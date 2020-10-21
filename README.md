@@ -75,7 +75,7 @@ input:
 
 ### Layer Class
 
-A layer that contains **h** units, stores the units' weight in a matrix *W* ![equation](https://latex.codecogs.com/gif.latex?%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*h%7D), the units' bias in a vector *b* ![equation](https://latex.codecogs.com/gif.latex?%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh%7D), and the weights' learning rate in a matrix *E* ![equation](https://latex.codecogs.com/gif.latex?%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*h%7D). Each unit of a layer has the same activation function defined when an instance of the class is created.
+A layer that contains **h** units with **i** inputs, stores the units' weight in a matrix ![equation](https://latex.codecogs.com/gif.latex?W%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*i%7D), the units' bias in a vector *b* ![equation](https://latex.codecogs.com/gif.latex?%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh%7D), and the weights' learning rate in a matrix ![equation](https://latex.codecogs.com/gif.latex?E%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*i%7D). Each unit of a layer has the same activation function defined when an instance of the class is created.
 
 
 
