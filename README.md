@@ -80,6 +80,7 @@ A layer that contains **h** units with **i** inputs, stores the units' weight in
 There are two specialized classes of the layer class:
 * the **Output layer class** that represents an output layer
 * the **Hidden layer class** that represents an hidden layer
+
 The two classes differ only on the error signal method. 
 
 #### methods
