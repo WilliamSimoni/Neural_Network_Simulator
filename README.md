@@ -18,7 +18,7 @@ The neural network simulator consists of two classes:
 #### instance variables
 
 the instance variables are:
-* **layers**: ordered sequence of layer objects.
+* **layers**: ordered sequence of layer objects. 
 * **momentum**: momentum function used for weights updatw
 * **learningRateUpdate**: function that update the learning rates
 * **momentumRate**: hyperparameter of momemtum rate
