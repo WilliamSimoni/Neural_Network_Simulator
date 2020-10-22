@@ -165,7 +165,7 @@ class LeakyRelu(ActivationFunction):
         return np.maximum(self.slope*x,x)
 
     def derivative(self, x):
-        result = np.zeros_like(f)
+        result = np.zeros_like(x)
         result[x < 0] = self.slope
         result[x >= 0] = 1
         return result
