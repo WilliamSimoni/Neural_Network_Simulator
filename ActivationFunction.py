@@ -23,6 +23,32 @@ class ActivationFunction():
             numpy.ndarray: output of the derivative
         """
 
+class Linear(ActivationFunction):
+    """Implementation of the linear function:
+
+        properties:
+            * range: (-oo,+oo)
+            * 0-centered: YES
+            * computation: easy
+
+        graph:
+                            |           x
+                            |        x
+                            |     x
+                            |  x
+            ----------------x----------------->
+                         x  |
+                      x     |
+                   x        |
+                x           |
+    """
+
+    def output(self,x):
+        return x
+    
+    def derivative(self,x):
+        return 1
+
 
 class Sigmoid(ActivationFunction):
     """Implementation of the sigmoid function:
@@ -146,15 +172,15 @@ class LeakyRelu(ActivationFunction):
             * computation: easy
 
         graph:
-                            |          x
-                            |       x
-                            |    x
-                            | x
+                            |           x
+                            |        x
+                            |     x
+                            |  x
             ----------------x----------------->
                         x   |
-                    x       |
-                x           |
-            x               |
+                   x        |
+               x            |
+           x                |
 
     """
 
@@ -170,19 +196,46 @@ class LeakyRelu(ActivationFunction):
         result[x >= 0] = 1
         return result
 
+class SoftPlus(ActivationFunction):
+    """Implementation of the soft plus function
+
+        properties:
+            * range: (0, +oo)
+            * vanishing gradient: NO
+            * computation: intensive
+
+        graph:
+                          1 |               
+                            |       
+                            |                       x
+                            |                    x   
+                            |                 x   
+                            |              x
+                            |           x
+                            |      x   
+            x---x---x---x---x------------------- 0
+
+    """
+    def output(self,x):
+        return np.log(1 + np.exp(x))
+
+    def derivative(self,x):
+        return 1 / (1 + np.exp(-x))
+
 """
 # Example
 
 # create activationFunction object
-activationFunction = Sigmoid()
+activationFunction = SoftPlus()
 
 # define x
-x = np.array([5.54, -25.43, 342134])
+x = np.array([-3, 3])
+
+#calculate the output
+output = activationFunction.output(x)
+print(output)
 
 # calculate the derivative
-output = activationFunction.output(x)
-
-gradient = activationFunction.derivative(x)
-
-print(gradient)
+derivative = activationFunction.derivative(x)
+print(derivative)
 """
