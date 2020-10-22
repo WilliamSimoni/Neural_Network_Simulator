@@ -24,7 +24,7 @@ class ActivationFunction():
         """
 
 
-class SigmoidFunction(ActivationFunction):
+class Sigmoid(ActivationFunction):
     """Implementation of the sigmoid function:
 
         properties:
@@ -174,7 +174,7 @@ class LeakyRelu(ActivationFunction):
 # Example
 
 # create activationFunction object
-activationFunction = Relu()
+activationFunction = Sigmoid()
 
 # define x
 x = np.array([5.54, -25.43, 342134])
@@ -182,6 +182,7 @@ x = np.array([5.54, -25.43, 342134])
 # calculate the derivative
 output = activationFunction.output(x)
 
-gradient = activationFunction.derivative(output)
+gradient = activationFunction.derivative(x)
 
+print(gradient)
 """
