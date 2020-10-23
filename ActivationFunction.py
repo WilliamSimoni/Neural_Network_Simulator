@@ -23,6 +23,7 @@ class ActivationFunction():
             numpy.ndarray: output of the derivative
         """
 
+
 class Linear(ActivationFunction):
     """Implementation of the linear function:
 
@@ -43,10 +44,10 @@ class Linear(ActivationFunction):
                 x           |
     """
 
-    def output(self,x):
+    def output(self, x):
         return x
-    
-    def derivative(self,x):
+
+    def derivative(self, x):
         return 1
 
 
@@ -125,7 +126,7 @@ class TanH(ActivationFunction):
         Returns:
             numpy.ndarray: return f'(x) given f(x)
         """
-        return (1 - np.square(f))
+        return 1 - np.square(f)
 
     def derivative(self, x):
         return self.derivativeF(self.output(x))
@@ -188,13 +189,14 @@ class LeakyRelu(ActivationFunction):
         self.slope = slope
 
     def output(self, x):
-        return np.maximum(self.slope*x,x)
+        return np.maximum(self.slope*x, x)
 
     def derivative(self, x):
         result = np.zeros_like(x)
         result[x < 0] = self.slope
         result[x >= 0] = 1
         return result
+
 
 class SoftPlus(ActivationFunction):
     """Implementation of the soft plus function
@@ -216,11 +218,13 @@ class SoftPlus(ActivationFunction):
             x---x---x---x---x------------------- 0
 
     """
-    def output(self,x):
+
+    def output(self, x):
         return np.log(1 + np.exp(x))
 
-    def derivative(self,x):
+    def derivative(self, x):
         return 1 / (1 + np.exp(-x))
+
 
 """
 # Example
