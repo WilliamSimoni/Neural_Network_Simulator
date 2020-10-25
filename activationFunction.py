@@ -1,7 +1,6 @@
 import numpy as np
 
-
-class ActivationFunction():
+class Activation_function():
 
     def output(self, x):
         """return the output of the function f(x)
@@ -24,7 +23,7 @@ class ActivationFunction():
         """
 
 
-class Linear(ActivationFunction):
+class Linear(Activation_function):
     """Implementation of the linear function:
 
         properties:
@@ -51,7 +50,7 @@ class Linear(ActivationFunction):
         return 1
 
 
-class Sigmoid(ActivationFunction):
+class Sigmoid(Activation_function):
     """Implementation of the sigmoid function:
 
         properties:
@@ -91,7 +90,7 @@ class Sigmoid(ActivationFunction):
         return self.derivativeF(self.output(x))
 
 
-class TanH(ActivationFunction):
+class TanH(Activation_function):
     """Implementation of the tanh function
 
         properties:
@@ -132,7 +131,7 @@ class TanH(ActivationFunction):
         return self.derivativeF(self.output(x))
 
 
-class Relu(ActivationFunction):
+class Relu(Activation_function):
     """Implementation of the relu function
 
         properties:
@@ -156,13 +155,13 @@ class Relu(ActivationFunction):
     """
 
     def output(self, x):
-        return 1.0*(x > 0)
+        return np.maximum(0,x)
 
     def derivative(self, x):
         return 1.0*(x > 0)
 
 
-class LeakyRelu(ActivationFunction):
+class LeakyRelu(Activation_function):
     """Implementation of the leaky relu function
 
         properties:
@@ -198,7 +197,7 @@ class LeakyRelu(ActivationFunction):
         return result
 
 
-class SoftPlus(ActivationFunction):
+class SoftPlus(Activation_function):
     """Implementation of the soft plus function
 
         properties:
