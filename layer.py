@@ -2,7 +2,6 @@
     Layer Module used to represent a layer of a NN
 """
 import numpy as np
-import activationFunction
 
 
 class Layer:
