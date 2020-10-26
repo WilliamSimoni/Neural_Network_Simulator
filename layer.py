@@ -3,7 +3,6 @@
 """
 import numpy as np
 import activationFunction
-import weightInitializer as wi
 
 class Layer:
     """
