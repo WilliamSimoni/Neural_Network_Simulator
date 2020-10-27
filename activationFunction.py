@@ -2,21 +2,21 @@ import numpy as np
 
 class Activation_function():
 
-    def output(self, input):
-        """return the output of the function f(input)
+    def output(self, x):
+        """return the output of the function f(x)
 
         Args:
-            input (numpy.ndarray): input for the activation function
+            x (numpy.ndarray): input for the activation function
 
         Returns:
             numpy.ndarray: output of the function
         """
 
-    def derivative(self, input):
-        """return f'(input) given input
+    def derivative(self, x):
+        """return f'(x) given x
 
         Args:
-            input (numpy.ndarray): input for the derivative of the activation function f'(input)
+            x (numpy.ndarray): input for the derivative of the activation function f'(x)
 
         Returns:
             numpy.ndarray: output of the derivative
@@ -43,11 +43,11 @@ class Linear(Activation_function):
                 x           |
     """
 
-    def output(self, input):
-        return input
+    def output(self, x):
+        return x
 
-    def derivative(self, input):
-        return np.ones(input.shape)
+    def derivative(self, x):
+        return np.ones(x.shape)
 
 
 class Sigmoid(Activation_function):
@@ -72,10 +72,10 @@ class Sigmoid(Activation_function):
             x---x------------------------------- 0
     """
 
-    def output(self, input):
-        return 1.0/(1.0 + np.exp(-input))
+    def output(self, x):
+        return 1.0/(1.0 + np.exp(-x))
 
-    def derivativeF(self, function_value):
+    def derivativeF(self, f):
         """return value of the derivative [f'(x)] given the function values on x [f(x)]
 
         Args:
@@ -84,10 +84,10 @@ class Sigmoid(Activation_function):
         Returns:
             numpy.ndarray: return f'(x) given f(x)
         """
-        return function_value * (1 - function_value)
+        return f * (1 - f)
 
-    def derivative(self, input):
-        return self.derivativeF(self.output(input))
+    def derivative(self, x):
+        return self.derivativeF(self.output(x))
 
 
 class TanH(Activation_function):
@@ -113,10 +113,10 @@ class TanH(Activation_function):
 
     """
 
-    def output(self, input):
+    def output(self, x):
         return np.tanh(x)
 
-    def derivativeF(self, function_value):
+    def derivativeF(self, f):
         """return value of the derivative [f'(x)] given the function values on x [f(x)]
 
         Args:
@@ -125,10 +125,10 @@ class TanH(Activation_function):
         Returns:
             numpy.ndarray: return f'(x) given f(x)
         """
-        return 1 - np.square(function_value)
+        return 1 - np.square(f)
 
-    def derivative(self, input):
-        return self.derivativeF(self.output(input))
+    def derivative(self, x):
+        return self.derivativeF(self.output(x))
 
 
 class Relu(Activation_function):
@@ -154,11 +154,11 @@ class Relu(Activation_function):
 
     """
 
-    def output(self, input):
-        return np.maximum(0,input)
+    def output(self, x):
+        return np.maximum(0,x)
 
-    def derivative(self, input):
-        return 1.0*(input > 0)
+    def derivative(self, x):
+        return 1.0*(x > 0)
 
 
 class LeakyRelu(Activation_function):
@@ -187,13 +187,13 @@ class LeakyRelu(Activation_function):
     def __init__(self, slope):
         self.slope = slope
 
-    def output(self, input):
-        return np.maximum(self.slope*input, input)
+    def output(self, x):
+        return np.maximum(self.slope*x, x)
 
-    def derivative(self, input):
-        result = np.zeros_like(input)
-        result[input < 0] = self.slope
-        result[input >= 0] = 1
+    def derivative(self, x):
+        result = np.zeros_like(x)
+        result[x < 0] = self.slope
+        result[x >= 0] = 1
         return result
 
 
@@ -218,11 +218,11 @@ class SoftPlus(Activation_function):
 
     """
 
-    def output(self, input):
-        return np.log(1 + np.exp(input))
+    def output(self, x):
+        return np.log(1 + np.exp(x))
 
-    def derivative(self, input):
-        return 1 / (1 + np.exp(-input))
+    def derivative(self, x):
+        return 1 / (1 + np.exp(-x))
 
 
 """
@@ -231,14 +231,14 @@ class SoftPlus(Activation_function):
 # create activationFunction object
 activationFunction = SoftPlus()
 
-# define input
-input = np.array([-3, 3])
+# define x
+x = np.array([-3, 3])
 
 #calculate the output
-output = activationFunction.output(input)
+output = activationFunction.output(x)
 print(output)
 
 # calculate the derivative
-derivative = activationFunction.derivative(input)
+derivative = activationFunction.derivative(x)
 print(derivative)
 """
