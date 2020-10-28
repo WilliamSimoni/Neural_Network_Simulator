@@ -28,7 +28,7 @@ the instance variables are:
 * **maxEpochs**: maximum number of epochs
 * **regularizationRate**: regularization rate
 * **regularizationFunction**: function used for regularization
-* **batchSize**: size of the batch (e.g.: 1 is online)
+* **Neural Network Type**: type of neural network solver, we only implemented Stochastic/Online Gradient descent
 * **inputDimension**: dimension of the input
 
 #### methods
@@ -70,7 +70,6 @@ input:
 * exampleSample: 
 * targetPredicted:
 
-
 *post-condition*: update the weights
 
 ### Layer Class
@@ -91,11 +90,33 @@ return the function signal
 
 #### errorSignal
 
-return the error signal
+abstact method
 
 ##### updateWeight
 
 update weights 
+
+### Output Layer class
+
+A layer that contains output unit. It implements errorSignal for output unit. 
+
+#### Error Signal
+
+This method returns: 
+    
+![equation](https://latex.codecogs.com/gif.latex?%5Cdelta_%7Bj%7D%20%3D%20f%27%28net_%7Bj%7D%29%28target_%7Bj%7D%20-%20output_%7Bj%7D%29)
+
+
+### Hidden Layer class
+
+A layer that contains output unit. It implements errorSignal for output unit. 
+
+#### Error Signal
+
+This method returns: 
+    
+![equation](https://latex.codecogs.com/gif.latex?%5Cdelta_%7Bj%7D%20%3D%20f%27%28net_%7Bj%7D%29%5Csum_%7Bk%5Cin%20Downstream%28j%29%7D%5Cdelta_%7Bk%7D%20*%20w_%7Bkj%7D)
+
 
 ## Function signal
 
