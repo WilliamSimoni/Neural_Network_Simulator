@@ -126,70 +126,19 @@ Suppose to have a neural network with **i** inputs, **H** hidden layers with **h
 
 The feedback signal for the first level is calculated as follow: TODO
 
-
-## Backpropagation Algorithm
-
-The system will use the **backpropagation algorithm** that is a gradient descent algorithm. Notation:
-* Batch_size: size of the batch
-* D: training set where a generic pattern i is <x[i], target[i]>
-* l: size of the training set
-
-    Until the termination condition is not met
-    
-        Shuffle the patterns in D
-        
-        p = 0       #pattern counter
-        
-        while p < l
-  
-*Note: an epoch ends whenever this cycle terminates*
-          
-          j = 0
-           
-          initialize a new deltaW for each layer
-               
-          while j < Batch_size and p < l
-        
-                    #Propagate the input forward through the network
-
-                    compute output(x[p])[u] for every unit u in the network
-
-                    #Calculate the error signal fo every unit in the network
-
-                    for each unit k in the output layer
-
-                        calculate delta[k][p] (delta k for pattern p) = (D[p].target[k] (p-th target for unit k) - output[k][p]) * f'(output[k][p])
-
-                    for each hidden layer l in the network 
-
-                        for each unit h in the hidden layer
-
-                            calculate delta[h][p] = (summation, for all the unit k in the downstream of h, of w[k][h] * delta[k][p]) * * f'(output[h][p])
-
-                     #update deltaW for all the units
-
-                     deltaW[u][i] (deltaW for the weight of the unit u for the input i) = deltaW[u][i] + delta[u][p] * x[u][i][p] (i-th input of unit j for p-th pattern)
-
-                     i = i + 1
-
-                     j = j + 1
-           
-           #update the weights w[u][i] using deltaW[u][i]:
-           
-           w[u][i] = w[u][i] + (larning_rate[u][i] * deltaW[u][i])/l + momentum_rate * old_deltaW[u][i] - 2 * regularization_rate * w[u][i]
-           
-           old_deltaW[u][i] = deltaW[u][i]
-           
-
-                
-
-
 # TODO (28/10/2020)
 
 * function signal in layer (Marco)
 * feedforwardSignal in neural network (Marco)
 * predict in neural network (Marco)
-* layer and NN constructor (William)
+* layer constructor (William)
 * activation function (William)
+
+# TODO (04/11/2020)
+
+* add comments to code (William)
+* study how to implement momentum and regularization rate (Everyone)
+* unitary test about predict, backpropagation, error_signal, ecc. (Marco)
+
 
 
