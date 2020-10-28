@@ -206,14 +206,14 @@ class SoftPlus(Activation_function):
             * computation: intensive
 
         graph:
-                          1 |               
-                            |       
+                          1 |
+                            |
                             |                       x
-                            |                    x   
-                            |                 x   
+                            |                    x
+                            |                 x
                             |              x
                             |           x
-                            |      x   
+                            |      x
             x---x---x---x---x------------------- 0
 
     """

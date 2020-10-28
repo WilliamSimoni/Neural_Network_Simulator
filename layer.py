@@ -13,10 +13,10 @@ class Layer:
         """This function initialize an instance of the layer class
 
         Parameters:
-            weights (numpy.ndarray): matrix, of num_unit * num_input + 1 elements, 
+            weights (numpy.ndarray): matrix, of num_unit * num_input + 1 elements,
             that contain the weights of the units in the layer (including the biases)
 
-            learning_rates (numpy.ndarray): matrix, of unitNumber * inputNumber elements, 
+            learning_rates (numpy.ndarray): matrix, of unitNumber * inputNumber elements,
             that contain the learning rates of the units in the layer (including the biases)
 
             activation (ActivationFunction): each unit of this layer use this function as activation function
@@ -42,7 +42,7 @@ class Layer:
         # num_unit = number of weights'/learning_rates' rows
         # num_input = number of weights'/learning_rates' columns
         self.num_unit, self.num_input = weights.shape
-        
+
         #removing 1, because in weights there is also the bias column
         self.num_input -= 1
 
@@ -61,7 +61,7 @@ class Layer:
             int: the number of input for the layer (included the bias input)
         """
         return self.num_input
-        
+
     def function_signal(self, input_values):
         """
             Calculate the propagated values of a layer using an activation function
@@ -73,7 +73,7 @@ class Layer:
         """
         if len(input_values) != self.num_input:
             raise ValueError
-        
+
         #add bias input to input_values
         input_values = np.concatenate(([1], input_values), axis=0)
 

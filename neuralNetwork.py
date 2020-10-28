@@ -1,7 +1,7 @@
 """
 Neural Network module implement a feedforward Neural Network
 """
-import numpy as np
+#import numpy as np
 from layer import Layer
 
 class NeuralNetwork:
@@ -29,25 +29,26 @@ class NeuralNetwork:
         self.layers = []
 
     def addLayer(self, layer):
-        
+
         """ add a layer in the neural network
 
             Parameters:
-                layer (Layer): layer to be added. The layer must have a number 
+                layer (Layer): layer to be added. The layer must have a number
                 of input equal to the unit of the previous layer
 
             Raises:
                 ValueError: the layer is not a Layer object
-                ValueError: The number of input for this new layer is not equal 
+                ValueError: The number of input for this new layer is not equal
                   to the number of unit of the previous layer in the neural network
-                  
-            Example:  
+
+            Example:
                 this is a neural network with two layers
 
                       o   o   o
                     o   o   o   o
 
-                Then we execute neuralNetwork.addLayer(layer) where layer has 2 units with 3 inputs(o o):
+                Then we execute neuralNetwork.addLayer(layer) 
+                where layer has 2 units with 3 inputs(o o):
 
                         o   o
                       o   o   o
@@ -62,7 +63,7 @@ class NeuralNetwork:
             self.input_dimension = layer.get_num_input()
         elif layer.get_num_input() != self.output_dimension:
             raise ValueError(
-                "The number of input for this new layer must be equal to the number of unit of the previous layer")
+                "The number of input for this new layer must be equal to previous layer")
 
         self.output_dimension = layer.get_num_unit()
 
