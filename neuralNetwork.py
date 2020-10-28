@@ -1,15 +1,15 @@
 """
 Neural Network module implement a feedforward Neural Network
 """
-#import numpy as np
-from layer import Layer
+import numpy as np
+from layer import Layer, OutputLayer, HiddenLayer
 
 class NeuralNetwork:
     """
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs):
+    def __init__(self, max_epochs, momentum_rate = 0):
         """create an instance of neural network class
 
         Parameters:
@@ -27,6 +27,7 @@ class NeuralNetwork:
 
         # note: this is not a np.ndarray object
         self.layers = []
+        self.momentum_rate = momentum_rate
 
     def addLayer(self, layer):
 
@@ -108,3 +109,17 @@ class NeuralNetwork:
             input_layer = output_layer
 
         return output_layer
+    
+    def _back_propagation(self, example_sample, target_predicted):
+        
+        # calculate delta of output units
+        self.layers[-1].error_signal(target_predicted, example_sample)
+        
+        for index in range(len(self.layers[:-2]),-1,-1): 
+            self.layers[index].error_signal(self.layers[index+1].get_errors(),self.layers[index+1].get_weights())
+        
+        for layer in self.layers:
+            layer.update_weight(self.momentum_rate)
+
+        
+            

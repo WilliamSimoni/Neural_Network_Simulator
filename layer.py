@@ -46,6 +46,14 @@ class Layer:
         #removing 1, because in weights there is also the bias column
         self.num_input -= 1
 
+        self.net = 0
+
+        self.errors = np.empty([self.num_unit])
+
+        self.inputs = 0
+
+        self.old_delta_w = np.zeros(weights.shape)
+
     def get_num_unit(self):
         """To get the number of unit in the layer
 
@@ -61,6 +69,12 @@ class Layer:
             int: the number of input for the layer (included the bias input)
         """
         return self.num_input
+    
+    def get_errors(self):
+        return self.errors
+
+    def get_weights(self):
+        return self.weights
 
     def function_signal(self, input_values):
         """
@@ -77,5 +91,32 @@ class Layer:
         #add bias input to input_values
         input_values = np.concatenate(([1], input_values), axis=0)
 
-        return np.array([self.activation.output(np.inner(unit_weights, input_values))
-                         for unit_weights in self.weights])
+        self.inputs = input_values
+
+        self.net = np.array([np.inner(unit_weights, input_values) for unit_weights in self.weights])
+
+        return np.array(self.activation.output(self.net))
+
+    def update_weight(self, momentum_rate = 0, regularization_rate = 0):
+        new_delta_w = np.multiply(self.learning_rates, np.outer(self.errors, self.inputs))
+        self.weights += new_delta_w + self.old_delta_w * momentum_rate
+        self.old_delta_w = new_delta_w
+
+    def error_signal(self):
+        pass
+
+class OutputLayer(Layer):
+
+    def __init__(self, weights, learning_rates, activation):
+        super().__init__(weights, learning_rates, activation)
+    
+    def error_signal(self, target, output):
+        self.errors = self.activation.derivative(self.net) * (target - output)
+
+class HiddenLayer(Layer):
+
+    def __init__(self, weights, learning_rates, activation):
+        super().__init__(weights, learning_rates, activation)
+
+    def error_signal(self, downStreamErrors, downStreamWeights):
+        self.errors = self.activation.derivative(self.net) * np.matmul(downStreamErrors, downStreamWeights[0:,1:])
