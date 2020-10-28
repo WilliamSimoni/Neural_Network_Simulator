@@ -34,7 +34,7 @@ jobs:
       - name: Configure Python System
         run: |
           python -m pip install --upgrade pip
-          pip install pylint pytest 
+          pip install pylint pytest numpy
         
           
       # Check Formatting quality
