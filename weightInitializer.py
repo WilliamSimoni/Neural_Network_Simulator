@@ -1,6 +1,6 @@
 import numpy as np
 
-def xavier_initializer(num_input, num_unit):
+def xavier_initializer(num_unit, num_input):
     """returns weight matrix to use in a layer (included bias in the first column)
 
         The xavier method apply the following rule:

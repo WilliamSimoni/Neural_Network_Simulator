@@ -8,10 +8,10 @@ NN = NeuralNetwork(19, 0.1)
 
 #create three layers
 
-layer1 = HiddenLayer(wi.xavier_initializer(3,5), np.full((5,4), 0.001), af.Linear())
-layer2 = HiddenLayer(wi.xavier_initializer(5,7), np.full((7,6), 0.001), af.Linear())
-layer3 = HiddenLayer(wi.xavier_initializer(7,2), np.full((2,8), 0.001), af.Linear())
-layer4 = OutputLayer(wi.xavier_initializer(2,3), np.full((3,3), 0.001), af.Linear())
+layer1 = HiddenLayer(wi.xavier_initializer(5,3), np.full((5,4), 0.001), af.Linear())
+layer2 = HiddenLayer(wi.xavier_initializer(7,5), np.full((7,6), 0.001), af.Linear())
+layer3 = HiddenLayer(wi.xavier_initializer(2,7), np.full((2,8), 0.001), af.Linear())
+layer4 = OutputLayer(wi.xavier_initializer(3,2), np.full((3,3), 0.001), af.Linear())
 
 
 
