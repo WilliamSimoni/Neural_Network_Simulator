@@ -20,7 +20,8 @@ class Layer:
             learning_rates (numpy.ndarray): matrix, of unitNumber * inputNumber elements,
             that contain the learning rates of the units in the layer (including the biases)
 
-            activation (ActivationFunction): each unit of this layer use this function as activation function
+            activation (ActivationFunction): each unit of this layer use this function 
+                                                as activation function
         """
 
         # checking parameters -------------------
@@ -77,7 +78,9 @@ class Layer:
         """To get the array of errors obtained once you have executed the error signal
 
         Returns:
-            np.array: an array of floating-point. In particular, the array element i is the error of the i-th unit of the layer
+            np.array: an array of floating-point. In particular, 
+                the i-th element of the returned array is the error 
+                of the i-th unit in the layer
         """
         return self.errors
 
@@ -108,20 +111,23 @@ class Layer:
         # updating the value of inputs
         self.inputs = input_values
 
-        # calculating the value of the net. The value calculated is an array whose i-th element is
-        # the net value of the i-th unit.
+        # calculating the value of the net. The value calculated is an array
+        # whose i-th element is the net value of the i-th unit.
         self.net = np.array([np.inner(unit_weights, input_values)
-                            for unit_weights in self.weights])
+                             for unit_weights in self.weights])
 
-        # returnin the value obtained applying the activation function of the layer to the new nets result.
+        # returnig the value obtained applying the activation function
+        # of the layer to the new nets result.
         return np.array(self.activation.output(self.net))
 
     def update_weight(self, momentum_rate=0, regularization_rate=0):
         """update the weights of the layers
 
         Parameters:
-            momentum_rate (int, optional): the momentum rate used to update the weights. Defaults to 0.
-            regularization_rate (int, optional): the regularization rate used to update the weights. Defaults to 0.
+            momentum_rate (int, optional): the momentum rate used to update the weights. 
+                Defaults to 0.
+            regularization_rate (int, optional): the regularization rate used to update the weights. 
+                                                    Defaults to 0.
 
         Formula:
             The j-th weight of the i-th unit is update as follow:
@@ -160,25 +166,27 @@ class OutputLayer(Layer):
                 that contain the weights of the units in the layer (including the biases)
 
                 learning_rates (numpy.ndarray): matrix, of unitNumber * inputNumber elements,
-                that contain the learning rates of the units in the layer (including the biases)
+                    that contain the learning rates of the units in the layer (including the biases)
 
-                activation (ActivationFunction): each unit of this layer use this function as activation function
+                activation (ActivationFunction): each unit of this layer use this function 
+                                                    as activation function
         """
         super().__init__(weights, learning_rates, activation)
-    
+
     def error_signal(self, target, output):
         """implement the calculation of the error signal for an output layer
 
         Parameters:
             target (np.array): target for a specific pattern x
             output (np.array): the output of the layer for a specific pattern x
-        
+
         Formula: 
             for each unit i
-            
+
                 errors[i] = f'(net[i]) * (target[i] - output[i])
         """
         self.errors = self.activation.derivative(self.net) * (target - output)
+
 
 class HiddenLayer(Layer):
 
@@ -192,7 +200,8 @@ class HiddenLayer(Layer):
                 learning_rates (numpy.ndarray): matrix, of unitNumber * inputNumber elements,
                 that contain the learning rates of the units in the layer (including the biases)
 
-                activation (ActivationFunction): each unit of this layer use this function as activation function
+                activation (ActivationFunction): each unit of this layer use this 
+                                                    function as activation function
         """
         super().__init__(weights, learning_rates, activation)
 
@@ -205,8 +214,9 @@ class HiddenLayer(Layer):
 
         Formula: 
             for each unit i, assuming the layer above has k units:
-            
-                errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... + 
+
+                errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... +
                                                     downStreamWeights[k][i] * downStreamErrors[k])
         """
-        self.errors = self.activation.derivative(self.net) * np.matmul(downStreamErrors, downStreamWeights[0:,1:])
+        self.errors = self.activation.derivative(self.net) * np.matmul(downStreamErrors,
+                                                                       downStreamWeights[0:, 1:])
