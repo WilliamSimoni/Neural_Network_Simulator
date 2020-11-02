@@ -1,6 +1,6 @@
 import numpy as np
 from neuralNetwork import NeuralNetwork
-from layer import Layer, OutputLayer, HiddenLayer
+from layer import OutputLayer, HiddenLayer
 import weightInitializer as wi
 import activationFunction as af
 

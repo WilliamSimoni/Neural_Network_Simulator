@@ -48,7 +48,7 @@ class NeuralNetwork:
                       o   o   o
                     o   o   o   o
 
-                Then we execute neuralNetwork.addLayer(layer) 
+                Then we execute neuralNetwork.addLayer(layer)
                 where layer has 2 units with 3 inputs(o o):
 
                         o   o
@@ -59,11 +59,12 @@ class NeuralNetwork:
 
         if not isinstance(layer, Layer):
             raise ValueError('layer must be a Layer object')
-        
+
         #the first layer added define the input dimension of the neural network
         if len(self.layers) == 0:
             self.input_dimension = layer.get_num_input()
-        #the new layer must have an input dimension equal to the number of unit of the last layer added
+        #the new layer must have an input dimension equal 
+        # to the number of units in the last layer added
         elif layer.get_num_input() != self.output_dimension:
             raise ValueError(
                 "The number of input for this new layer must be equal to previous layer")
@@ -112,7 +113,7 @@ class NeuralNetwork:
             input_layer = output_layer
 
         return output_layer
-    
+
     def _back_propagation(self, target_sample, target_predicted):
         """execute a step of the backpropagation algorithm
 
@@ -122,15 +123,12 @@ class NeuralNetwork:
         """
         # calculate error signal (delta) of output units
         self.layers[-1].error_signal(target_sample, target_predicted)
-        
+
         #calculate error signal (delta) of hidden units
         #TODO problem if there is only one layer
-        for index in range(len(self.layers[:-2]),-1,-1): 
+        for index in range(len(self.layers[:-2]),-1,-1):
             self.layers[index].error_signal(self.layers[index+1].get_errors(),self.layers[index+1].get_weights())
-        
+
         #updatinf the weights in the neural network
         for layer in self.layers:
             layer.update_weight(self.momentum_rate)
-
-        
-            
