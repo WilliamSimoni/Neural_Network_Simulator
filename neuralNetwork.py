@@ -12,16 +12,16 @@ class NeuralNetwork:
     def __init__(self, max_epochs, momentum_rate = 0):
         """create an instance of neural network class
 
-        Parameters:
-            max_epochs (int): maximum number of epochs for the training
+        Args:
+            momentum_rate (int, optional): momentum_rate used for learning. Defaults to 0.
         """
-
         # checking parameters -------------------
         # TODO
         # ---------------------------------------
 
-        self.max_epochs = max_epochs
+        #TODO DELETE MAX_EPOCHS?
 
+        self.max_epochs = max_epochs
         self.input_dimension = 0
         self.output_dimension = 0
 
@@ -59,13 +59,16 @@ class NeuralNetwork:
 
         if not isinstance(layer, Layer):
             raise ValueError('layer must be a Layer object')
-
+        
+        #the first layer added define the input dimension of the neural network
         if len(self.layers) == 0:
             self.input_dimension = layer.get_num_input()
+        #the new layer must have an input dimension equal to the number of unit of the last layer added
         elif layer.get_num_input() != self.output_dimension:
             raise ValueError(
                 "The number of input for this new layer must be equal to previous layer")
 
+        #the last layer inserted define the output dimension
         self.output_dimension = layer.get_num_unit()
 
         self.layers.append(layer)
@@ -110,14 +113,22 @@ class NeuralNetwork:
 
         return output_layer
     
-    def _back_propagation(self, example_sample, target_predicted):
+    def _back_propagation(self, target_sample, target_predicted):
+        """execute a step of the backpropagation algorithm
+
+        Parameters:
+            target_sample (np.array): the target for the sample x
+            target_predicted (np.array): the output returned by the neural network for the sample x
+        """
+        # calculate error signal (delta) of output units
+        self.layers[-1].error_signal(target_sample, target_predicted)
         
-        # calculate delta of output units
-        self.layers[-1].error_signal(target_predicted, example_sample)
-        
+        #calculate error signal (delta) of hidden units
+        #TODO problem if there is only one layer
         for index in range(len(self.layers[:-2]),-1,-1): 
             self.layers[index].error_signal(self.layers[index+1].get_errors(),self.layers[index+1].get_weights())
         
+        #updatinf the weights in the neural network
         for layer in self.layers:
             layer.update_weight(self.momentum_rate)
 
