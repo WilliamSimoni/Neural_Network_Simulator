@@ -134,7 +134,7 @@ class Layer:
 
                 W[i][j] = W[i][j] + learning_rate[i][j] * errors[i] * inputs[j] +
                           momentum_rate * old_delta_w +
-                          reularization_rate * ||W|| TODO
+                          reularization_rate * W[i][j]
         """
         # calculating the new delta
         # new_delta_w[i][j] = learning_rate[i][j] * errors[i] * inputs[j]
@@ -142,8 +142,13 @@ class Layer:
             self.learning_rates, np.outer(self.errors, self.inputs))
 
         # updating the weights
-        # weight[i][j] = weight[i][j] + momentum_rate * old_delta_w
+
+        #regularization
+        self.weights[0:, 1:] -= regularization_rate * self.weights[0:, 1:]
+
+        #addinf delta_w and momentum
         self.weights += new_delta_w + self.old_delta_w * momentum_rate
+        
 
         # updating old_delta_w for the next update of the weights
         self.old_delta_w = new_delta_w

@@ -4,7 +4,7 @@ from layer import OutputLayer, HiddenLayer
 import weightInitializer as wi
 import activationFunction as af
 
-NN = NeuralNetwork(19, 0.1)
+NN = NeuralNetwork(1000, 0.1)
 
 #create three layers
 
@@ -21,12 +21,26 @@ NN.addLayer(layer2)
 NN.addLayer(layer3)
 NN.addLayer(layer4)
 
-x = np.array([1, 2, 3])
-target = np.array([1, 3, 4])
+x1 = np.array([1, 1, 1])
+target1 = np.array([1, 0, 0])
 
+x2 = np.array([2, 1, 1])
+target2 = np.array([0, 1, 0])
+
+x3 = np.array([3, 2, 1])
+target3 = np.array([0, 0, 1])
+
+training_examples = np.array([(x1,target1), (x2, target2), (x3, target3)])
+
+NN.fit(training_examples)
+
+
+
+"""
 print(np.linalg.norm(target - NN.predict(x)))
 
 for i in range(0,50):
     NN._back_propagation(target, NN.predict(x))
 
 print(np.linalg.norm(target - NN.predict(x)))
+"""

@@ -19,8 +19,6 @@ class NeuralNetwork:
         # TODO
         # ---------------------------------------
 
-        #TODO DELETE MAX_EPOCHS?
-
         self.max_epochs = max_epochs
         self.input_dimension = 0
         self.output_dimension = 0
@@ -87,8 +85,8 @@ class NeuralNetwork:
 
             Return: the predicted target over the sample
         """
-        if len(sample) != self.input_dimension:
-            raise ValueError
+        #sample dimension controlled in _feedwardSignal
+
         return self._feedwardSignal(sample)
 
     def _feedwardSignal(self, sample):
@@ -114,6 +112,39 @@ class NeuralNetwork:
 
         return output_layer
 
+    def fit(self, training_examples, min_training_error = 1e-12):
+        """[summary]
+
+        Parameters:
+            training_examples (array(tupla(input, target))): [description]
+            min_training_error (): [description]
+        """
+
+        #executed epochs
+        num_epochs = 0
+        error = np.Inf
+
+        #stop when we execure max_epochs epochs or TODO training error
+        while(num_epochs < self.max_epochs or error <= min_training_error):
+    
+            #shuffle training examples
+            np.random.shuffle(training_examples)
+
+            #training
+            for example in training_examples:
+                self._back_propagation(example[1], self.predict(example[0]))
+
+            #calculate euclidean error 
+            error = 0
+            for example in training_examples:
+                error += np.linalg.norm(self.predict(example[0]) - example[1])
+            error = error / len(example)
+
+            #increase number of epochs
+            num_epochs += 1
+        
+        print(error)
+
     def _back_propagation(self, target_sample, target_predicted):
         """execute a step of the backpropagation algorithm
 
@@ -125,8 +156,7 @@ class NeuralNetwork:
         self.layers[-1].error_signal(target_sample, target_predicted)
 
         #calculate error signal (delta) of hidden units
-        #TODO problem if there is only one layer
-        for index in range(len(self.layers[:-2]),-1,-1):
+        for index in range(len(self.layers[:-1]) - 1, -1, -1):
             self.layers[index].error_signal(self.layers[index+1].get_errors(),self.layers[index+1].get_weights())
 
         #updatinf the weights in the neural network
