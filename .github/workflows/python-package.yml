@@ -45,5 +45,5 @@ jobs:
       # Execute Test 
       - name: Execute Unittest
         run: |
-           pytest 
+           python Test/test_nn.py
 
