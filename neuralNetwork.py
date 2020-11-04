@@ -131,19 +131,20 @@ class NeuralNetwork:
             np.random.shuffle(training_examples)
 
             #training
+            
             for example in training_examples:
                 self._back_propagation(example[1], self.predict(example[0]))
+            
 
             #calculate euclidean error 
-            error = 0
-            for example in training_examples:
-                error += np.linalg.norm(self.predict(example[0]) - example[1])
-            error = error / len(example)
+            error = np.sum([np.linalg.norm(self.predict(example[0]) - example[1])
+                            for example in training_examples]) / len(training_examples)
+            
 
             #increase number of epochs
             num_epochs += 1
         
-        print(error)
+        
 
     def _back_propagation(self, target_sample, target_predicted):
         """execute a step of the backpropagation algorithm
