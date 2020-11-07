@@ -120,10 +120,11 @@ class Layer:
         # of the layer to the new nets result.
         return np.array(self.activation.output(self.net))
 
-    def update_weight(self, momentum_rate=0, regularization_rate=0):
+    def update_weight(self, batch_size, momentum_rate=0, regularization_rate=0):
         """update the weights of the layers
 
         Parameters:
+            batch_size: size of a batch used to compute average over batch
             momentum_rate (int, optional): the momentum rate used to update the weights.
                 Defaults to 0.
             regularization_rate (int, optional): the regularization rate used to update the weights.
@@ -139,7 +140,7 @@ class Layer:
         # calculating the new delta
         # new_delta_w[i][j] = learning_rate[i][j] * errors[i] * inputs[j]
         new_delta_w = np.multiply(
-            self.learning_rates, np.outer(self.errors, self.inputs))
+            self.learning_rates / batch_size, np.outer(self.errors, self.inputs))
 
         # updating the weights
 
@@ -148,10 +149,12 @@ class Layer:
 
         #addinf delta_w and momentum
         self.weights += new_delta_w + self.old_delta_w * momentum_rate
-        
+
 
         # updating old_delta_w for the next update of the weights
         self.old_delta_w = new_delta_w
+
+        self.errors = np.empty([self.num_unit])
 
     def error_signal(self):
         """abstract class
@@ -190,7 +193,7 @@ class OutputLayer(Layer):
 
                 errors[i] = f'(net[i]) * (target[i] - output[i])
         """
-        self.errors = self.activation.derivative(self.net) * (target - output)
+        self.errors += self.activation.derivative(self.net) * (target - output)
 
 
 class HiddenLayer(Layer):
@@ -223,5 +226,5 @@ class HiddenLayer(Layer):
                 errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... +
                                                     downStreamWeights[k][i] * downStreamErrors[k])
         """
-        self.errors = self.activation.derivative(self.net) * np.matmul(downStreamErrors,
-                                                                       downStreamWeights[0:, 1:])
+        self.errors += self.activation.derivative(self.net) * np.matmul(downStreamErrors,
+                                                                        downStreamWeights[0:, 1:])

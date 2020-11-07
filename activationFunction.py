@@ -155,7 +155,7 @@ class Relu(Activation_function):
     """
 
     def output(self, x):
-        return np.maximum(0,x)
+        return np.maximum(0, x)
 
     def derivative(self, x):
         return 1.0*(x > 0)

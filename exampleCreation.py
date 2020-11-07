@@ -4,7 +4,7 @@ from layer import OutputLayer, HiddenLayer
 import weightInitializer as wi
 import activationFunction as af
 
-NN = NeuralNetwork(1000, 0.1)
+NN = NeuralNetwork(1000, 0.1, nn_type="minibatch", batch_size=2)
 
 #create three layers
 
@@ -30,7 +30,10 @@ target2 = np.array([0, 1, 0])
 x3 = np.array([3, 2, 1])
 target3 = np.array([0, 0, 1])
 
-training_examples = np.array([(x1,target1), (x2, target2), (x3, target3)])
+x4 = np.array([3, 2, 1])
+target4 = np.array([0, 0, 1])
+
+training_examples = np.array([(x1,target1), (x2, target2), (x3, target3), (x4, target4)])
 
 NN.fit(training_examples)
 

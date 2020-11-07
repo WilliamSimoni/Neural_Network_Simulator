@@ -1,3 +1,7 @@
+"""
+    Module weightInitializer define how to initialize weights in
+    our NN simulator
+"""
 import numpy as np
 
 def xavier_initializer(num_unit, num_input):
@@ -14,6 +18,6 @@ def xavier_initializer(num_unit, num_input):
     Returns:
         numpy.ndarray: returns weight matrix to use in a layer (included bias in the first column)
     """
-    bias_weights = np.zeros((num_unit,1))
-    input_weights = np.random.normal(size=[num_unit,num_input]) * np.sqrt(1/num_input)
+    bias_weights = np.zeros((num_unit, 1))
+    input_weights = np.random.normal(size=[num_unit, num_input]) * np.sqrt(1/num_input)
     return np.concatenate((bias_weights, input_weights), axis=1)

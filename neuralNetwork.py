@@ -3,17 +3,22 @@ Neural Network module implement a feedforward Neural Network
 """
 import numpy as np
 from layer import Layer, OutputLayer, HiddenLayer
+from neural_exception import InvalidNeuralNetwork
 
 class NeuralNetwork:
     """
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, momentum_rate = 0):
+    def __init__(self, max_epochs, momentum_rate=0, nn_type="SGD", batch_size=1):
         """create an instance of neural network class
 
         Args:
+            max_epochs (int): number of maximum epochs used in param fitting.
             momentum_rate (int, optional): momentum_rate used for learning. Defaults to 0.
+            nn_type (string, optional): type of Neural Network used. Default "SGD"
+                Only SGD(Stocasthic Gradient Descent), batch and minibatch has been implemented.
+            batch_size (int, optional): size of batch used, Default set to 1.
         """
         # checking parameters -------------------
         # TODO
@@ -22,6 +27,14 @@ class NeuralNetwork:
         self.max_epochs = max_epochs
         self.input_dimension = 0
         self.output_dimension = 0
+        self.type = nn_type
+        self.batch_size = batch_size
+
+        if nn_type == "SGD" and batch_size != 1:
+            print("Invalid Batch Size. Reset to valid value 1")
+            self.batch_size = 1
+        if nn_type not in ("batch", "SGD", "minibatch"):
+            raise InvalidNeuralNetwork
 
         # note: this is not a np.ndarray object
         self.layers = []
@@ -61,7 +74,7 @@ class NeuralNetwork:
         #the first layer added define the input dimension of the neural network
         if len(self.layers) == 0:
             self.input_dimension = layer.get_num_input()
-        #the new layer must have an input dimension equal 
+        #the new layer must have an input dimension equal
         # to the number of units in the last layer added
         elif layer.get_num_input() != self.output_dimension:
             raise ValueError(
@@ -112,7 +125,7 @@ class NeuralNetwork:
 
         return output_layer
 
-    def fit(self, training_examples, min_training_error = 1e-12):
+    def fit(self, training_examples, min_training_error=1e-12):
         """[summary]
 
         Parameters:
@@ -123,43 +136,52 @@ class NeuralNetwork:
         #executed epochs
         num_epochs = 0
         error = np.Inf
+        num_window = len(training_examples) // self.batch_size + 1
 
         #stop when we execure max_epochs epochs or TODO training error
         while(num_epochs < self.max_epochs or error <= min_training_error):
-    
+
             #shuffle training examples
             np.random.shuffle(training_examples)
 
             #training
-            
-            for example in training_examples:
-                self._back_propagation(example[1], self.predict(example[0]))
-            
 
-            #calculate euclidean error 
+            for index in range(0, num_window):
+                window_examples = training_examples[index * num_window:index * (num_window + 1)]
+                #Backpropagate training examples
+                for example in window_examples:
+                    self._back_propagation([(example[1],
+                                             self.predict(example[0]))
+                                            for example in window_examples])
+
+            #calculate euclidean error
             error = np.sum([np.linalg.norm(self.predict(example[0]) - example[1])
                             for example in training_examples]) / len(training_examples)
-            
+
+            print(error)
 
             #increase number of epochs
             num_epochs += 1
-        
-        
 
-    def _back_propagation(self, target_sample, target_predicted):
+
+
+    def _back_propagation(self, target_samples):
         """execute a step of the backpropagation algorithm
 
         Parameters:
-            target_sample (np.array): the target for the sample x
-            target_predicted (np.array): the output returned by the neural network for the sample x
-        """
-        # calculate error signal (delta) of output units
-        self.layers[-1].error_signal(target_sample, target_predicted)
+            target_samples (np.array): list of (target, predicted_output) element
 
-        #calculate error signal (delta) of hidden units
-        for index in range(len(self.layers[:-1]) - 1, -1, -1):
-            self.layers[index].error_signal(self.layers[index+1].get_errors(),self.layers[index+1].get_weights())
+        """
+        for target, predicted_target in target_samples:
+
+            # calculate error signal (delta) of output units
+            self.layers[-1].error_signal(target, predicted_target)
+
+            #calculate error signal (delta) of hidden units
+            for index in range(len(self.layers[:-1]) - 1, -1, -1):
+                self.layers[index].error_signal(self.layers[index+1].get_errors(),
+                                                self.layers[index+1].get_weights())
 
         #updatinf the weights in the neural network
         for layer in self.layers:
-            layer.update_weight(self.momentum_rate)
+            layer.update_weight(self.batch_size, self.momentum_rate)
