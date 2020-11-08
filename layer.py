@@ -52,11 +52,12 @@ class Layer:
 
         # delta calculated in the last error signal execution
         self.errors = np.empty([self.num_unit])
-
+        
         # contains the last input the layer has processed
         self.inputs = 0
 
         self.old_delta_w = np.zeros(weights.shape)
+        self.current_delta_w = np.zeros(weights.shape)
 
     def get_num_unit(self):
         """To get the number of unit in the layer
@@ -140,21 +141,23 @@ class Layer:
         # calculating the new delta
         # new_delta_w[i][j] = learning_rate[i][j] * errors[i] * inputs[j]
         new_delta_w = np.multiply(
-            self.learning_rates / batch_size, np.outer(self.errors, self.inputs))
+            self.learning_rates / batch_size, self.current_delta_w)
 
         # updating the weights
 
-        #regularization
+        # regularization (no for bias)
         self.weights[0:, 1:] -= regularization_rate * self.weights[0:, 1:]
 
-        #addinf delta_w and momentum
+        # adding delta_w and momentum
         self.weights += new_delta_w + self.old_delta_w * momentum_rate
-
 
         # updating old_delta_w for the next update of the weights
         self.old_delta_w = new_delta_w
 
+        # reinitialize things
+        self.current_delta_w = np.zeros(self.weights.shape)
         self.errors = np.empty([self.num_unit])
+
 
     def error_signal(self):
         """abstract class
@@ -193,8 +196,8 @@ class OutputLayer(Layer):
 
                 errors[i] = f'(net[i]) * (target[i] - output[i])
         """
-        self.errors += self.activation.derivative(self.net) * (target - output)
-
+        self.errors = self.activation.derivative(self.net) * (target - output)
+        self.current_delta_w += np.outer(self.errors, self.inputs)
 
 class HiddenLayer(Layer):
 
@@ -226,5 +229,6 @@ class HiddenLayer(Layer):
                 errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... +
                                                     downStreamWeights[k][i] * downStreamErrors[k])
         """
-        self.errors += self.activation.derivative(self.net) * np.matmul(downStreamErrors,
+        self.errors = self.activation.derivative(self.net) * np.matmul(downStreamErrors,
                                                                         downStreamWeights[0:, 1:])
+        self.current_delta_w += np.outer(self.errors, self.inputs)

@@ -147,7 +147,8 @@ class NeuralNetwork:
             #training
 
             for index in range(0, num_window):
-                window_examples = training_examples[index * num_window:index * (num_window + 1)]
+                window_examples = training_examples[index * self.batch_size:(index+1) * self.batch_size]
+                
                 #Backpropagate training examples
                 for example in window_examples:
                     self._back_propagation([(example[1],
@@ -156,9 +157,11 @@ class NeuralNetwork:
 
             #calculate euclidean error
             error = np.sum([np.linalg.norm(self.predict(example[0]) - example[1])
-                            for example in training_examples]) / len(training_examples)
-
-            print(error)
+                           for example in training_examples]) / len(training_examples)
+            
+            print("Error during epoch {} is {}".format(num_epochs, error))
+            print("Predicted value during epoch {} is {}".format(num_epochs, self.predict(training_examples[0][0])))
+            print("Target value during epoch {} is {}".format(num_epochs, training_examples[0][1]))
 
             #increase number of epochs
             num_epochs += 1
@@ -172,6 +175,7 @@ class NeuralNetwork:
             target_samples (np.array): list of (target, predicted_output) element
 
         """
+        
         for target, predicted_target in target_samples:
 
             # calculate error signal (delta) of output units
@@ -181,7 +185,8 @@ class NeuralNetwork:
             for index in range(len(self.layers[:-1]) - 1, -1, -1):
                 self.layers[index].error_signal(self.layers[index+1].get_errors(),
                                                 self.layers[index+1].get_weights())
-
-        #updatinf the weights in the neural network
+        
+        # updating the weights in the neural network
         for layer in self.layers:
             layer.update_weight(self.batch_size, self.momentum_rate)
+            
