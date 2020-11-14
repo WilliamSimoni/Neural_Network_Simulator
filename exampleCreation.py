@@ -4,14 +4,14 @@ from layer import OutputLayer, HiddenLayer
 import weightInitializer as wi
 import activationFunction as af
 
-NN = NeuralNetwork(1000, 0.1, nn_type="minibatch", batch_size=2)
+NN = NeuralNetwork(1000, 0.1, 0.01, nn_type="minibatch", batch_size=2)
 
 #create three layers
 
 layer1 = HiddenLayer(wi.xavier_initializer(5,3), np.full((5,4), 0.01), af.Linear())
 layer2 = HiddenLayer(wi.xavier_initializer(7,5), np.full((7,6), 0.01), af.Linear())
 layer3 = HiddenLayer(wi.xavier_initializer(2,7), np.full((2,8), 0.01), af.Linear())
-layer4 = OutputLayer(wi.xavier_initializer(3,2), np.full((3,3), 0.01), af.Linear())
+layer4 = OutputLayer(wi.xavier_initializer(3,2), np.full((3,3), 0.01), af.TanH())
 
 
 
@@ -35,9 +35,9 @@ target4 = np.array([0, 0, 1])
 
 training_examples = np.array([(x1,target1), (x2, target2), (x3, target3), (x4, target4)])
 
-NN.fit(training_examples)
+report = NN.fit(training_examples)
 
-
+report.plotLoss()
 
 """
 print(np.linalg.norm(target - NN.predict(x)))
