@@ -5,18 +5,20 @@ import numpy as np
 import math
 from layer import Layer, OutputLayer, HiddenLayer
 from neural_exception import InvalidNeuralNetwork
+from report import Report
 
 class NeuralNetwork:
     """
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, momentum_rate=0, nn_type="SGD", batch_size=1):
+    def __init__(self, max_epochs, momentum_rate=0, regularization_rate=0, nn_type="SGD", batch_size=1):
         """create an instance of neural network class
 
         Args:
             max_epochs (int): number of maximum epochs used in param fitting.
             momentum_rate (int, optional): momentum_rate used for learning. Defaults to 0.
+            regularization_rate(int,optional): regularization_rate used for learning. Defaults to 0
             nn_type (string, optional): type of Neural Network used. Default "SGD"
                 Only SGD(Stocasthic Gradient Descent), batch and minibatch has been implemented.
             batch_size (int, optional): size of batch used, Default set to 1.
@@ -40,6 +42,7 @@ class NeuralNetwork:
         # note: this is not a np.ndarray object
         self.layers = []
         self.momentum_rate = momentum_rate
+        self.regularization_rate = regularization_rate
 
     def addLayer(self, layer):
 
@@ -133,6 +136,8 @@ class NeuralNetwork:
             training_examples (array(tupla(input, target))): [description]
             min_training_error (): [description]
         """
+        #create empty Report object
+        report = Report(self.max_epochs)
 
         #executed epochs
         num_epochs = 0
@@ -161,6 +166,8 @@ class NeuralNetwork:
             error = np.sum([np.linalg.norm(self.predict(example[0]) - example[1])
                            for example in training_examples]) / len(training_examples)
 
+            report.add_training_error(error, num_epochs)
+
             print("Error during epoch {} is {}".format(num_epochs, error))
             print("Predicted value during epoch {} is {}"
                   .format(num_epochs, self.predict(training_examples[0][0])))
@@ -168,8 +175,8 @@ class NeuralNetwork:
 
             #increase number of epochs
             num_epochs += 1
-
-
+        
+        return report
 
     def _back_propagation(self, target_samples):
         """execute a step of the backpropagation algorithm
@@ -191,5 +198,5 @@ class NeuralNetwork:
 
         # updating the weights in the neural network
         for layer in self.layers:
-            layer.update_weight(self.batch_size, self.momentum_rate)
+            layer.update_weight(self.batch_size, self.momentum_rate, self.regularization_rate)
 
