@@ -10,7 +10,7 @@ from neural_exception import InvalidNeuralNetwork
 from layer import HiddenLayer, OutputLayer
 import activationFunction as activation
 
-class TestNeuralNetwork(unittest.TestCase):
+class TestInvalidNeuralNetwork(unittest.TestCase):
     def setUp(self):
         self.neural_network = NeuralNetwork(100)
 

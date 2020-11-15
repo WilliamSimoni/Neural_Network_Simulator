@@ -44,7 +44,7 @@ def read_monk_data(file_path, train_dim=1.0, shuffle=False):
       
     return data, label, [], []
 
-def read_cup_data(file_path, train_dim):
+def read_cup_data(file_path, train_dim=1.0):
     """
         Read data from ML Cup dataset to put as input in ML algorithms
 
@@ -61,10 +61,10 @@ def read_cup_data(file_path, train_dim):
             if row[0][0] != '#':
                 # Id, 10 data, 2 label
                 labels.append([float(row[11]), float(row[12])])
-                data.append([float(x) for x in row[1:10]])
+                data.append([float(x) for x in row[1:11]])
 
     if 0 < train_dim < 1:
-        dim_data = train_dim * len(data)
+        dim_data = int(train_dim * len(data))
         return np.array(data[:dim_data]), np.array(labels[:dim_data]), np.array(data[dim_data:]), np.array(labels[dim_data:]) 
       
     return np.array(data), np.array(labels), [], []
@@ -84,6 +84,6 @@ def read_blind_data(file_path):
             if row[0][0] != '#':
                 # Id, 10 data, 2 label
                 id_name.append(int(row[0]))
-                data.append([float(x) for x in row[1:10]])
+                data.append([float(x) for x in row[1:11]])
 
     return id_name, np.array(data) 
