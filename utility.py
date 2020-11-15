@@ -3,8 +3,9 @@
     divide data in training and test set and so on.
 """
 import numpy as np
+import csv
 
-def read_monk_data(file_path, train_dim=1.0):
+def read_monk_data(file_path, train_dim=1.0, shuffle=False):
     """
         Read data from Monk dataset to put as input in ML algorithms
 
@@ -12,7 +13,14 @@ def read_monk_data(file_path, train_dim=1.0):
             file_path (string): Path of Monk dataset
             train_dim (float): number between 0.0 to 1.0 to use as partition 
                                between training and test set.
-
+        Semantics of Monk Dataset:
+            1° Row: label of data with value 0, 1
+            2° Row: has value 1, 2, 3
+            3° Row: has value 1, 2, 3
+            4° Row: has value 1, 2
+            5° Row: has value 1, 2, 3
+            6° Row: has value 1, 2, 3, 4
+            7° Row: has value 1, 2
     """
     with open(file_path, "r") as monk_file:
         string_data = [line.split() for line in monk_file]
@@ -31,7 +39,7 @@ def read_monk_data(file_path, train_dim=1.0):
             data.append(data_row)
 
     if 0 < train_dim < 1:
-        dim_data = train_dim * len(data)
+        dim_data = int(train_dim * len(data))
         return data[:dim_data], label[:dim_data], data[dim_data:], label[dim_data:] 
       
     return data, label, [], []
@@ -57,10 +65,9 @@ def read_cup_data(file_path, train_dim):
 
     if 0 < train_dim < 1:
         dim_data = train_dim * len(data)
-        return np.array(data[:dim_data]), np.array(label[:dim_data]),
-               np.array(data[dim_data:]), np.array(label[dim_data:]) 
+        return np.array(data[:dim_data]), np.array(labels[:dim_data]), np.array(data[dim_data:]), np.array(labels[dim_data:]) 
       
-    return np.array(data), np.array(label), [], []
+    return np.array(data), np.array(labels), [], []
 
 def read_blind_data(file_path):
     """

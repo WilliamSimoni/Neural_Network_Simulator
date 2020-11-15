@@ -1,18 +1,19 @@
 """
 Neural Network module implement a feedforward Neural Network
 """
-import numpy as np
 import math
+import numpy as np
 from layer import Layer, OutputLayer, HiddenLayer
 from neural_exception import InvalidNeuralNetwork
 from report import Report
+from loss import euclidean_loss
 
 class NeuralNetwork:
     """
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, momentum_rate=0, regularization_rate=0, nn_type="SGD", batch_size=1):
+    def __init__(self, max_epochs, momentum_rate=0, regularization_rate=0, nn_type="SGD", batch_size=1, type_classifier="classification"):
         """create an instance of neural network class
 
         Args:
@@ -22,27 +23,110 @@ class NeuralNetwork:
             nn_type (string, optional): type of Neural Network used. Default "SGD"
                 Only SGD(Stocasthic Gradient Descent), batch and minibatch has been implemented.
             batch_size (int, optional): size of batch used, Default set to 1.
+            type_classifier (string, optional): estabilish the type of classification used
+                            Accepted values are "Classification" and "Regression"
         """
         # checking parameters -------------------
         # TODO
         # ---------------------------------------
 
-        self.max_epochs = max_epochs
+        self.max_epochs = self.check_max_epochs(max_epochs)
         self.input_dimension = 0
         self.output_dimension = 0
-        self.type = nn_type
-        self.batch_size = batch_size
-
-        if nn_type == "SGD" and batch_size != 1:
-            print("Invalid Batch Size. Reset to valid value 1")
-            self.batch_size = 1
-        if nn_type not in ("batch", "SGD", "minibatch"):
-            raise InvalidNeuralNetwork
+        self.type = self.check_nn_type(nn_type)
+        self.batch_size = self.check_batch_size(batch_size, )
+        self.type_classifier = self.check_type_classifier(type_classifier)
 
         # note: this is not a np.ndarray object
         self.layers = []
-        self.momentum_rate = momentum_rate
-        self.regularization_rate = regularization_rate
+        self.momentum_rate = self.check_momentum(momentum_rate)
+        self.regularization_rate = self.check_regularization(regularization_rate)
+    
+    def check_batch_size(self, batch_size):
+        """
+            Check batch_size value inserted in NN constructor
+            Param:
+                batch_size(float): rate used as batch_size and should be > 0
+            Return:
+                batch_size is 1 if self.type is SGD
+                batch_size if self.type is != SGD and batch_size > 0
+                otherwise raise InvalidNeuralNetwork exception
+        """
+        if self.type == "SGD" and batch_size == 1:
+            return batch_size
+        elif batch_size > 0:
+            return batch_size
+        else:
+            raise InvalidNeuralNetwork()
+    
+    def check_max_epochs(self,max_epochs):
+        """
+            Check max_epochs value inserted in constructor
+            Param:
+                max_epochs(int): number of epochs used in NN training and need to be > 0
+            Return:
+                max_epochs if >0 otherwise raise InvalidNeuralNetwork exception
+        """
+        if max_epochs > 0:
+            return max_epochs
+        else:
+            raise InvalidNeuralNetwork()
+
+    def check_momentum(self, momentum_rate):
+        """
+            Check momentum_rate value inserted in Constructor
+
+            Param:
+                momentum_rate(float): rate used as momentum and should be >= 0
+            Return:
+                momentum_rate if is >= 0 otherwise raise InvalidNeuralNetwork exception
+        """
+        if momentum_rate >= 0:
+            print("Hello")
+            return momentum_rate
+        else:
+            raise InvalidNeuralNetwork()
+
+    def check_nn_type(self, nn_type):
+        """
+            Check type of Neural Network implemented in NN constructor
+            Param:
+                nn_type(string): indicate the type of NN implemented
+                    Accepted value are SGD, minibatch and batch
+            Return:
+                nn_type is an accepted value otherwise raise InvalidNeuralNetwork exception
+        """
+        if nn_type in ["SGD", "minibatch", "batch"]:
+           return nn_type
+        else:
+            raise InvalidNeuralNetwork()
+
+    def check_regularization(self, regularization_rate):
+        """
+            Check regularization_rate value inserted in NN costructor
+            Param:
+                regularization_rate(float): rate used as regularization and should be >= 0
+            Return:
+                regularization_rate if is >= 0 otherwise raise InvalidNeuralNetwork exception
+        """
+        if regularization_rate >= 0:
+            return regularization_rate
+        else:
+            raise InvalidNeuralNetwork()
+
+    def check_type_classifier(self, type_classifier):
+        """
+            Check type of Classifier for NN model
+            Param:
+                type_classifier(string): type of classifier and valid value 
+                                         are classification and regression
+            Return:
+                type_classifier if is a valid value otherwise raise InvalidNeuralNetwork exception
+        """
+        if type_classifier in ["classification", "regression"]:
+            return type_classifier
+        else:
+            raise InvalidNeuralNetwork()
 
     def addLayer(self, layer):
 
@@ -103,8 +187,10 @@ class NeuralNetwork:
             Return: the predicted target over the sample
         """
         #sample dimension controlled in _feedwardSignal
-
-        return self._feedwardSignal(sample)
+        prediction = self._feedwardSignal(sample)
+        if self.type_classifier is "classification":
+            prediction = np.round(prediction)
+        return prediction
 
     def _feedwardSignal(self, sample):
         """
@@ -139,11 +225,14 @@ class NeuralNetwork:
         #create empty Report object
         report = Report(self.max_epochs)
 
+        if self.type == "batch":
+            self.batch_size = len(training_examples[0])
+        
         #executed epochs
         num_epochs = 0
         error = np.Inf
         num_window = math.ceil(len(training_examples) // self.batch_size)
-
+        Direxample = training_examples[0]
         #stop when we execure max_epochs epochs or TODO training error
         while(num_epochs < self.max_epochs or error <= min_training_error):
 
@@ -163,16 +252,16 @@ class NeuralNetwork:
                                             for example in window_examples])
 
             #calculate euclidean error
-            error = np.sum([np.linalg.norm(self.predict(example[0]) - example[1])
+            error = np.sum([euclidean_loss(self.predict(example[0]), example[1])
                            for example in training_examples]) / len(training_examples)
 
             report.add_training_error(error, num_epochs)
 
-            print("Error during epoch {} is {}".format(num_epochs, error))
+            #print("Error during epoch {} is {}".format(num_epochs, error))
             print("Predicted value during epoch {} is {}"
-                  .format(num_epochs, self.predict(training_examples[0][0])))
-            print("Target value during epoch {} is {}".format(num_epochs, training_examples[0][1]))
-
+                  .format(num_epochs, self.predict(Direxample[0])))
+            print("Target value during epoch {} is {}".format(num_epochs, Direxample[1]))
+            print("Num Epoch: ", num_epochs)
             #increase number of epochs
             num_epochs += 1
         

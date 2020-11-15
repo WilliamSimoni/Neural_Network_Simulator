@@ -4,7 +4,7 @@ from layer import OutputLayer, HiddenLayer
 import weightInitializer as wi
 import activationFunction as af
 
-NN = NeuralNetwork(200, 0.1, 0.001, nn_type="minibatch", batch_size=1)
+NN = NeuralNetwork(1000, 0.1, 0.001, nn_type="minibatch", batch_size=1, type_classifier="regression")
 
 #create three layers
 

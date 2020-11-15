@@ -12,8 +12,8 @@ def xavier_initializer(num_unit, num_input):
         - bias = 0
 
     Args:
-        num_input (int): number of input of the layer (no bias included in the counting)
         num_unit (int): number of unit in the layer
+        num_input (int): number of input of the layer (no bias included in the counting)
 
     Returns:
         numpy.ndarray: returns weight matrix to use in a layer (included bias in the first column)
