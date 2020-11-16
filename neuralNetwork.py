@@ -7,6 +7,7 @@ from layer import Layer, OutputLayer, HiddenLayer
 from neural_exception import InvalidNeuralNetwork
 from report import Report
 from loss import euclidean_loss
+import json
 
 class NeuralNetwork:
     """
@@ -224,7 +225,7 @@ class NeuralNetwork:
         report = Report(self.max_epochs)
 
         if self.type == "batch":
-            self.batch_size = len(training_examples[0])
+            self.batch_size = len(training_examples)
         
         #executed epochs
         num_epochs = 0
@@ -265,7 +266,8 @@ class NeuralNetwork:
         return report
 
     def toJson(self):
-        pass
+        jsonStr = json.dumps(self.__dict__)
+        return jsonStr
 
     def _back_propagation(self, target_samples):
         """execute a step of the backpropagation algorithm
