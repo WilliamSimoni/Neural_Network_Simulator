@@ -230,7 +230,6 @@ class NeuralNetwork:
         num_epochs = 0
         error = np.Inf
         num_window = math.ceil(len(training_examples) // self.batch_size)
-        Direxample = training_examples[0]
         #stop when we execure max_epochs epochs or TODO training error
         while(num_epochs < self.max_epochs or error <= min_training_error):
 
@@ -257,13 +256,16 @@ class NeuralNetwork:
 
             #print("Error during epoch {} is {}".format(num_epochs, error))
             print("Predicted value during epoch {} is {}"
-                  .format(num_epochs, self.predict(Direxample[0])))
-            print("Target value during epoch {} is {}".format(num_epochs, Direxample[1]))
+                  .format(num_epochs, self.predict(training_examples[0][0])))
+            print("Target value during epoch {} is {}".format(num_epochs, training_examples[0][1]))
             print("Num Epoch: ", num_epochs)
             #increase number of epochs
             num_epochs += 1
         
         return report
+
+    def toJson(self):
+        pass
 
     def _back_propagation(self, target_samples):
         """execute a step of the backpropagation algorithm

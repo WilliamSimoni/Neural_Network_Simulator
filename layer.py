@@ -196,7 +196,8 @@ class OutputLayer(Layer):
 
                 errors[i] = f'(net[i]) * (target[i] - output[i])
         """
-        self.errors = self.activation.derivative(self.net) * (target - output)
+        self.errors = np.round((self.activation.derivative(self.net) * (target - output)), 8)
+        
         self.current_delta_w += np.outer(self.errors, self.inputs)
 
 class HiddenLayer(Layer):
@@ -229,6 +230,6 @@ class HiddenLayer(Layer):
                 errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... +
                                                     downStreamWeights[k][i] * downStreamErrors[k])
         """
-        self.errors = self.activation.derivative(self.net) * np.matmul(downStreamErrors,
-                                                                        downStreamWeights[0:, 1:])
+        self.errors = np.round((self.activation.derivative(self.net) * np.matmul(downStreamErrors,
+                                                                        downStreamWeights[0:, 1:])), 8)
         self.current_delta_w += np.outer(self.errors, self.inputs)

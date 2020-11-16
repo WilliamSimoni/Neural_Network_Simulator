@@ -4,46 +4,27 @@ from layer import OutputLayer, HiddenLayer
 import weightInitializer as wi
 import activationFunction as af
 
-NN = NeuralNetwork(1000, 0.1, 0.01, nn_type="minibatch", batch_size=2)
+NN = NeuralNetwork(10000, nn_type="minibatch", batch_size=1)
 
 #create three layers
 
-layer1 = HiddenLayer(wi.xavier_initializer(5,3), np.full((5,4), 0.01), af.Linear())
-layer2 = HiddenLayer(wi.xavier_initializer(7,5), np.full((7,6), 0.01), af.Linear())
-layer3 = HiddenLayer(wi.xavier_initializer(2,7), np.full((2,8), 0.01), af.Linear())
-layer4 = OutputLayer(wi.xavier_initializer(3,2), np.full((3,3), 0.01), af.TanH())
+wHidden = np.array([[0, 0.84886225, -0.70838177], 
+              [0, 0.88296627, -0.0148878], 
+              [0, -0.32618086, 0.8117482]])
+
+wOut = np.array([[0, 0.65348894, 0.7163801, 0.12492884]])
+
+layer1 = HiddenLayer(wHidden, np.full((3,3), 0.1), af.Sigmoid())
+layer2 = OutputLayer(wOut, np.full((1,4), 0.1), af.Sigmoid())
 
 
 
 #add layers to NN
 NN.addLayer(layer1)
 NN.addLayer(layer2)
-NN.addLayer(layer3)
-NN.addLayer(layer4)
 
-x1 = np.array([1, 1, 1])
-target1 = np.array([1, 0, 0])
+x = np.array([([1,1],[0]), ([0,1], [1]), ([1,0], [1]), ([0,0], [0])])
 
-x2 = np.array([2, 1, 1])
-target2 = np.array([0, 1, 0])
-
-x3 = np.array([3, 2, 1])
-target3 = np.array([0, 0, 1])
-
-x4 = np.array([3, 2, 1])
-target4 = np.array([0, 0, 1])
-
-training_examples = np.array([(x1,target1), (x2, target2), (x3, target3), (x4, target4)])
-
-report = NN.fit(training_examples)
+report = NN.fit(x)
 
 report.plotLoss()
-
-"""
-print(np.linalg.norm(target - NN.predict(x)))
-
-for i in range(0,50):
-    NN._back_propagation(target, NN.predict(x))
-
-print(np.linalg.norm(target - NN.predict(x)))
-"""
