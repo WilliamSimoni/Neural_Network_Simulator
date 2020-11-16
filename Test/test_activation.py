@@ -1,3 +1,6 @@
+"""
+    Test Activation function module
+"""
 import unittest
 import numpy as np
 import activationFunction as af
@@ -8,21 +11,41 @@ class TestActivation(unittest.TestCase):
     """
 
     def test_linear_activation(self):
+        """
+            Test linear Activation function 
+        """
         self.assertEqual([0.5, 0.6], af.Linear().output([0.5, 0.6]))
-        self.assertEqual([1, 1], af.Linear().derivative(np.array([0.5, 0.6])))
+        self.assertEqual([1, 1], list(af.Linear().derivative(np.array([0.5, 0.6]))))
 
     def test_sigmoid_activation(self):
-        self.assertEqual([0.5, 0.5], af.Sigmoid().output(np.array([0, 0])))
-        self.assertEqual([0.25, 0.25], af.Sigmoid().derivative(np.array([0, 0])))
+        """
+            Test Sigmoid Activation function
+        """
+        self.assertEqual([0.5, 0.5], list(af.Sigmoid().output(np.array([0, 0]))))
+        self.assertEqual([0.25, 0.25], list(af.Sigmoid().derivative(np.array([0, 0]))))
 
     def test_tanh_activation(self):
-        self.assertEqual
+        """
+            Test Tanh Activation function
+        """
+        self.assertEqual([0.099668, 0.099668], list(af.TanH().output(np.array([0.1, 0.1]))))
+        self.assertEqual([0.990066, 0.990066], list(af.TanH().derivative(np.array([0.1, 0.1]))))
 
     def test_relu_activation(self):
-        pass
+        """
+            Test Relu Activation function
+        """
+        self.assertEqual([0, 0.5], list(af.Relu().output(np.array([-0.5, 0.5]))))
+        self.assertEqual([0, 1], list(af.Relu().derivative(np.array([-0.5, 0.5]))))
 
     def test_leaky_relu_activation(self):
+        """
+            Test Leaky Relu Activation function
+        """
         pass
 
     def test_softplus_activation(self):
+        """
+            Test Softplus Activation function
+        """
         pass

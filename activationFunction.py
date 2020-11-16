@@ -114,7 +114,7 @@ class TanH(Activation_function):
     """
 
     def output(self, x):
-        return np.tanh(x)
+        return np.round(np.tanh(x), 6)
 
     def derivativeF(self, f):
         """return value of the derivative [f'(x)] given the function values on x [f(x)]
@@ -125,7 +125,7 @@ class TanH(Activation_function):
         Returns:
             numpy.ndarray: return f'(x) given f(x)
         """
-        return 1 - np.square(f)
+        return np.round(1 - np.square(f), 6)
 
     def derivative(self, x):
         return self.derivativeF(self.output(x))

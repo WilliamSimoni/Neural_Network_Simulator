@@ -172,6 +172,7 @@ class NeuralNetwork:
         self.output_dimension = layer.get_num_unit()
 
         self.layers.append(layer)
+        
 
     def predict(self, sample):
         """
@@ -187,10 +188,7 @@ class NeuralNetwork:
             Return: the predicted target over the sample
         """
         #sample dimension controlled in _feedwardSignal
-        prediction = self._feedwardSignal(sample)
-        if self.type_classifier is "classification":
-            prediction = np.round(prediction)
-        return prediction
+        return self._feedwardSignal(sample)
 
     def _feedwardSignal(self, sample):
         """

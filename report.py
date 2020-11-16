@@ -15,7 +15,7 @@ class Report():
             raise ValueError
 
     def add_training_error(self, error, num_epochs):
-        if num_epochs < 0 or num_epochs > self.training_error.size:
+        if num_epochs < 0 or num_epochs >= self.training_error.size:
             raise ValueError
         self.training_error[num_epochs] = error
 
