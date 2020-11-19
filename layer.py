@@ -158,6 +158,8 @@ class Layer:
         self.current_delta_w = np.zeros(self.weights.shape)
         self.errors = np.empty([self.num_unit])
 
+    def update_delta_w(self):
+        self.current_delta_w += np.outer(self.errors, self.inputs)
 
     def error_signal(self):
         """abstract class
@@ -197,8 +199,6 @@ class OutputLayer(Layer):
                 errors[i] = f'(net[i]) * (target[i] - output[i])
         """
         self.errors = np.round((self.activation.derivative(self.net) * (target - output)), 8)
-        
-        self.current_delta_w += np.outer(self.errors, self.inputs)
 
 class HiddenLayer(Layer):
 
@@ -232,4 +232,3 @@ class HiddenLayer(Layer):
         """
         self.errors = np.round((self.activation.derivative(self.net) * np.matmul(downStreamErrors,
                                                                         downStreamWeights[0:, 1:])), 8)
-        self.current_delta_w += np.outer(self.errors, self.inputs)
