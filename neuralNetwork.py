@@ -6,7 +6,7 @@ import numpy as np
 from layer import Layer, OutputLayer, HiddenLayer
 from neural_exception import InvalidNeuralNetwork
 from report import Report
-from loss import euclidean_loss
+from loss import cross_entropy, euclidean_loss
 import json
 
 
@@ -231,6 +231,7 @@ class NeuralNetwork:
         num_epochs = 0
         error = np.Inf
         num_window = math.ceil(len(training_examples) // self.batch_size)
+        ex = training_examples[0] 
         # stop when we execure max_epochs epochs or TODO training error
         while(num_epochs < self.max_epochs or error <= min_training_error):
 
@@ -248,16 +249,19 @@ class NeuralNetwork:
                     self._back_propagation(window_examples)
 
             # calculate euclidean error
-            error = np.sum([euclidean_loss(self.predict(example[0]), example[1])
-                            for example in training_examples]) / len(training_examples)
+            #error = np.sum([euclidean_loss(self.predict(example[0]), example[1])
+                #            for example in training_examples]) / len(training_examples)
+            error = cross_entropy([self.predict(example[0]) for example in training_examples],
+                                  [example[1] for example in training_examples]) / len(training_examples)
 
             report.add_training_error(error, num_epochs)
+            
 
             #print("Error during epoch {} is {}".format(num_epochs, error))
             print("Predicted value during epoch {} is {}"
-                  .format(num_epochs, self.predict(training_examples[0][0])))
+                  .format(num_epochs, self.predict(ex[0])))
             print("Target value during epoch {} is {}".format(
-                num_epochs, training_examples[0][1]))
+                num_epochs, ex[1]))
             print("Num Epoch: ", num_epochs)
             # increase number of epochs
             num_epochs += 1

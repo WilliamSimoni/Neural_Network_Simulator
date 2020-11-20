@@ -6,15 +6,21 @@ import weightInitializer as wi
 import activationFunction as af
 
 def monk_example():
-    NN = NeuralNetwork(1000, 0.01, nn_type="minibatch", batch_size=1)
+    NN = NeuralNetwork(100, 0.8, 0.005, nn_type="batch", batch_size=1)
 
     #create three layers
 
     train_data, train_label, valid_data, valid_label = utility.read_monk_data("dataset/monks-3.train", 0.8)
 
-    layer1 = HiddenLayer(wi.xavier_initializer(2,len(train_data[0])), np.full((2,len(train_data[0])+1), 0.01), af.TanH())
-    layer2 = OutputLayer(wi.xavier_initializer(1, 2), np.full((1,3), 0.01), af.Sigmoid())
-
+    
+    layer1 = HiddenLayer(weights=wi.xavier_initializer(20, len(train_data[0])),
+                         learning_rates=np.full((20, len(train_data[0]) + 1),  0.8),
+                         activation=af.TanH())
+    layer2 = OutputLayer(weights=wi.xavier_initializer(1, 20),
+                         learning_rates=np.full((1,21), 0.8),
+                         activation=af.Sigmoid())
+    
+    
     NN.addLayer(layer1)
     NN.addLayer(layer2)
 
