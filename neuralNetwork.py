@@ -254,14 +254,19 @@ class NeuralNetwork:
         """
         # create empty Report object
         report = Report(self.max_epochs)
+        total_samples = len(training_examples)
 
         if self.type == "batch":
-            self.batch_size = len(training_examples)
-
+            self.batch_size = total_samples
+        
         # executed epochs
         num_epochs = 0
         error = np.Inf
-        num_window = math.ceil(len(training_examples) // self.batch_size)
+        num_window = math.ceil(total_samples // self.batch_size)
+        
+        #ratio between batch size and the total number of samples
+        batch_total_samples_ratio = self.batch_size/total_samples
+
         ex = training_examples[0] 
         # stop when we execure max_epochs epochs or TODO training error
         while(num_epochs < self.max_epochs or error <= min_training_error):
@@ -276,13 +281,12 @@ class NeuralNetwork:
                                                     (index+1) * self.batch_size]
 
                 # Backpropagate training examples
-                for example in window_examples:
-                    self._back_propagation(window_examples)
+                self._back_propagation(window_examples, batch_total_samples_ratio)
 
             # calculate Training error
             error = loss_functions[self.loss]([self.predict(example[0]) for example in training_examples],
                                              [example[1] for example in training_examples],
-                                             ) / len(training_examples)
+                                             ) / total_samples
             report.add_training_error(error, num_epochs)
 
             if validation_samples:
@@ -313,12 +317,12 @@ class NeuralNetwork:
         jsonStr = json.dumps(self.__dict__)
         return jsonStr
 
-    def _back_propagation(self, samples):
+    def _back_propagation(self, samples, batch_total_samples_ratio):
         """execute a step of the backpropagation algorithm
 
         Parameters:
-            target_samples (np.array): list of (target, predicted_output) element
-
+            samples (np.array): list of samples
+            batch_total_samples_ratio (float): batch_size / len(samples)
         """
 
         for sample in samples:
@@ -336,4 +340,4 @@ class NeuralNetwork:
         # updating the weights in the neural network
         for layer in self.layers:
             layer.update_weight(
-                self.batch_size, self.momentum_rate, self.regularization_rate)
+                self.batch_size, batch_total_samples_ratio, self.momentum_rate, self.regularization_rate)
