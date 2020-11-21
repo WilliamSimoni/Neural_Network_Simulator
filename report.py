@@ -11,6 +11,8 @@ class Report():
     def __init__(self, max_epochs):
         if max_epochs > 0:
             self.training_error = np.zeros(max_epochs)
+            self.validation_error = np.zeros(max_epochs)
+            self.test_error = np.zeros(max_epochs)
         else:
             raise ValueError
 
@@ -19,8 +21,19 @@ class Report():
             raise ValueError
         self.training_error[num_epochs] = error
 
+    def add_validation_error(self, error, num_epochs):
+        if num_epochs < 0 or num_epochs >= self.validation_error.size:
+            raise ValueError
+        self.validation_error[num_epochs] = error
+
+    def add_test_error(self, error, num_epochs):
+        if num_epochs < 0 or num_epochs >= self.test_error.size:
+            raise ValueError
+        self.test_error[num_epochs] = error
+
     def plotLoss(self):
         plt.plot(self.training_error)
-        plt.ylabel('training error')
+        plt.plot(self.validation_error)
+        plt.ylabel('Error')
         plt.show()
         plt.savefig('training_error.png')

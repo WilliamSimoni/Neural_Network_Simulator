@@ -6,7 +6,7 @@ import numpy as np
 from layer import Layer, OutputLayer, HiddenLayer
 from neural_exception import InvalidNeuralNetwork
 from report import Report
-from loss import cross_entropy, euclidean_loss
+from loss import *
 import json
 
 
@@ -15,7 +15,8 @@ class NeuralNetwork:
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, momentum_rate=0, regularization_rate=0, nn_type="SGD", batch_size=1, type_classifier="classification"):
+    def __init__(self, max_epochs, loss, metric, momentum_rate=0, regularization_rate=0, 
+                 nn_type="SGD", batch_size=1, type_classifier="classification"):
         """create an instance of neural network class
 
         Args:
@@ -27,6 +28,8 @@ class NeuralNetwork:
             batch_size (int, optional): size of batch used, Default set to 1.
             type_classifier (string, optional): estabilish the type of classification used
                             Accepted values are "Classification" and "Regression"
+            loss (string or a Loss function): Indicate the loss function to use to evaluate the model
+            metric(string or a Metric function): indicate the metric used to evaluate the model, like Accuracy
         """
         # checking parameters -------------------
         # TODO
@@ -42,8 +45,9 @@ class NeuralNetwork:
         # note: this is not a np.ndarray object
         self.layers = []
         self.momentum_rate = self.check_momentum(momentum_rate)
-        self.regularization_rate = self.check_regularization(
-            regularization_rate)
+        self.regularization_rate = self.check_regularization(regularization_rate)
+        #self.metric = self.check_metric(metric)
+        self.loss = self.check_loss(loss)
 
     def check_batch_size(self, batch_size):
         """
@@ -62,6 +66,19 @@ class NeuralNetwork:
         else:
             raise InvalidNeuralNetwork()
 
+    def check_loss(self, loss):
+        """
+            Check valid loss function inserted in NN constructor
+            Param:
+                loss(string): name of loss function to use to evaluate NN model
+            Return:
+                loss if is a valid loss function otherwise raise InvalidNeuralNetwork exception.
+        """
+        if loss in loss_functions:
+            return loss
+        else:
+            raise InvalidNeuralNetwork()
+
     def check_max_epochs(self, max_epochs):
         """
             Check max_epochs value inserted in constructor
@@ -75,6 +92,18 @@ class NeuralNetwork:
         else:
             raise InvalidNeuralNetwork()
 
+    def check_metric(self, metric):
+        """
+            Check metric value inserted in NN constructor
+            Param:
+                metric(string): name of metric function used to evaluate NN model
+            Return:
+                metric if is a valid metric function otherwise raise InvalidNeuralNetwork exception
+        """
+        if metric in metric_function:
+            return metric
+        else:
+            raise InvalidNeuralNetwork()
     def check_momentum(self, momentum_rate):
         """
             Check momentum_rate value inserted in Constructor
@@ -214,11 +243,13 @@ class NeuralNetwork:
 
         return output_layer
 
-    def fit(self, training_examples, min_training_error=1e-12):
+    def fit(self, training_examples, validation_samples=None, test_samples=None, min_training_error=1e-12):
         """[summary]
 
         Parameters:
             training_examples (array(tupla(input, target))): [description]
+            validation_samples (array(tupla(input, target))): Validation samples (default None)
+            test_samples (array(tupla(input, target))): Test samples to use in test (default None)
             min_training_error (): [description]
         """
         # create empty Report object
@@ -248,13 +279,23 @@ class NeuralNetwork:
                 for example in window_examples:
                     self._back_propagation(window_examples)
 
-            # calculate euclidean error
-            #error = np.sum([euclidean_loss(self.predict(example[0]), example[1])
-                #            for example in training_examples]) / len(training_examples)
-            error = cross_entropy([self.predict(example[0]) for example in training_examples],
-                                  [example[1] for example in training_examples]) / len(training_examples)
-
+            # calculate Training error
+            error = loss_functions[self.loss]([self.predict(example[0]) for example in training_examples],
+                                             [example[1] for example in training_examples],
+                                             ) / len(training_examples)
             report.add_training_error(error, num_epochs)
+
+            if validation_samples:
+                validation_error = loss_functions[self.loss]([self.predict(val_example[0]) for val_example in validation_samples],
+                                                             [val_example[1] for val_example in validation_samples],
+                                                            ) / len(validation_samples)
+                report.add_validation_error(validation_error, num_epochs)
+
+            if test_samples:
+                test_error = loss_functions[self.loss]([self.predict(test_example[0]) for test_example in test_samples],
+                                                             [test_example[1] for test_example in test_samples],
+                                                            ) / len(validation_samples)
+                report.add_test_error(test_error, num_epochs)    
             
 
             #print("Error during epoch {} is {}".format(num_epochs, error))
