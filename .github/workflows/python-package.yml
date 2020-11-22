@@ -45,5 +45,5 @@ jobs:
       # Execute Test 
       - name: Execute Unittest
         run: |
-           python Test/test_nn.py
+            python -m unittest discover -s Test/ -p 'test_*.py'
 
