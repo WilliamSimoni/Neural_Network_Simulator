@@ -60,6 +60,6 @@ class TestActivation(unittest.TestCase):
             Test Softplus Activation function
         """
         self.assertEqual(
-            [0.474077, 0.974077], list(af.SoftPlus().output(np.array([-0.5, 0.5]))))
-        self.assertEqual([0.377541, 0.622459], list(
-            af.LeakyRelu().derivative(np.array([-0.5, 0.5]))))
+            [0.4740769841801067, 0.9740769841801067], list(af.SoftPlus().output(np.array([-0.5, 0.5]))))
+        self.assertEqual([0.3775406687981454, 0.6224593312018546], list(
+            af.SoftPlus().derivative(np.array([-0.5, 0.5]))))

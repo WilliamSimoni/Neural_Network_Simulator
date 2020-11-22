@@ -14,9 +14,9 @@ class TestReadData(unittest.TestCase):
         """
             Define path for monk dataset, ML_CUP dataset and blink_ML_CUP dataset
         """
-        self.monkPath = "../dataset/monks-1.train"
-        self.blindPath = "../dataset/ML-CUP20-TS.csv"
-        self.mlTrainPath = "../dataset/ML-CUP20-TR.csv"
+        self.monkPath = "dataset/monks-1.train"
+        self.blindPath = "dataset/ML-CUP20-TS.csv"
+        self.mlTrainPath = "dataset/ML-CUP20-TR.csv"
     
     def test_monk_data_train(self):
         """

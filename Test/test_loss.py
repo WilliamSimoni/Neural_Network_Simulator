@@ -15,7 +15,7 @@ class TestLoss(unittest.TestCase):
             Test the euclidean loss with valid values
         """
         self.assertEqual(1, euclidean_loss(np.array([2]), np.array([3])))
-        self.assertEqual(3, euclidean_loss(np.array([1, 3, 3]), np.array([0, 1, 1])))
+        self.assertEqual(3, euclidean_loss(np.array([[1, 3, 3]]), np.array([[0, 1, 1]])))
 
     def test_invalid_euclidean_loss(self):
         """

@@ -18,9 +18,9 @@ class TestNeuralNetwork(unittest.TestCase):
                 -nn2 with batch and regression 
                 -nn3 with minibatch and classification
         """
-        self.neural_network = NeuralNetwork(100, momentum_rate=0.2, regularization_rate=0.5)
-        self.nn2 = NeuralNetwork(100, nn_type="batch", batch_size=5, type_classifier="regression")
-        self.nn3 = NeuralNetwork(100, nn_type="minibatch", batch_size=4)
+        self.neural_network = NeuralNetwork(100, 'euclidean_loss', '', momentum_rate=0.2, regularization_rate=0.5)
+        self.nn2 = NeuralNetwork(100, 'euclidean_loss', '', nn_type="batch", batch_size=5, type_classifier="regression")
+        self.nn3 = NeuralNetwork(100, 'euclidean_loss', '', nn_type="minibatch", batch_size=4)
 
 
     def test_constructor(self):
@@ -34,6 +34,7 @@ class TestNeuralNetwork(unittest.TestCase):
         self.assertEqual("SGD", self.neural_network.type)
         self.assertEqual(1, self.neural_network.batch_size)
         self.assertEqual("classification", self.neural_network.type_classifier)
+        self.assertEqual("euclidean_loss", self.neural_network.loss)
     
     def test_constructor_different_type(self):
         """
