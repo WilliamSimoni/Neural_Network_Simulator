@@ -1,7 +1,15 @@
+"""
+    Learning Rate module to represent the Learning Rate possible
+    choice in ML models in particular for NN
+"""
 import numpy as np
 import report as rp
 
 class LearningRate():
+    """
+        Represent a Learning Rate object which represent how to manages
+        Learning Rate in our NN model
+    """
 
     def __init__(self, num_unit, num_input, value=0):
         self.learning_rates = np.full((num_unit, num_input + 1), value, dtype=np.float)
@@ -66,14 +74,14 @@ class LearningRate():
             new_lr = (1 - alpha)*lr0 + alpha*lr_tau
             learning_rates[True] = new_lr
             return learning_rates
-        
+
         self.update_method = _linear_decay
         self.current_method_name = 'linear_decay'
 
 
 lr = LearningRate(3, 3, 0.1)
 #lr.linear_decay(110, 0.001)
-#comment this and decomment above to try linear decay 
+#comment this and decomment above to try linear decay
 lr.time_based_decay()
 
 report = rp.Report(200)
@@ -82,4 +90,4 @@ for i in range(0, 200):
     lr.update(i)
     report.add_training_error(lr.value()[0][0],i)
 
-report.plotLoss()
+report.plot_loss()

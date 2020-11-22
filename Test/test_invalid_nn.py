@@ -5,10 +5,10 @@ import unittest
 import sys
 sys.path.append('../')
 import numpy as np
-from neuralNetwork import NeuralNetwork
+from neural_network import NeuralNetwork
 from neural_exception import InvalidNeuralNetwork
 from layer import HiddenLayer, OutputLayer
-import activationFunction as activation
+import activation_function as activation
 
 class TestInvalidNeuralNetwork(unittest.TestCase):
     """
@@ -60,7 +60,7 @@ class TestInvalidNeuralNetwork(unittest.TestCase):
     def test_add_layer_exception(self):
         layer = NeuralNetwork(2)
         try:
-            self.assertRaises(ValueError, self.neural_network.addLayer(layer)) 
+            self.assertRaises(ValueError, self.neural_network.add_layer(layer)) 
         except:
             pass
 
@@ -68,7 +68,7 @@ class TestInvalidNeuralNetwork(unittest.TestCase):
         weights = np.ones((3, 3))
         learning_rate = np.array([[0.1, 0.1, 0.1], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]])
         layer = OutputLayer(weights, learning_rate, activation.Linear())
-        self.neural_network.addLayer(layer)
+        self.neural_network.add_layer(layer)
         try:
             self.assertRaises(ValueError, list(self.neural_network.predict([2])))
         except:
@@ -83,8 +83,8 @@ class TestInvalidNeuralNetwork(unittest.TestCase):
         layer2 = OutputLayer(weight1, learning_rate_1, activation.Linear())
 
         try:
-            self.neural_network.addLayer(layer1)
-            self.assertRaises(ValueError, self.neural_network.addLayer(layer2))
+            self.neural_network.add_layer(layer1)
+            self.assertRaises(ValueError, self.neural_network.add_layer(layer2))
         except:
             pass
 

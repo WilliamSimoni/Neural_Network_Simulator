@@ -3,7 +3,7 @@
 """
 import unittest
 import numpy as np
-import activationFunction as af
+import activation_function as af
 
 
 class TestActivation(unittest.TestCase):

@@ -2,20 +2,20 @@
     Loss module used to compute the Loss function of ML model
 """
 import numpy as np
-import layer
 
 def euclidean_loss(predicted, targets):
     """
-        Calculate the Euclidean Loss for Regression 
+        Calculate the Euclidean Loss for Regression
         Param:
-            predict: predicted output layer 
+            predict: predicted output layer
             target: a target value (array of values)
     """
     #if not isinstance(predict, np.ndarray):
      #       raise ValueError('predict must be a np.ndarray object')
     #if not isinstance(target, np.ndarray):
     #        raise ValueError('Target must be a np.ndarray object')
-    return np.sum([np.linalg.norm(predict - target) for predict, target in list(zip(predicted, targets))])
+    return np.sum([np.linalg.norm(predict - target)
+                   for predict, target in list(zip(predicted, targets))])
 
 
 def cross_entropy(predicted, targets):
@@ -29,7 +29,7 @@ def cross_entropy(predicted, targets):
     #for layer in layers:
      #   w = layer.get_weights()
      #   sum_w += np.sum(w*w)
-    return -1 * np.sum([target * np.log(predict) + (1.0 - target) * np.log(1.0 - predict) 
+    return -1 * np.sum([target * np.log(predict) + (1.0 - target) * np.log(1.0 - predict)
                     for predict, target in list(zip(predicted, targets))])
 
 

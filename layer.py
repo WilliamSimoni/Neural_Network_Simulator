@@ -2,7 +2,7 @@
     Layer Module used to represent a layer of a NN
 """
 import numpy as np
-from activationFunction import Activation_function
+from activation_function import ActivationFunction
 
 
 class Layer:
@@ -29,7 +29,7 @@ class Layer:
             raise ValueError('weights must be a np.ndarray object')
         if not isinstance(learning_rates, np.ndarray):
             raise ValueError('learning_rates must be a np.ndarray object')
-        if not isinstance(activation, Activation_function):
+        if not isinstance(activation, ActivationFunction):
             raise ValueError('activation must be an activation function')
 
         if weights.shape != learning_rates.shape:
@@ -121,7 +121,8 @@ class Layer:
         # of the layer to the new nets result.
         return np.array(self.activation.output(self.net))
 
-    def update_weight(self, batch_size, batch_total_samples_ratio, momentum_rate=0, regularization_rate=0):
+    def update_weight(self, batch_size, batch_total_samples_ratio,
+                            momentum_rate=0, regularization_rate=0):
         """update the weights of the layers
 
         Parameters:
@@ -161,18 +162,24 @@ class Layer:
         self.errors = np.empty([self.num_unit])
 
     def update_delta_w(self):
+        """
+            Updates the Delta_w to use to update weights in backpropagation
+        """
         self.current_delta_w += np.outer(self.errors, self.inputs)
 
-    def error_signal(self):
+    def error_signal(self, target, output):
         """abstract class
 
             implementation in output layer and input layer
         """
-        pass
+
 
 
 class OutputLayer(Layer):
-
+    """
+        Represent an Output Layer in NN model
+        It is a subclass of Layer object
+    """
     def __init__(self, weights, learning_rates, activation):
         """This function initialize an instance of the layer class
 
@@ -205,6 +212,9 @@ class OutputLayer(Layer):
 
 
 class HiddenLayer(Layer):
+    """
+        Represent an Hidden Layer in our NN model and it is a subclass of Layer object
+    """
 
     def __init__(self, weights, learning_rates, activation):
         """This function initialize an instance of the layer class
@@ -234,5 +244,5 @@ class HiddenLayer(Layer):
                 errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... +
                                                     downStreamWeights[k][i] * downStreamErrors[k])
         """
-        self.errors = np.round((self.activation.derivative(self.net) * np.matmul(downStreamErrors,
-                                                                                 downStreamWeights[0:, 1:])), 8)
+        self.errors = np.round((self.activation.derivative(self.net) *
+                                np.matmul(downStreamErrors, downStreamWeights[0:, 1:])), 8)

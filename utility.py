@@ -2,8 +2,8 @@
     Module utility to define some utilities functions, like read data,
     divide data in training and test set and so on.
 """
-import numpy as np
 import csv
+import numpy as np
 
 def read_monk_data(file_path, train_dim=1.0, shuffle=False):
     """
@@ -11,7 +11,7 @@ def read_monk_data(file_path, train_dim=1.0, shuffle=False):
 
         Param:
             file_path (string): Path of Monk dataset
-            train_dim (float): number between 0.0 to 1.0 to use as partition 
+            train_dim (float): number between 0.0 to 1.0 to use as partition
                                between training and test set.
         Semantics of Monk Dataset:
             1° Row: label of data with value 0, 1
@@ -26,9 +26,8 @@ def read_monk_data(file_path, train_dim=1.0, shuffle=False):
         string_data = [line.split() for line in monk_file]
         label = [int(row[0]) for row in string_data]
         data = []
-        
+
         for row in string_data:
-            
             data_row = np.zeros(17)
             data_row[int(row[1]) - 1] = 1
             data_row[int(row[2]) + 2] = 1
@@ -40,8 +39,8 @@ def read_monk_data(file_path, train_dim=1.0, shuffle=False):
 
     if 0 < train_dim < 1:
         dim_data = int(train_dim * len(data))
-        return data[:dim_data], label[:dim_data], data[dim_data:], label[dim_data:] 
-      
+        return data[:dim_data], label[:dim_data], data[dim_data:], label[dim_data:]
+
     return data, label, [], []
 
 def read_cup_data(file_path, train_dim=1.0):
@@ -50,7 +49,7 @@ def read_cup_data(file_path, train_dim=1.0):
 
         Param:
             file_path (string): Path of ML Cup dataset
-            train_dim (float): number between 0.0 to 1.0 to use as partition 
+            train_dim (float): number between 0.0 to 1.0 to use as partition
                                between training and test set.
     """
     with open(file_path, "r") as cup_file:
@@ -65,8 +64,9 @@ def read_cup_data(file_path, train_dim=1.0):
 
     if 0 < train_dim < 1:
         dim_data = int(train_dim * len(data))
-        return np.array(data[:dim_data]), np.array(labels[:dim_data]), np.array(data[dim_data:]), np.array(labels[dim_data:]) 
-      
+        return np.array(data[:dim_data]), np.array(labels[:dim_data]), \
+               np.array(data[dim_data:]), np.array(labels[dim_data:])
+
     return np.array(data), np.array(labels), [], []
 
 def read_blind_data(file_path):
@@ -86,4 +86,4 @@ def read_blind_data(file_path):
                 id_name.append(int(row[0]))
                 data.append([float(x) for x in row[1:11]])
 
-    return id_name, np.array(data) 
+    return id_name, np.array(data)

@@ -2,12 +2,12 @@
 Neural Network module implement a feedforward Neural Network
 """
 import math
+import json
 import numpy as np
-from layer import Layer, OutputLayer, HiddenLayer
+from layer import Layer
 from neural_exception import InvalidNeuralNetwork
 from report import Report
-from loss import *
-import json
+from loss import loss_functions
 
 
 class NeuralNetwork:
@@ -15,8 +15,9 @@ class NeuralNetwork:
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, loss, metric, momentum_rate=0, regularization_rate=0, 
-                 nn_type="SGD", batch_size=1, type_classifier="classification"):
+    def __init__(self, max_epochs, loss='euclidean_loss', metric='',
+                 momentum_rate=0, regularization_rate=0, nn_type="SGD",
+                 batch_size=1, type_classifier="classification"):
         """create an instance of neural network class
 
         Args:
@@ -28,13 +29,9 @@ class NeuralNetwork:
             batch_size (int, optional): size of batch used, Default set to 1.
             type_classifier (string, optional): estabilish the type of classification used
                             Accepted values are "Classification" and "Regression"
-            loss (string or a Loss function): Indicate the loss function to use to evaluate the model
-            metric(string or a Metric function): indicate the metric used to evaluate the model, like Accuracy
+            loss (string): Indicate the loss function to use to evaluate the model
+            metric(string): indicate the metric used to evaluate the model, like Accuracy
         """
-        # checking parameters -------------------
-        # TODO
-        # ---------------------------------------
-
         self.max_epochs = self.check_max_epochs(max_epochs)
         self.input_dimension = 0
         self.output_dimension = 0
@@ -150,7 +147,7 @@ class NeuralNetwork:
         """
             Check type of Classifier for NN model
             Param:
-                type_classifier(string): type of classifier and valid value 
+                type_classifier(string): type of classifier and valid value
                                          are classification and regression
             Return:
                 type_classifier if is a valid value otherwise raise InvalidNeuralNetwork exception
@@ -160,7 +157,7 @@ class NeuralNetwork:
         else:
             raise InvalidNeuralNetwork()
 
-    def addLayer(self, layer):
+    def add_layer(self, layer):
         """ add a layer in the neural network
 
             Parameters:
@@ -220,7 +217,7 @@ class NeuralNetwork:
         # sample dimension controlled in _feedwardSignal
         return self._feedwardSignal(sample)
 
-    def _feedwardSignal(self, sample):
+    def _feedward_signal(self, sample):
         """
             FeedwardSignal feedward the signal from input to output of a feedforward NN
 
@@ -243,7 +240,7 @@ class NeuralNetwork:
 
         return output_layer
 
-    def fit(self, training_examples, validation_samples=None, test_samples=None, min_training_error=1e-12):
+    def fit(self, training_examples, validation_samples=None, test_samples=None, min_error=1e-12):
         """[summary]
 
         Parameters:
@@ -258,18 +255,18 @@ class NeuralNetwork:
 
         if self.type == "batch":
             self.batch_size = total_samples
-        
+
         # executed epochs
         num_epochs = 0
         error = np.Inf
         num_window = math.ceil(total_samples // self.batch_size)
-        
+
         #ratio between batch size and the total number of samples
         batch_total_samples_ratio = self.batch_size/total_samples
 
-        ex = training_examples[0] 
+        ex = training_examples[0]
         # stop when we execure max_epochs epochs or TODO training error
-        while(num_epochs < self.max_epochs or error <= min_training_error):
+        while(num_epochs < self.max_epochs or error <= min_error):
 
             # shuffle training examples
             np.random.shuffle(training_examples)
@@ -284,23 +281,25 @@ class NeuralNetwork:
                 self._back_propagation(window_examples, batch_total_samples_ratio)
 
             # calculate Training error
-            error = loss_functions[self.loss]([self.predict(example[0]) for example in training_examples],
-                                             [example[1] for example in training_examples],
+            error = loss_functions[self.loss](
+                                [self.predict(example[0]) for example in training_examples],
+                                [example[1] for example in training_examples],
                                              ) / total_samples
             report.add_training_error(error, num_epochs)
 
             if validation_samples:
-                validation_error = loss_functions[self.loss]([self.predict(val_example[0]) for val_example in validation_samples],
-                                                             [val_example[1] for val_example in validation_samples],
+                validation_error = loss_functions[self.loss](
+                            [self.predict(val_example[0]) for val_example in validation_samples],
+                            [val_example[1] for val_example in validation_samples],
                                                             ) / len(validation_samples)
                 report.add_validation_error(validation_error, num_epochs)
 
             if test_samples:
-                test_error = loss_functions[self.loss]([self.predict(test_example[0]) for test_example in test_samples],
-                                                             [test_example[1] for test_example in test_samples],
-                                                            ) / len(validation_samples)
-                report.add_test_error(test_error, num_epochs)    
-            
+                test_error = loss_functions[self.loss](
+                            [self.predict(test_example[0]) for test_example in test_samples],
+                            [test_example[1] for test_example in test_samples],
+                                                      ) / len(validation_samples)
+                report.add_test_error(test_error, num_epochs)
 
             #print("Error during epoch {} is {}".format(num_epochs, error))
             print("Predicted value during epoch {} is {}"
@@ -313,9 +312,12 @@ class NeuralNetwork:
 
         return report
 
-    def toJson(self):
-        jsonStr = json.dumps(self.__dict__)
-        return jsonStr
+    def to_json(self):
+        """
+            Serialize NN object to a Json object
+        """
+        json_str = json.dumps(self.__dict__)
+        return json_str
 
     def _back_propagation(self, samples, batch_total_samples_ratio):
         """execute a step of the backpropagation algorithm
@@ -330,7 +332,7 @@ class NeuralNetwork:
             # calculate error signal (delta) of output units
             self.layers[-1].error_signal(sample[1], self.predict(sample[0]))
             self.layers[-1].update_delta_w()
-            
+
             # calculate error signal (delta) of hidden units
             for index in range(len(self.layers[:-1]) - 1, -1, -1):
                 self.layers[index].error_signal(self.layers[index+1].get_errors(),
@@ -340,4 +342,5 @@ class NeuralNetwork:
         # updating the weights in the neural network
         for layer in self.layers:
             layer.update_weight(
-                self.batch_size, batch_total_samples_ratio, self.momentum_rate, self.regularization_rate)
+                self.batch_size, batch_total_samples_ratio,
+                self.momentum_rate, self.regularization_rate)

@@ -6,9 +6,9 @@ import sys
 sys.path.append("/home/bigboss98/Programming/Projects/Neural_Network_Simulator")
 print(sys.path)
 import numpy as np
-from neuralNetwork import NeuralNetwork
+from neural_network import NeuralNetwork
 from layer import HiddenLayer, OutputLayer
-import activationFunction as activation
+import activation_function as activation
 
 class TestNeuralNetwork(unittest.TestCase):
     def setUp(self):
@@ -64,7 +64,7 @@ class TestNeuralNetwork(unittest.TestCase):
         learning_rate = np.array([[0.1, 0.1, 0.1], [0.1, 0.1, 0.1], [0.1, 0.1, 0.1]])
         layer = OutputLayer(weights, learning_rate, activation.Linear())
         print(layer.get_num_input())
-        self.nn2.addLayer(layer)
+        self.nn2.add_layer(layer)
         self.assertListEqual(list(self.nn2.predict([1, 2])), [4, 4, 4])
 
     def test_classification_predict(self):
