@@ -51,20 +51,19 @@ class LearningRate():
         self.update_method = _time_based_decay
         self.current_method_name = 'time_based_decay'
 
-    def linear_decay(self, tau, lr0, lr_tau):
+    def linear_decay(self, tau, lr_tau):
         """if called, the learning rate will be updated using a linear decay strategy
 
         Args:
             tau (int): if num_epoch >= tau then learning_rate = lr_tau
-            lr0 (float): learning rate from which to start
             lr_tau (float): learning rate to which arrive when tau = num_epoch
         """
 
+        lr0 = self.learning_rates[0][0]
+
         def _linear_decay(learning_rates, epoch):
             alpha = (epoch)/tau if tau > epoch else 1
-            print(alpha)
             new_lr = (1 - alpha)*lr0 + alpha*lr_tau
-            print(new_lr)
             learning_rates[True] = new_lr
             return learning_rates
         
@@ -73,7 +72,7 @@ class LearningRate():
 
 
 lr = LearningRate(3, 3, 0.1)
-#lr.linear_decay(110, 0.1, 0.001)
+#lr.linear_decay(110, 0.001)
 #comment this and decomment above to try linear decay 
 lr.time_based_decay()
 
