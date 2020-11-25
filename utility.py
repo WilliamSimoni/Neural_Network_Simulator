@@ -24,7 +24,7 @@ def read_monk_data(file_path, train_dim=1.0, shuffle=False):
     """
     with open(file_path, "r") as monk_file:
         string_data = [line.split() for line in monk_file]
-        label = [int(row[0]) for row in string_data]
+        label = [0.1 if int(row[0]) == 0 else 0.9 for row in string_data]
         data = []
 
         for row in string_data:
