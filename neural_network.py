@@ -214,10 +214,10 @@ class NeuralNetwork:
 
             Return: the predicted target over the sample
         """
-        # sample dimension controlled in _feedwardSignal
-        return self._feedwardSignal(sample)
+        # sample dimension controlled in _feedforwardwardSignal
+        return self._feedforward_signal(sample)
 
-    def _feedward_signal(self, sample):
+    def _feedforward_signal(self, sample):
         """
             FeedwardSignal feedward the signal from input to output of a feedforward NN
 
