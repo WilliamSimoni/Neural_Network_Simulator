@@ -230,7 +230,8 @@ class NeuralNetwork:
             Return: the predicted output obtained after propagation of signal
         """
         if len(sample) != self.input_dimension:
-            raise ValueError
+            print(sample)
+            raise ValueError(len(sample), self.input_dimension)
 
         input_layer = sample
 
