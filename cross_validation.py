@@ -17,6 +17,10 @@ def split(dataset, num_subsets):
 
 
 def cross_validation(model, dataset, num_subsets):
+    sum_error = 0
+    standard_deviation = 0
+    best_training_error = 0
+
     splitted_data_set_index = split(dataset, num_subsets)
 
     for k in range(0, num_subsets):
@@ -25,7 +29,11 @@ def cross_validation(model, dataset, num_subsets):
         validation_set = dataset[splitted_data_set_index[k][0]:splitted_data_set_index[k][1]]
         report=model_k.fit(training_set, validation_set)
         print("Finished for k = {}".format(k))
+        print(report.get_training_error_best_validation_error())
+        mean_error
         report.plot_loss()
+    
+    return sum_error/num_subsets, standard_deviation, best_training_error
 
 
 nn = NeuralNetwork(200, 'euclidean_loss', '', 0.8,

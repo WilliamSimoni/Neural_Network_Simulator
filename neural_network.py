@@ -250,7 +250,7 @@ class NeuralNetwork:
             min_training_error (): [description]
         """
         # create empty Report object
-        report = Report(self.max_epochs)
+        report = Report(self.max_epochs, min_error)
         total_samples = len(training_examples)
 
         if self.type == "batch":
@@ -292,7 +292,7 @@ class NeuralNetwork:
                             [self.predict(val_example[0]) for val_example in validation_samples],
                             [val_example[1] for val_example in validation_samples],
                                                             ) / len(validation_samples)
-                report.add_validation_error(validation_error, num_epochs)
+                report.add_validation_error(error, validation_error, num_epochs)
 
             if test_samples:
                 test_error = loss_functions[self.loss](
