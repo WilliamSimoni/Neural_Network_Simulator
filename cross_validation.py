@@ -69,7 +69,7 @@ def cross_validation(model, dataset, num_subsets):
 
         # report.plot_loss()
 
-    return sum_error/num_subsets, np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, report
+    return sum_error/num_subsets, np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
 
 
 nn = NeuralNetwork(200, 'euclidean_loss', '', 0.8,
