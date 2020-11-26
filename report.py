@@ -14,7 +14,7 @@ class Report():
             self.validation_error = np.zeros(max_epochs)
             self.test_error = np.zeros(max_epochs)
             self.min_validation_error = np.Inf
-            self.training_error_best_validation_error = min_error
+            self.tr_err_with_best_vl_err = min_error
         else:
             raise ValueError
 
@@ -41,7 +41,7 @@ class Report():
         
         if self.min_validation_error > vl_error:
             self.min_validation_error = vl_error
-            self.training_error_best_validation_error = tr_error
+            self.tr_err_with_best_vl_err = tr_error
 
 
         self.validation_error[num_epoch] = vl_error
@@ -56,9 +56,25 @@ class Report():
         if num_epoch < 0 or num_epoch >= self.test_error.size:
             raise ValueError
         self.test_error[num_epoch] = error
-    
-    def get_training_error_best_validation_error(self):
-        return self.training_error_best_validation_error
+
+    def get_tr_err_with_best_vl_err(self):
+        """return the training error when we reach the minimum validation error 
+
+        Returns:
+            (float64): training error when we reach the minimum validation error 
+        """
+        return self.tr_err_with_best_vl_err
+
+    def get_vl_error(self, num_epoch = -1):
+        """return the validation error at a certain epoch
+
+        Param:
+            num_epoch (int, optional): Defaults to -1.
+
+        Returns:
+            (float64): the validation error at a certain epoch
+        """
+        return self.validation_error[num_epoch]
 
     def plot_loss(self):
         """
@@ -69,3 +85,4 @@ class Report():
         plt.ylabel('Error')
         plt.show()
         plt.savefig('training_error.png')
+
