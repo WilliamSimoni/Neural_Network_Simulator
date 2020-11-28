@@ -13,10 +13,46 @@ class Report():
             self.training_error = np.zeros(max_epochs)
             self.validation_error = np.zeros(max_epochs)
             self.test_error = np.zeros(max_epochs)
+            self.training_accuracy = np.zeros(max_epochs)
+            self.validation_accuracy = np.zeros(max_epochs)
+            self.test_accuracy = np.zeros(max_epochs)
             self.min_validation_error = np.Inf
             self.tr_err_with_best_vl_err = min_error
         else:
             raise ValueError
+
+    def add_training_accuracy(self, accuracy, num_epoch):
+        """
+            Add Training Accuracy to use for report and plot
+            Param:
+                accuracy(float): training accuracy
+                num_epoch(int): num of epoch
+        """
+        if num_epoch < 0 or num_epoch >= self.training_accuracy.size:
+            raise ValueError
+        self.training_accuracy[num_epoch] = accuracy
+
+    def add_validation_accuracy(self, accuracy, num_epoch):
+        """
+            Add Validation Accuracy to use for report and plot
+            Param:
+                accuracy(float): validation accuracy
+                num_epoch(int): num of epoch
+        """
+        if num_epoch < 0 or num_epoch >= self.validation_accuracy.size:
+            raise ValueError
+        self.validation_accuracy[num_epoch] = accuracy
+
+    def add_test_accuracy(self, accuracy, num_epoch):
+        """
+            Add Test Accuracy to use for report and plot
+            Param:
+                error(float): test accuracy
+                num_epoch(int): num of epoch
+        """
+        if num_epoch < 0 or num_epoch >= self.test_accuracy.size:
+            raise ValueError
+        self.test_accuracy[num_epoch] = accuracy
 
     def add_training_error(self, error, num_epoch):
         """
@@ -81,8 +117,20 @@ class Report():
             Plot Loss error for Training, Validation and Test set
         """
         plt.plot(self.training_error)
-        plt.plot(self.validation_error)
+        plt.plot(self.validation_error, 'r--')
+        #plt.plot(self.test_error)
         plt.ylabel('Error')
         plt.show()
         plt.savefig('training_error.png')
 
+
+    def plot_accuracy(self):
+        """
+            Plot Accuracy for Training, Validation and Test set
+        """
+        plt.plot(self.training_accuracy)
+        plt.plot(self.validation_accuracy, 'r--')
+        #plt.plot(self.test_accuracy)
+        plt.ylabel('Accuracy')
+        plt.show()
+        plt.savefig('training_accuracy.png')

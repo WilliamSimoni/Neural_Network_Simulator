@@ -73,7 +73,7 @@ def cross_validation(model, dataset, num_subsets):
 
 
 nn = NeuralNetwork(200, 'euclidean_loss', '', 0.8,
-                   0, nn_type="batch", batch_size=1)
+                   0, nn_type="minibatch", batch_size=1)
 
 # create three layers
 
