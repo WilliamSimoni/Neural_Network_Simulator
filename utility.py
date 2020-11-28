@@ -4,6 +4,7 @@
 """
 import csv
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 def read_monk_data(file_path, train_dim=1.0, shuffle=False):
     """
@@ -25,6 +26,7 @@ def read_monk_data(file_path, train_dim=1.0, shuffle=False):
     with open(file_path, "r") as monk_file:
         string_data = [line.split() for line in monk_file]
         label = [0.1 if int(row[0]) == 0 else 0.9 for row in string_data]
+        #label = [int(row[0]) for row in string_data]
         data = []
 
         for row in string_data:
@@ -87,3 +89,16 @@ def read_blind_data(file_path):
                 data.append([float(x) for x in row[1:11]])
 
     return id_name, np.array(data)
+
+
+def normalize_data(features, targets):
+    """
+    Args:
+        features (list): [description]
+        targets (list): [description]
+    """
+    scaler = StandardScaler()
+    features = scaler.fit_transform(features)
+    targets = scaler.fit_transform(targets)
+    return features, targets
+
