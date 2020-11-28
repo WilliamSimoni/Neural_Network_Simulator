@@ -116,10 +116,11 @@ class Report():
         """
             Plot Loss error for Training, Validation and Test set
         """
-        plt.plot(self.training_error)
-        plt.plot(self.validation_error, 'r--')
+        plt.plot(self.training_error, label='training')
+        plt.plot(self.validation_error, 'r--', label='validation')
         #plt.plot(self.test_error)
         plt.ylabel('Error')
+        plt.legend()
         plt.savefig('training_error.png')
         plt.show()
 
@@ -128,9 +129,10 @@ class Report():
         """
             Plot Accuracy for Training, Validation and Test set
         """
-        plt.plot(self.training_accuracy)
-        plt.plot(self.validation_accuracy, 'r--')
+        plt.plot(self.training_accuracy, label='training')
+        plt.plot(self.validation_accuracy, 'r--', label='validation')
         #plt.plot(self.test_accuracy)
         plt.ylabel('Accuracy')
+        plt.legend()
         plt.savefig('training_accuracy.png')
         plt.show()

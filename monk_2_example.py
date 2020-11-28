@@ -16,14 +16,14 @@ def monk_example():
 
     #create three layers
 
-    train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train")
-    test_data, test_label, _, _ = read_monk_data("dataset/monks-1.test")
+    train_data, train_label, _, _ = read_monk_data("dataset/monks-2.train")
+    test_data, test_label, _, _ = read_monk_data("dataset/monks-2.test")
 
     layer1 = HiddenLayer(weights=wi.he_initializer(15, len(train_data[0])),
-                         learning_rates=np.full((15, len(train_data[0]) + 1),  0.8),
+                         learning_rates=np.full((15, len(train_data[0]) + 1),  0.7),
                          activation=af.Relu())
     layer2 = OutputLayer(weights=wi.he_initializer(1, 15),
-                         learning_rates=np.full((1, 16), 0.8),
+                         learning_rates=np.full((1, 16), 0.7),
                          activation=af.Sigmoid())
 
     nn.add_layer(layer1)

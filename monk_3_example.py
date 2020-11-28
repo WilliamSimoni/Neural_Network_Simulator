@@ -15,11 +15,12 @@ def monk_example():
     """
         Test NN model using monk3 dataset
     """
-    nn = NeuralNetwork(200, 'euclidean_loss', '', 0.8, 0.005, nn_type="batch", batch_size=1)
+    nn = NeuralNetwork(200, 'euclidean_loss', 'classification_accuracy', 0.8, 0.005, nn_type="batch", batch_size=1)
 
     #create three layers
 
-    train_data, train_label, valid_data, valid_label = read_monk_data("dataset/monks-3.train", 0.8)
+    train_data, train_label, valid_data, valid_label = read_monk_data("dataset/monks-3.train")
+    test_data, test_label, _, _ = read_monk_data("dataset/monks-3.test")
 
     layer1 = HiddenLayer(weights=wi.xavier_initializer(15, len(train_data[0])),
                          learning_rates=np.full((15, len(train_data[0]) + 1),  0.8),
@@ -32,11 +33,11 @@ def monk_example():
     nn.add_layer(layer2)
 
     training_examples = list(zip(train_data, train_label))
-    validation_examples = list(zip(valid_data, valid_label))
+    test_examples = list(zip(test_data, test_label))
 
-    print(training_examples[0])
-    report = nn.fit(training_examples, validation_examples)
+    report = nn.fit(training_examples, test_examples)
     report.plot_loss()
+    report.plot_accuracy()
 
 if __name__ == "__main__":
     monk_example()
