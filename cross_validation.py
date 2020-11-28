@@ -1,12 +1,12 @@
 import numpy as np
 import copy
-from utility import read_monk_data
+from utility import read_monk_data, read_cup_data
 from neural_network import NeuralNetwork
 from layer import OutputLayer, HiddenLayer
 import weight_initializer as wi
 import activation_function as af
 import math
-
+import cProfile
 
 def split(dataset, num_subsets):
     min_num_element_per_subset = math.floor(len(dataset) / num_subsets)
@@ -77,14 +77,15 @@ nn = NeuralNetwork(200, 'euclidean_loss', '', 0.8,
 
 # create three layers
 
-train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
+train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 1)
+#train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
 
 layer1 = HiddenLayer(weights=wi.xavier_initializer(15, len(train_data[0])),
                      learning_rates=np.full(
     (15, len(train_data[0]) + 1),  0.5),
     activation=af.TanH())
-layer2 = OutputLayer(weights=wi.xavier_initializer(1, 15),
-                     learning_rates=np.full((1, 16), 0.5),
+layer2 = OutputLayer(weights=wi.xavier_initializer(2, 15),
+                     learning_rates=np.full((2, 16), 0.5),
                      activation=af.Sigmoid())
 
 nn.add_layer(layer1)
@@ -92,6 +93,7 @@ nn.add_layer(layer2)
 
 training_examples = list(zip(train_data, train_label))
 # print(training_examples)
-cross_validation_res = cross_validation(nn, training_examples, 5)
+#cross_validation_res = cross_validation(nn, training_examples, 5)
 # print(split(training_examples, 5))
-print(cross_validation_res)
+#print(cross_validation_res)
+cProfile.run('cross_validation(nn, training_examples, 4)')

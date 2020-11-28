@@ -214,10 +214,10 @@ class NeuralNetwork:
 
             Return: the predicted target over the sample
         """
-        # sample dimension controlled in _feedforwardwardSignal
-        return self._feedforward_signal(sample)
+        # sample dimension controlled in _feedwardSignal
+        return self._feedward_signal(sample)
 
-    def _feedforward_signal(self, sample):
+    def _feedward_signal(self, sample):
         """
             FeedwardSignal feedward the signal from input to output of a feedforward NN
 
@@ -230,8 +230,7 @@ class NeuralNetwork:
             Return: the predicted output obtained after propagation of signal
         """
         if len(sample) != self.input_dimension:
-            print(sample)
-            raise ValueError(len(sample), self.input_dimension)
+            raise ValueError
 
         input_layer = sample
 
@@ -327,21 +326,50 @@ class NeuralNetwork:
             samples (np.array): list of samples
             batch_total_samples_ratio (float): batch_size / len(samples)
         """
-
+        """
+        Extended code using normal For
         for sample in samples:
 
             # calculate error signal (delta) of output units
             self.layers[-1].error_signal(sample[1], self.predict(sample[0]))
             self.layers[-1].update_delta_w()
 
-            # calculate error signal (delta) of hidden units
+           
+            
             for index in range(len(self.layers[:-1]) - 1, -1, -1):
                 self.layers[index].error_signal(self.layers[index+1].get_errors(),
                                                 self.layers[index+1].get_weights())
                 self.layers[index].update_delta_w()
+        """
+        [self._sample_backpropagation(sample) for sample in samples]
 
         # updating the weights in the neural network
+        [layer.update_weight(
+                self.batch_size, batch_total_samples_ratio,
+                self.momentum_rate, self.regularization_rate)
+         for layer in self.layers]
+        """
         for layer in self.layers:
             layer.update_weight(
                 self.batch_size, batch_total_samples_ratio,
                 self.momentum_rate, self.regularization_rate)
+        """
+
+    def _sample_backpropagation(self, sample):
+        """
+            Compute Error propagation and update Delta_W
+            for a sample as a routine for backpropagation
+            
+            Param:
+                sample((features, target)): sample example
+        """
+        # calculate error signal (delta) of output units
+        self.layers[-1].error_signal(sample[1], self.predict(sample[0]))
+        self.layers[-1].update_delta_w()
+
+        # calculate error signal (delta) of hidden units
+        [self.layers[index].error_signal(self.layers[index+1].get_errors(),
+                                         self.layers[index+1].get_weights())
+         for index in range(len(self.layers[:-1]) - 1, -1, -1)]
+            
+        [self.layers[index].update_delta_w() for index in range(len(self.layers[:-1]) - 1, -1, -1)]
