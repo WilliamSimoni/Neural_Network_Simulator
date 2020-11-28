@@ -120,8 +120,8 @@ class Report():
         plt.plot(self.validation_error, 'r--')
         #plt.plot(self.test_error)
         plt.ylabel('Error')
-        plt.show()
         plt.savefig('training_error.png')
+        plt.show()
 
 
     def plot_accuracy(self):
@@ -132,5 +132,5 @@ class Report():
         plt.plot(self.validation_accuracy, 'r--')
         #plt.plot(self.test_accuracy)
         plt.ylabel('Accuracy')
-        plt.show()
         plt.savefig('training_accuracy.png')
+        plt.show()
