@@ -38,6 +38,7 @@ class Layer:
         # ---------------------------------------
 
         self.weights = weights
+        self.transposedWeights = np.transpose(weights)
         self.learning_rates = learning_rates
         self.activation = activation
 
@@ -106,19 +107,20 @@ class Layer:
             Return: output values of Layer units
         """
         # checking that the input is the right dimension
-        if len(input_values) != self.num_input:
+        if input_values.shape[1] != self.num_input:
             raise ValueError
 
         # adding bias input to input_values
-        input_values = np.concatenate(([1], input_values), axis=0)
+
+        input_values = np.c_[np.ones(len(input_values)), input_values]
 
         # updating the value of inputs
         self.inputs = input_values
 
         # calculating the value of the net. The value calculated is an array
         # whose i-th element is the net value of the i-th unit.
-        self.net = np.matmul(self.weights, input_values)
-
+        self.net = np.matmul(input_values, self.transposedWeights)
+        
         # returnig the value obtained applying the activation function
         # of the layer to the new nets result.
         return np.array(self.activation.output(self.net))
@@ -190,7 +192,7 @@ class OutputLayer(Layer):
         """
         super().__init__(weights, learning_rates, activation)
 
-    def error_signal(self, target, output):
+    def error_signal(self, targets, outputs):
         """implement the calculation of the error signal for an output layer
 
         Parameters:
@@ -202,9 +204,9 @@ class OutputLayer(Layer):
 
                 errors[i] = f'(net[i]) * (target[i] - output[i])
         """
-        self.errors = np.round(
-            (self.activation.derivative(self.net) * (target - output)), 8)
-        self.current_delta_w += np.outer(self.errors, self.inputs)
+        difference = np.array([(target - output) for target, output in zip(targets, outputs)])
+        self.errors = np.multiply(self.activation.derivative(self.net), difference)
+        self.current_delta_w = np.sum([np.outer(error, input) for error, input in zip(self.errors, self.inputs)], axis=0)
 
 
 class HiddenLayer(Layer):
@@ -240,6 +242,6 @@ class HiddenLayer(Layer):
                 errors[i] = f'(net[i]) * (downStreamWeights[0][i] * downStreamErrors[0] + ... +
                                                     downStreamWeights[k][i] * downStreamErrors[k])
         """
-        self.errors = np.round((self.activation.derivative(self.net) *
-                                np.matmul(downStreamErrors, downStreamWeights[0:, 1:])), 8)
-        self.current_delta_w += np.outer(self.errors, self.inputs)
+        self.errors = (self.activation.derivative(self.net) *
+                                np.matmul(downStreamErrors, downStreamWeights[0:, 1:]))
+        self.current_delta_w = np.sum([np.outer(error, input) for error, input in zip(self.errors, self.inputs)], axis=0)

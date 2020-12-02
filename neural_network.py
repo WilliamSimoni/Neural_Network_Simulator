@@ -99,7 +99,7 @@ class NeuralNetwork:
                 metric if is a valid metric function otherwise raise InvalidNeuralNetwork exception
         """
         
-        if metric in metric_functions or metric is '':
+        if metric in metric_functions or metric == '':
             return metric
         else:
             raise InvalidNeuralNetwork()
@@ -230,7 +230,7 @@ class NeuralNetwork:
 
             Return: the predicted output obtained after propagation of signal
         """
-        if len(sample) != self.input_dimension:
+        if sample.shape[1] != self.input_dimension:
             raise ValueError
 
         input_layer = sample
@@ -282,7 +282,9 @@ class NeuralNetwork:
                 # Backpropagate training examples
                 self._back_propagation(window_examples, batch_total_samples_ratio)
 
-            training_predicted = [self.predict(example[0]) for example in training_examples]
+            inputs = np.array([elem[0] for elem in training_examples])
+
+            training_predicted = self.predict(inputs)
                                              
             # calculate Training error
             error = loss_functions[self.loss](
@@ -290,7 +292,7 @@ class NeuralNetwork:
                                 [example[1] for example in training_examples],
                                              ) / total_samples
             
-            if self.metric is not '':
+            if self.metric != '':
                 accuracy = metric_functions[self.metric](
                                 training_predicted,
                                 [example[1] for example in training_examples])
@@ -300,12 +302,13 @@ class NeuralNetwork:
             
 
             if validation_samples:
-                val_predicted = [self.predict(val_example[0]) for val_example in validation_samples]
+                inputs_validation = np.array([elem[0] for elem in validation_samples])
+                val_predicted = self.predict(inputs_validation)
                 validation_error = loss_functions[self.loss](
                             val_predicted,
                             [val_example[1] for val_example in validation_samples],
                                                             ) / len(validation_samples)
-                if self.metric is not '':
+                if self.metric != '':
                     accuracy = metric_functions[self.metric](
                                 val_predicted,
                                 [val_example[1] for val_example in validation_samples])
@@ -369,32 +372,25 @@ class NeuralNetwork:
                                                 self.layers[index+1].get_weights())
                 self.layers[index].update_delta_w()
         """
-        [self._sample_backpropagation(sample) for sample in samples]
+        # calculate error signal (delta) of output units
+        targets = np.array([elem[1] for elem in samples])
+        inputs = np.array([elem[0] for elem in samples])
+        self.layers[-1].error_signal(targets, self.predict(inputs))
+
+        # calculate error signal (delta) of hidden units
+        [self.layers[index].error_signal(self.layers[index+1].get_errors(),
+                                         self.layers[index+1].get_weights())
+         for index in range(len(self.layers[:-1]) - 1, -1, -1)]
 
         # updating the weights in the neural network
         [layer.update_weight(
                 self.batch_size, batch_total_samples_ratio,
                 self.momentum_rate, self.regularization_rate)
          for layer in self.layers]
+
         """
         for layer in self.layers:
             layer.update_weight(
                 self.batch_size, batch_total_samples_ratio,
                 self.momentum_rate, self.regularization_rate)
         """
-
-    def _sample_backpropagation(self, sample):
-        """
-            Compute Error propagation and update Delta_W
-            for a sample as a routine for backpropagation
-            
-            Param:
-                sample((features, target)): sample example
-        """
-        # calculate error signal (delta) of output units
-        self.layers[-1].error_signal(sample[1], self.predict(sample[0]))
-
-        # calculate error signal (delta) of hidden units
-        [self.layers[index].error_signal(self.layers[index+1].get_errors(),
-                                         self.layers[index+1].get_weights())
-         for index in range(len(self.layers[:-1]) - 1, -1, -1)]
