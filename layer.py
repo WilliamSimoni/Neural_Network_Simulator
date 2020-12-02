@@ -32,7 +32,6 @@ class Layer:
         if not isinstance(activation, ActivationFunction):
             raise ValueError('activation must be an activation function')
         
-        print(learning_rates.value().shape, weights.shape)
         if weights.shape != learning_rates.value().shape:
             raise ValueError(
                 'weights and learning_rates must have the same shape')
