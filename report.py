@@ -1,7 +1,7 @@
 """
     Report module used to report result of our NN simulator
 """
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as mlp
 import numpy as np
 
 class Report():
@@ -116,23 +116,23 @@ class Report():
         """
             Plot Loss error for Training, Validation and Test set
         """
-        plt.plot(self.training_error, label='training')
-        plt.plot(self.validation_error, 'r--', label='validation')
-        #plt.plot(self.test_error)
-        plt.ylabel('Error')
-        plt.legend()
-        plt.savefig('training_error.png')
-        plt.show()
+        mlp.plot(self.training_error, label='training')
+        mlp.plot(self.validation_error, 'r--', linewidth=2,  label='validation')
+        #mlp.plot(self.test_error)
+        mlp.ylabel('Error')
+        mlp.legend()
+        mlp.savefig('training_error.png')
+        mlp.show()
 
 
     def plot_accuracy(self):
         """
             Plot Accuracy for Training, Validation and Test set
         """
-        plt.plot(self.training_accuracy, label='training')
-        plt.plot(self.validation_accuracy, 'r--', label='validation')
-        #plt.plot(self.test_accuracy)
-        plt.ylabel('Accuracy')
-        plt.legend()
-        plt.savefig('training_accuracy.png')
-        plt.show()
+        mlp.plot(self.training_accuracy, label='training')
+        mlp.plot(self.validation_accuracy, 'r--', linewidth=2, label='validation')
+        #mlp.plot(self.test_accuracy)
+        mlp.ylabel('Accuracy')
+        mlp.legend()
+        mlp.savefig('training_accuracy.png')
+        mlp.show()
