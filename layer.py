@@ -117,8 +117,7 @@ class Layer:
 
         # calculating the value of the net. The value calculated is an array
         # whose i-th element is the net value of the i-th unit.
-        self.net = np.array([np.inner(unit_weights, input_values)
-                             for unit_weights in self.weights])
+        self.net = np.matmul(self.weights, input_values)
 
         # returnig the value obtained applying the activation function
         # of the layer to the new nets result.
@@ -164,18 +163,11 @@ class Layer:
         self.current_delta_w = np.zeros(self.weights.shape)
         self.errors = np.empty([self.num_unit])
 
-    def update_delta_w(self):
-        """
-            Updates the Delta_w to use to update weights in backpropagation
-        """
-        self.current_delta_w += np.outer(self.errors, self.inputs)
-
     def error_signal(self, target, output):
         """abstract class
 
             implementation in output layer and input layer
         """
-
 
 
 class OutputLayer(Layer):
@@ -212,6 +204,7 @@ class OutputLayer(Layer):
         """
         self.errors = np.round(
             (self.activation.derivative(self.net) * (target - output)), 8)
+        self.current_delta_w += np.outer(self.errors, self.inputs)
 
 
 class HiddenLayer(Layer):
@@ -249,3 +242,4 @@ class HiddenLayer(Layer):
         """
         self.errors = np.round((self.activation.derivative(self.net) *
                                 np.matmul(downStreamErrors, downStreamWeights[0:, 1:])), 8)
+        self.current_delta_w += np.outer(self.errors, self.inputs)

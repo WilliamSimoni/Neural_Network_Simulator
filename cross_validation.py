@@ -16,7 +16,6 @@ def split(dataset, num_subsets):
     return [(k*min_num_element_per_subset + min(k, residual), (
         k+1) * min_num_element_per_subset + min(k+1, residual)) for k in range(0, num_subsets)]
 
-
 def cross_validation(model, dataset, num_subsets):
     """cross validation implementation
 
@@ -75,23 +74,27 @@ def cross_validation(model, dataset, num_subsets):
 
 
 nn = NeuralNetwork(500, 'euclidean_loss', '', 0.8,
-                   0, nn_type="minibatch", batch_size=1)
+                   0, nn_type="batch", batch_size=1)
 
 # create three layers
 
-train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 1)
+train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
 #train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
 train_data, train_label = normalize_data(train_data, train_label)
 
-layer1 = HiddenLayer(weights=wi.xavier_initializer(30, len(train_data[0])),
-                     learning_rates=lr.Constant(30, len(train_data[0]),  0.5),
+layer1 = HiddenLayer(weights=wi.xavier_initializer(50, len(train_data[0])),
+                     learning_rates=lr.Constant(50, len(train_data[0]),  0.2),
                      activation=af.TanH())
-layer2 = OutputLayer(weights=wi.xavier_initializer(2, 30),
-                     learning_rates=lr.Constant(2, 30, 0.5),
+layer2 = HiddenLayer(weights=wi.xavier_initializer(50, 50),
+                     learning_rates=lr.Constant(50, 50,  0.2),
+                     activation=af.TanH())
+layer3 = OutputLayer(weights=wi.xavier_initializer(2, 50),
+                     learning_rates=lr.Constant(2, 50, 0.2),
                      activation=af.Linear())
 
 nn.add_layer(layer1)
 nn.add_layer(layer2)
+nn.add_layer(layer3)
 
 training_examples = list(zip(train_data, train_label))
 # print(training_examples)

@@ -9,7 +9,7 @@ from neural_exception import InvalidNeuralNetwork
 from report import Report
 from loss import loss_functions
 from metric import metric_functions
-
+import tqdm
 
 class NeuralNetwork:
     """
@@ -267,7 +267,8 @@ class NeuralNetwork:
 
         ex = training_examples[0]
         # stop when we execure max_epochs epochs or TODO training error
-        while(num_epochs < self.max_epochs or error <= min_error):
+
+        for num_epochs in tqdm.tqdm(range(self.max_epochs), desc="fir"):
 
             # shuffle training examples
             np.random.shuffle(training_examples)
@@ -321,11 +322,15 @@ class NeuralNetwork:
                 report.add_test_error(test_error, num_epochs)
 
             #print("Error during epoch {} is {}".format(num_epochs, error))
-            print("Predicted value during epoch {} is {}"
-                  .format(num_epochs, self.predict(ex[0])))
-            print("Target value during epoch {} is {}".format(
-                num_epochs, ex[1]))
-            print("Num Epoch: ", num_epochs)
+            #print("Predicted value during epoch {} is {}"
+            #      .format(num_epochs, self.predict(ex[0])))
+            #print("Target value during epoch {} is {}".format(
+            #    num_epochs, ex[1]))
+            #print("Num Epoch: ", num_epochs)
+
+            #check error
+            if  error <= min_error:
+                break
 
             #update the learning rate
             [layer.update_learning_rate(num_epochs) for layer in self.layers]
@@ -388,11 +393,8 @@ class NeuralNetwork:
         """
         # calculate error signal (delta) of output units
         self.layers[-1].error_signal(sample[1], self.predict(sample[0]))
-        self.layers[-1].update_delta_w()
 
         # calculate error signal (delta) of hidden units
         [self.layers[index].error_signal(self.layers[index+1].get_errors(),
                                          self.layers[index+1].get_weights())
          for index in range(len(self.layers[:-1]) - 1, -1, -1)]
-            
-        [self.layers[index].update_delta_w() for index in range(len(self.layers[:-1]) - 1, -1, -1)]
