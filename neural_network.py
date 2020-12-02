@@ -98,6 +98,8 @@ class NeuralNetwork:
             Return:
                 metric if is a valid metric function otherwise raise InvalidNeuralNetwork exception
         """
+        if metric is '':
+            return ''
         if metric in metric_functions:
             return metric
         else:
@@ -112,7 +114,6 @@ class NeuralNetwork:
                 momentum_rate if is >= 0 otherwise raise InvalidNeuralNetwork exception
         """
         if momentum_rate >= 0:
-            print("Hello")
             return momentum_rate
         else:
             raise InvalidNeuralNetwork()
@@ -288,12 +289,15 @@ class NeuralNetwork:
                                 training_predicted,
                                 [example[1] for example in training_examples],
                                              ) / total_samples
-            accuracy = metric_functions[self.metric](
+            
+            if self.metric is not '':
+                accuracy = metric_functions[self.metric](
                                 training_predicted,
                                 [example[1] for example in training_examples])
-
+                report.add_training_accuracy(accuracy, num_epochs)
+            
             report.add_training_error(error, num_epochs)
-            report.add_training_accuracy(accuracy, num_epochs)
+            
 
             if validation_samples:
                 val_predicted = [self.predict(val_example[0]) for val_example in validation_samples]
@@ -301,12 +305,14 @@ class NeuralNetwork:
                             val_predicted,
                             [val_example[1] for val_example in validation_samples],
                                                             ) / len(validation_samples)
-                accuracy = metric_functions[self.metric](
+                if self.metric is not '':
+                    accuracy = metric_functions[self.metric](
                                 val_predicted,
                                 [val_example[1] for val_example in validation_samples])
+                    report.add_validation_accuracy(accuracy, num_epochs)
                 
                 report.add_validation_error(error, validation_error, num_epochs)
-                report.add_validation_accuracy(accuracy, num_epochs)
+                
 
             if test_samples:
                 test_error = loss_functions[self.loss](
