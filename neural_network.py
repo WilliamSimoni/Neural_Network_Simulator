@@ -327,6 +327,10 @@ class NeuralNetwork:
             print("Target value during epoch {} is {}".format(
                 num_epochs, ex[1]))
             print("Num Epoch: ", num_epochs)
+
+            #update the learning rate
+            [layer.update_learning_rate(num_epochs) for layer in self.layers]
+
             # increase number of epochs
             num_epochs += 1
 

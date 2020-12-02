@@ -11,7 +11,7 @@ class LearningRate():
         Learning Rate in our NN model
     """
 
-    def __init__(self, num_unit, num_input, value=0):
+    def __init__(self, num_unit, num_input, value=0.1):
         self.learning_rates = np.full((num_unit, num_input + 1), value, dtype=np.float)
         self.update_method = lambda learning_rates, epoch: learning_rates
         self.current_method_name = 'constant'
@@ -40,34 +40,56 @@ class LearningRate():
         """
         return self.current_method_name
 
-    def constant(self):
-        """if called, the learning rate will not be updated
-        """
-        self.update_method = lambda learning_rates, epoch: learning_rates
-        self.current_method_name = 'constant'
-
-    def time_based_decay(self, decay=0.0001):
-        """if called, the learning rate will be updated using a time based decay strategy
-
+class Constant(LearningRate):
+    """Learning rate is not updated
+    """
+    def __init__(self, num_unit, num_input, value=0.1):
+        """create a constant learning rate object
         Args:
-            decay (float): determine how fast the learning rate goes to 0
+            num_unit (int): number of unit in the layer
+            num_input (int): number of input for each unit
+            value (int, optional): the value to which initialize the learning rate. Defaults to 0.1.
         """
+        super().__init__(num_unit, num_input, value)
+
+class timeBasedDecay(LearningRate):
+    """Learning rate is updated using time based decay
+    """
+    def __init__(self, num_unit, num_input, value=0.1, decay=0.0001, min_value= 0.01):
+        """create a time based decay learning rate object
+        Args:
+            num_unit (int): number of unit in the layer
+            num_input (int): number of input for each unit
+            value (int, optional): the value to which initialize the learning rate. Defaults to 0.1.
+            decay (float): determine how fast the learning rate goes to 0
+            min_value (float): min value that the learning rate can reach
+        """
+
+        super().__init__(num_unit, num_input, value)
 
         def _time_based_decay(learning_rates, epoch):
-            return learning_rates * 1./(1. + decay * epoch)
+            new_learning_rates = learning_rates * 1./(1. + decay * epoch)
+            return new_learning_rates if new_learning_rates[0][0] > min_value else learning_rates
 
         self.update_method = _time_based_decay
         self.current_method_name = 'time_based_decay'
 
-    def linear_decay(self, tau, lr_tau):
-        """if called, the learning rate will be updated using a linear decay strategy
-
+class LinearDecay(LearningRate):
+    """ the learning rate will be updated using a linear decay strategy
+    """
+    def __init__(self, num_unit, num_input, value=0.1, tau = 100, lr_tau = 0.01):
+        """create a linear decay learning rate object
         Args:
-            tau (int): if num_epoch >= tau then learning_rate = lr_tau
-            lr_tau (float): learning rate to which arrive when tau = num_epoch
+            num_unit (int): number of unit in the layer
+            num_input (int): number of input for each unit
+            value (int, optional): the value to which initialize the learning rate. Defaults to 0.1.
+            tau (int): if num_epoch >= tau then learning_rate = lr_tau. Defaults to 100
+            lr_tau (float): learning rate to which arrive when tau = num_epoch. Defaults to 0.01
         """
 
-        lr0 = self.learning_rates[0][0]
+        super().__init__(num_unit, num_input, value)
+
+        lr0 = value
 
         def _linear_decay(learning_rates, epoch):
             alpha = (epoch)/tau if tau > epoch else 1
@@ -76,18 +98,4 @@ class LearningRate():
             return learning_rates
 
         self.update_method = _linear_decay
-        self.current_method_name = 'linear_decay'
-
-
-lr = LearningRate(3, 3, 0.1)
-#lr.linear_decay(110, 0.001)
-#comment this and decomment above to try linear decay
-lr.time_based_decay()
-
-report = rp.Report(200)
-
-for i in range(0, 200):
-    lr.update(i)
-    report.add_training_error(lr.value()[0][0],i)
-
-report.plot_loss()
+        self.current_method_name = 'linear_decay'      

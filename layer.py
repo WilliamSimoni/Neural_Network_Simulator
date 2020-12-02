@@ -3,7 +3,7 @@
 """
 import numpy as np
 from activation_function import ActivationFunction
-
+from learning_rate import LearningRate
 
 class Layer:
     """
@@ -27,12 +27,13 @@ class Layer:
         # checking parameters -------------------
         if not isinstance(weights, np.ndarray):
             raise ValueError('weights must be a np.ndarray object')
-        if not isinstance(learning_rates, np.ndarray):
+        if not isinstance(learning_rates, LearningRate):
             raise ValueError('learning_rates must be a np.ndarray object')
         if not isinstance(activation, ActivationFunction):
             raise ValueError('activation must be an activation function')
-
-        if weights.shape != learning_rates.shape:
+        
+        print(learning_rates.value().shape, weights.shape)
+        if weights.shape != learning_rates.value().shape:
             raise ValueError(
                 'weights and learning_rates must have the same shape')
         # ---------------------------------------
@@ -93,6 +94,9 @@ class Layer:
         """
         return self.weights
 
+    def update_learning_rate(self, epoch):
+        self.learning_rates.update(epoch)
+
     def function_signal(self, input_values):
         """
             Calculate the propagated values of a layer using an activation function
@@ -143,7 +147,7 @@ class Layer:
         # calculating the new delta
         # new_delta_w[i][j] = learning_rate[i][j] * errors[i] * inputs[j]
         new_delta_w = np.multiply(
-            self.learning_rates / batch_size, self.current_delta_w)
+            self.learning_rates.value() / batch_size, self.current_delta_w)
 
         # updating the weights
 
