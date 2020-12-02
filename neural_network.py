@@ -98,9 +98,8 @@ class NeuralNetwork:
             Return:
                 metric if is a valid metric function otherwise raise InvalidNeuralNetwork exception
         """
-        if metric is '':
-            return ''
-        if metric in metric_functions:
+        
+        if metric in metric_functions or metric is '':
             return metric
         else:
             raise InvalidNeuralNetwork()

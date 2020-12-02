@@ -1,12 +1,13 @@
 import numpy as np
 import copy
-from utility import read_monk_data, read_cup_data
+from utility import normalize_data, read_monk_data, read_cup_data
 from neural_network import NeuralNetwork
 from layer import OutputLayer, HiddenLayer
 import weight_initializer as wi
 import activation_function as af
 import math
 import cProfile
+import learning_rate as lr
 
 def split(dataset, num_subsets):
     min_num_element_per_subset = math.floor(len(dataset) / num_subsets)
@@ -39,6 +40,7 @@ def cross_validation(model, dataset, num_subsets):
 
     #get the indexes to break down the data set into the different folds
     splitted_data_set_index = split(dataset, num_subsets)
+    print(splitted_data_set_index)
 
     for k in range(0, num_subsets):
         #create a deep copy of the model passed as argument
@@ -72,28 +74,28 @@ def cross_validation(model, dataset, num_subsets):
     return sum_error/num_subsets, np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
 
 
-nn = NeuralNetwork(200, 'euclidean_loss', '', 0.8,
+nn = NeuralNetwork(500, 'euclidean_loss', '', 0.8,
                    0, nn_type="minibatch", batch_size=1)
 
 # create three layers
 
 train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 1)
 #train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
+train_data, train_label = normalize_data(train_data, train_label)
 
-layer1 = HiddenLayer(weights=wi.xavier_initializer(15, len(train_data[0])),
-                     learning_rates=np.full(
-    (15, len(train_data[0]) + 1),  0.5),
-    activation=af.TanH())
-layer2 = OutputLayer(weights=wi.xavier_initializer(2, 15),
-                     learning_rates=np.full((2, 16), 0.5),
-                     activation=af.Sigmoid())
+layer1 = HiddenLayer(weights=wi.xavier_initializer(30, len(train_data[0])),
+                     learning_rates=lr.Constant(30, len(train_data[0]),  0.5),
+                     activation=af.TanH())
+layer2 = OutputLayer(weights=wi.xavier_initializer(2, 30),
+                     learning_rates=lr.Constant(2, 30, 0.5),
+                     activation=af.Linear())
 
 nn.add_layer(layer1)
 nn.add_layer(layer2)
 
 training_examples = list(zip(train_data, train_label))
 # print(training_examples)
-#cross_validation_res = cross_validation(nn, training_examples, 5)
+cross_validation_res = cross_validation(nn, training_examples, 3)
 # print(split(training_examples, 5))
 #print(cross_validation_res)
-cProfile.run('cross_validation(nn, training_examples, 4)')
+#cProfile.run('cross_validation(nn, training_examples, 3)')
