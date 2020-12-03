@@ -301,7 +301,7 @@ class NeuralNetwork:
             error = loss_functions[self.loss](
                 training_predicted,
                 targets_training,
-            ) / total_samples
+            ) 
 
             if self.metric != '':
                 accuracy = metric_functions[self.metric](
@@ -316,7 +316,7 @@ class NeuralNetwork:
                 validation_error = loss_functions[self.loss](
                     val_predicted,
                     targets_validation,
-                ) / len(validation_samples)
+                )
                 if self.metric != '':
                     accuracy = metric_functions[self.metric](
                         val_predicted,

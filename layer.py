@@ -206,7 +206,7 @@ class OutputLayer(Layer):
         """
         difference = np.array([(target - output) for target, output in zip(targets, outputs)])
         self.errors = np.multiply(self.activation.derivative(self.net), difference)
-        self.current_delta_w = np.sum([np.outer(error, input) for error, input in zip(self.errors, self.inputs)], axis=0)
+        self.current_delta_w = np.sum([np.einsum('i,j', error, input) for error, input in zip(self.errors, self.inputs)], axis=0)
 
 
 class HiddenLayer(Layer):
@@ -244,4 +244,4 @@ class HiddenLayer(Layer):
         """
         self.errors = (self.activation.derivative(self.net) *
                                 np.matmul(downStreamErrors, downStreamWeights[0:, 1:]))
-        self.current_delta_w = np.sum([np.outer(error, input) for error, input in zip(self.errors, self.inputs)], axis=0)
+        self.current_delta_w = np.sum([np.einsum('i,j', error, input) for error, input in zip(self.errors, self.inputs)], axis=0)

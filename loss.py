@@ -2,8 +2,9 @@
     Loss module used to compute the Loss function of ML model
 """
 import numpy as np
-from numpy.core.records import array
+from numba import jit
 
+#@jit(nopython=True)
 def euclidean_loss(predicted, targets):
     """
         Calculate the Euclidean Loss for Regression
@@ -15,8 +16,7 @@ def euclidean_loss(predicted, targets):
     #    raise ValueError('predict must be a np.ndarray object or an array')
     #if not isinstance(targets, np.ndarray) or not isinstance(targets, array):
     #    raise ValueError('Target must be a np.ndarray object or an array ')
-    return np.sum([np.linalg.norm(predict - target)
-                   for predict, target in list(zip(predicted, targets))])
+    return np.mean([np.linalg.norm(predict - target) for predict, target in list(zip(predicted, targets))])
 
 def cross_entropy(predicted, targets):
     """
