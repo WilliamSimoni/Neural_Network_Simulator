@@ -11,6 +11,7 @@ from loss import loss_functions
 from metric import metric_functions
 import tqdm
 
+
 class NeuralNetwork:
     """
         Neural Network class to represent a feedforward Neural Network
@@ -43,7 +44,8 @@ class NeuralNetwork:
         # note: this is not a np.ndarray object
         self.layers = []
         self.momentum_rate = self.check_momentum(momentum_rate)
-        self.regularization_rate = self.check_regularization(regularization_rate)
+        self.regularization_rate = self.check_regularization(
+            regularization_rate)
         self.metric = self.check_metric(metric)
         self.loss = self.check_loss(loss)
 
@@ -98,11 +100,12 @@ class NeuralNetwork:
             Return:
                 metric if is a valid metric function otherwise raise InvalidNeuralNetwork exception
         """
-        
+
         if metric in metric_functions or metric == '':
             return metric
         else:
             raise InvalidNeuralNetwork()
+
     def check_momentum(self, momentum_rate):
         """
             Check momentum_rate value inserted in Constructor
@@ -262,13 +265,22 @@ class NeuralNetwork:
         error = np.Inf
         num_window = math.ceil(total_samples // self.batch_size)
 
-        #ratio between batch size and the total number of samples
+        inputs_training = np.array([elem[0] for elem in training_examples])
+        targets_training = np.array([elem[1] for elem in training_examples])
+
+        if validation_samples:
+            inputs_validation = np.array([elem[0]
+                                          for elem in validation_samples])
+            targets_validation = np.array([elem[1]
+                                           for elem in validation_samples])
+
+        # ratio between batch size and the total number of samples
         batch_total_samples_ratio = self.batch_size/total_samples
 
         ex = training_examples[0]
         # stop when we execure max_epochs epochs or TODO training error
 
-        for num_epochs in tqdm.tqdm(range(self.max_epochs), desc="fir"):
+        for num_epochs in tqdm.tqdm(range(self.max_epochs), desc="fit"):
 
             # shuffle training examples
             np.random.shuffle(training_examples)
@@ -280,62 +292,60 @@ class NeuralNetwork:
                                                     (index+1) * self.batch_size]
 
                 # Backpropagate training examples
-                self._back_propagation(window_examples, batch_total_samples_ratio)
+                self._back_propagation(
+                    window_examples, batch_total_samples_ratio)
 
-            inputs = np.array([elem[0] for elem in training_examples])
+            training_predicted = self.predict(inputs_training)
 
-            training_predicted = self.predict(inputs)
-                                             
             # calculate Training error
             error = loss_functions[self.loss](
-                                training_predicted,
-                                [example[1] for example in training_examples],
-                                             ) / total_samples
-            
+                training_predicted,
+                targets_training,
+            ) / total_samples
+
             if self.metric != '':
                 accuracy = metric_functions[self.metric](
-                                training_predicted,
-                                [example[1] for example in training_examples])
+                    training_predicted,
+                    targets_training)
                 report.add_training_accuracy(accuracy, num_epochs)
-            
+
             report.add_training_error(error, num_epochs)
-            
 
             if validation_samples:
-                inputs_validation = np.array([elem[0] for elem in validation_samples])
                 val_predicted = self.predict(inputs_validation)
                 validation_error = loss_functions[self.loss](
-                            val_predicted,
-                            [val_example[1] for val_example in validation_samples],
-                                                            ) / len(validation_samples)
+                    val_predicted,
+                    targets_validation,
+                ) / len(validation_samples)
                 if self.metric != '':
                     accuracy = metric_functions[self.metric](
-                                val_predicted,
-                                [val_example[1] for val_example in validation_samples])
+                        val_predicted,
+                        targets_validation)
                     report.add_validation_accuracy(accuracy, num_epochs)
-                
-                report.add_validation_error(error, validation_error, num_epochs)
-                
+
+                report.add_validation_error(
+                    error, validation_error, num_epochs)
 
             if test_samples:
                 test_error = loss_functions[self.loss](
-                            [self.predict(test_example[0]) for test_example in test_samples],
-                            [test_example[1] for test_example in test_samples],
-                                                      ) / len(test_samples)
+                    [self.predict(test_example[0])
+                     for test_example in test_samples],
+                    [test_example[1] for test_example in test_samples],
+                ) / len(test_samples)
                 report.add_test_error(test_error, num_epochs)
 
             #print("Error during epoch {} is {}".format(num_epochs, error))
-            #print("Predicted value during epoch {} is {}"
+            # print("Predicted value during epoch {} is {}"
             #      .format(num_epochs, self.predict(ex[0])))
-            #print("Target value during epoch {} is {}".format(
+            # print("Target value during epoch {} is {}".format(
             #    num_epochs, ex[1]))
             #print("Num Epoch: ", num_epochs)
 
-            #check error
-            if  error <= min_error:
+            # check error
+            if error <= min_error:
                 break
 
-            #update the learning rate
+            # update the learning rate
             [layer.update_learning_rate(num_epochs) for layer in self.layers]
 
             # increase number of epochs
@@ -384,8 +394,8 @@ class NeuralNetwork:
 
         # updating the weights in the neural network
         [layer.update_weight(
-                self.batch_size, batch_total_samples_ratio,
-                self.momentum_rate, self.regularization_rate)
+            self.batch_size, batch_total_samples_ratio,
+            self.momentum_rate, self.regularization_rate)
          for layer in self.layers]
 
         """
