@@ -43,8 +43,8 @@ def cross_validation(model, dataset, num_subsets):
 
     for k in range(0, num_subsets):
         #create a deep copy of the model passed as argument
-        model_k = copy.deepcopy(model)
-
+        model_k = model.deepcopy()
+        print(model_k)
         #dividing training and validation set
         training_set = dataset[:splitted_data_set_index[k]
                                [0]] + dataset[splitted_data_set_index[k][1]:]
@@ -68,13 +68,13 @@ def cross_validation(model, dataset, num_subsets):
         
         reports.append(report)
 
-        # report.plot_loss()
+        report.plot_loss()
 
     return sum_error/num_subsets, np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
 
 
-nn = NeuralNetwork(500, 'euclidean_loss', '', 0.8,
-                   0, nn_type="batch", batch_size=1)
+nn = NeuralNetwork(100, 'mean_squared_error', '', 0.8,
+                   0.01, nn_type="batch", batch_size=1)
 
 # create three layers
 
@@ -82,18 +82,19 @@ train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
 #train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
 train_data, train_label = normalize_data(train_data, train_label)
 
-layer1 = HiddenLayer(weights=wi.xavier_initializer(50, len(train_data[0])),
-                     learning_rates=lr.Constant(50, len(train_data[0]),  0.2),
+layer1 = HiddenLayer(weights=wi.xavier_initializer(30, len(train_data[0])),
+                     learning_rates=lr.Constant(30, len(train_data[0]),  0.3),
                      activation=af.TanH())
+"""
 layer2 = HiddenLayer(weights=wi.xavier_initializer(50, 50),
                      learning_rates=lr.Constant(50, 50,  0.2),
-                     activation=af.TanH())
-layer3 = OutputLayer(weights=wi.xavier_initializer(2, 50),
-                     learning_rates=lr.Constant(2, 50, 0.2),
+                     activation=af.TanH())"""
+layer3 = OutputLayer(weights=wi.xavier_initializer(2, 30),
+                     learning_rates=lr.Constant(2, 30, 0.3),
                      activation=af.Linear())
 
 nn.add_layer(layer1)
-nn.add_layer(layer2)
+#nn.add_layer(layer2)
 nn.add_layer(layer3)
 
 training_examples = list(zip(train_data, train_label))

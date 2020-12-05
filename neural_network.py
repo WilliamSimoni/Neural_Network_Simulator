@@ -49,6 +49,13 @@ class NeuralNetwork:
         self.metric = self.check_metric(metric)
         self.loss = self.check_loss(loss)
 
+    def deepcopy(self):
+        newNN = NeuralNetwork(self.max_epochs, self.loss, self.metric, self.momentum_rate,
+                              self.regularization_rate, self.type, self.batch_size, self.type_classifier)
+        [newNN.add_layer(layer.deepcopy()) for layer in self.layers]
+        return newNN
+        
+
     def check_batch_size(self, batch_size):
         """
             Check batch_size value inserted in NN constructor
@@ -277,8 +284,10 @@ class NeuralNetwork:
         # ratio between batch size and the total number of samples
         batch_total_samples_ratio = self.batch_size/total_samples
 
-        ex = training_examples[0]
+        #ex = training_examples[0]
         # stop when we execure max_epochs epochs or TODO training error
+
+        #training_predicted_before = self.predict(inputs_training)
 
         for num_epochs in tqdm.tqdm(range(self.max_epochs), desc="fit"):
 
@@ -297,11 +306,16 @@ class NeuralNetwork:
 
             training_predicted = self.predict(inputs_training)
 
+            #print(training_predicted - training_predicted_before)
+            # print(self.layers[0].weights)
+
+            #training_predicted_before = training_predicted
+
             # calculate Training error
             error = loss_functions[self.loss](
                 training_predicted,
                 targets_training,
-            ) 
+            )
 
             if self.metric != '':
                 accuracy = metric_functions[self.metric](

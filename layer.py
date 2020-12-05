@@ -170,7 +170,14 @@ class Layer:
 
             implementation in output layer and input layer
         """
-
+    
+    def deepcopy(self):
+        if isinstance(self, HiddenLayer):
+            return HiddenLayer(np.copy(self.weights), self.learning_rates.deepcopy(), self.activation)
+        elif isinstance(self, OutputLayer):
+            return OutputLayer(np.copy(self.weights), self.learning_rates.deepcopy(), self.activation)
+        else:
+            return Layer(np.copy(self.weights), self.learning_rates.deepcopy(), self.activation)
 
 class OutputLayer(Layer):
     """

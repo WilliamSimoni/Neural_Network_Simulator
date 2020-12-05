@@ -5,6 +5,7 @@
 import numpy as np
 import report as rp
 
+
 class LearningRate():
     """
         Represent a Learning Rate object which represent how to manages
@@ -12,8 +13,9 @@ class LearningRate():
     """
 
     def __init__(self, num_unit, num_input, value=0.1):
-        self.learning_rates = np.full((num_unit, num_input + 1), value, dtype=np.float)
-        self.update_method = self.update_method
+        self.learning_rates = np.full(
+            (num_unit, num_input + 1), value, dtype=np.float)
+        self.update_method = self.constant_update_method
         self.current_method_name = 'constant'
 
     def update(self, epoch):
@@ -24,7 +26,7 @@ class LearningRate():
         """
         self.learning_rates = self.update_method(self.learning_rates, epoch)
 
-    def update_method(self, learning_rate, epoch):
+    def constant_update_method(self, learning_rate, epoch):
         return learning_rate
 
     def value(self):
@@ -43,9 +45,21 @@ class LearningRate():
         """
         return self.current_method_name
 
+    def deepcopy(self):
+        if isinstance(self, Constant):
+            return Constant(self.learning_rates.shape[0], self.learning_rates.shape[1] - 1, self.learning_rates[0][0])
+        elif isinstance(self, timeBasedDecay):
+            return timeBasedDecay(self.learning_rates.shape[0], self.learning_rates.shape[1] - 1, self.learning_rates[0][0])
+        elif isinstance(self, LinearDecay):
+            return LinearDecay(self.learning_rates.shape[0], self.learning_rates.shape[1] - 1, self.learning_rates[0][0])
+        else:
+            return LearningRate(self.learning_rates.shape[0], self.learning_rates.shape[1] - 1, self.learning_rates[0][0])
+
+
 class Constant(LearningRate):
     """Learning rate is not updated
     """
+
     def __init__(self, num_unit, num_input, value=0.1):
         """create a constant learning rate object
         Args:
@@ -55,10 +69,12 @@ class Constant(LearningRate):
         """
         super().__init__(num_unit, num_input, value)
 
+
 class timeBasedDecay(LearningRate):
     """Learning rate is updated using time based decay
     """
-    def __init__(self, num_unit, num_input, value=0.1, decay=0.0001, min_value= 0.01):
+
+    def __init__(self, num_unit, num_input, value=0.1, decay=0.0001, min_value=0.01):
         """create a time based decay learning rate object
         Args:
             num_unit (int): number of unit in the layer
@@ -77,10 +93,12 @@ class timeBasedDecay(LearningRate):
         self.update_method = _time_based_decay
         self.current_method_name = 'time_based_decay'
 
+
 class LinearDecay(LearningRate):
     """ the learning rate will be updated using a linear decay strategy
     """
-    def __init__(self, num_unit, num_input, value=0.1, tau = 100, lr_tau = 0.01):
+
+    def __init__(self, num_unit, num_input, value=0.1, tau=100, lr_tau=0.01):
         """create a linear decay learning rate object
         Args:
             num_unit (int): number of unit in the layer
@@ -101,4 +119,4 @@ class LinearDecay(LearningRate):
             return learning_rates
 
         self.update_method = _linear_decay
-        self.current_method_name = 'linear_decay'      
+        self.current_method_name = 'linear_decay'
