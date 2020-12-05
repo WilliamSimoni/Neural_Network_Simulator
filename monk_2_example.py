@@ -14,7 +14,7 @@ def monk_example():
     """
         Test NN model using monk3 dataset
     """
-    nn = NeuralNetwork(400, 'euclidean_loss', 'classification_accuracy',
+    nn = NeuralNetwork(400, 'mean_squared_error', 'classification_accuracy',
                        0.8, nn_type="batch", batch_size=1)
 
     #load data
@@ -23,7 +23,7 @@ def monk_example():
     test_data, test_label, _, _ = read_monk_data("dataset/monks-2.test")
 
     #create two layers
-
+    
     layer1 = HiddenLayer(weights=wi.he_initializer(15, len(train_data[0])),
                          learning_rates=lr.Constant(15, len(train_data[0]), 0.7),
                          activation=af.Relu())

@@ -100,5 +100,5 @@ def normalize_data(features, targets):
     scaler = StandardScaler()
     features = scaler.fit_transform(features)
     targets = scaler.fit_transform(targets)
-    return features, targets
+    return np.array(features), np.array(targets)
 

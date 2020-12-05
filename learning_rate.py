@@ -13,7 +13,7 @@ class LearningRate():
 
     def __init__(self, num_unit, num_input, value=0.1):
         self.learning_rates = np.full((num_unit, num_input + 1), value, dtype=np.float)
-        self.update_method = lambda learning_rates, epoch: learning_rates
+        self.update_method = self.update_method
         self.current_method_name = 'constant'
 
     def update(self, epoch):
@@ -23,6 +23,9 @@ class LearningRate():
             epoch (int): epoch used to determine how to change the learning_rate
         """
         self.learning_rates = self.update_method(self.learning_rates, epoch)
+
+    def update_method(self, learning_rate, epoch):
+        return learning_rate
 
     def value(self):
         """return cyrrent learning rate

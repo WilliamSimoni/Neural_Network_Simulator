@@ -2,21 +2,8 @@
     Loss module used to compute the Loss function of ML model
 """
 import numpy as np
-from numba import jit
 
-#@jit(nopython=True)
-def euclidean_loss(predicted, targets):
-    """
-        Calculate the Euclidean Loss for Regression
-        Param:
-            predict: predicted output layer
-            target: a target value (array of values)
-    """
-    #if not isinstance(predicted, np.ndarray) or not isinstance(predicted, array):
-    #    raise ValueError('predict must be a np.ndarray object or an array')
-    #if not isinstance(targets, np.ndarray) or not isinstance(targets, array):
-    #    raise ValueError('Target must be a np.ndarray object or an array ')
-    return np.mean([np.linalg.norm(predict - target) for predict, target in list(zip(predicted, targets))])
+
 
 def cross_entropy(predicted, targets):
     """
@@ -35,7 +22,7 @@ def cross_entropy(predicted, targets):
         sum_w += np.sum(w*w)
     """
     eps = 1e-6
-    return -1 * np.sum([target * np.log(max(predict, eps))
+    return -1 * np.mean([target * np.log(max(predict, eps))
                         if target > 0.5 else np.log(max(1 - predict, eps))
                     for predict, target in list(zip(predicted, targets))])
 
@@ -50,7 +37,6 @@ def mean_squared_error(predicted, targets):
                    for predict, target in list(zip(predicted, targets))]) / len(predicted)
 
 loss_functions = {
-    'euclidean_loss': euclidean_loss,
     'cross_entropy': cross_entropy,
     'mean_squared_error': mean_squared_error,
 }
