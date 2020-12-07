@@ -49,7 +49,25 @@ class NeuralNetwork:
         self.metric = self.check_metric(metric)
         self.loss = self.check_loss(loss)
 
+    def __init__(self, parameters):
+        """
+            NN constructor which we pass a dict of parameters
+            Param:
+                parameters(dict): dictionary of parameters of NN object
+        """
+        max_epoch = parameters['num_epoch']
+        momentum_rate = parameters['momentum']
+        loss = parameters['loss_function']
+        accuracy = parameters['accuracy']
+        regularization = parameters['regularization']
+        nn_type = parameters['type_nn']
+        batch_size = parameters['batch_size']
+        self.__init__(max_epoch, loss, accuracy, momentum_rate, regularization, nn_type, batch_size)
+        
     def deepcopy(self):
+        """
+            Implement the deep copy of Neural Network object
+        """
         newNN = NeuralNetwork(self.max_epochs, self.loss, self.metric, self.momentum_rate,
                               self.regularization_rate, self.type, self.batch_size, self.type_classifier)
         [newNN.add_layer(layer.deepcopy()) for layer in self.layers]

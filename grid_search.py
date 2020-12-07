@@ -1,13 +1,32 @@
 """
     Module grid_search to do the grid search for ML models
 """
+from cross_validation import cross_validation
+import multiprocessing
+import weight_initializer as wi
+import activation_function as af
+
+parameters = {
+    'learning_rates': [0.01, 0.05, 0.1],
+    'regularization': [0, 0.005, 0.01],
+    'momentum': [0, 0.4, 0.8],
+    'weight_initialization': [wi.xavier_initializer, wi.he_initializer],
+    'activation_hidden': [af.TanH, af.Relu],
+    'type_nn': ['batch'],
+    'batch_size': [1],
+    'topology': [(10, 10), (15, ), (20, 20)],
+    'loss': 'mean_squared_error',
+    'accuracy': 'euclidean_loss',
+    'num_epoch': 500,
+}
+
 
 class GridSearch():
     """
         GridSearch class to do grid_search
     """
 
-    def __init__(self, parameters):
+    def __init__(self, parameters, n_threads=5):
         """
             Initialize parameters which will be done Grid Search
         """
@@ -17,9 +36,61 @@ class GridSearch():
         self.weight_initialization = parameters['weight_initialization']
         self.activation_hidden = parameters['activation_hidden']
         self.type_nn = parameters['type_nn']
-        self.batch_size = 1
-        self.num_layer = parameters['num_layer']
-        self.num_hidden_unit = parameters['num_hidden_unit']
+        self.batch_size = parameters['batch_size']
+        self.topology = parameters['topology']
+        self.num_epoch = parameters['num_epoch']
+        self.loss = parameters['loss_function']
+        self.accuracy = parameters['accuracy']
+        self.pool = multiprocessing.Pool(multiprocessing.cpu_count()) if n_threads is None else \
+                    multiprocessing.Pool(n_threads)
+        self.results = multiprocessing.Manager().list()
 
-    def 
+    def grid_search(self, save_path='grid_results/grid'):
+        """
+            Execute Grid Search
+
+            Param: 
+                save_path(str): string of file path 
+
+        """
+        models_param = self.initialize_models_param()
+
+        for model_param in models_param:
+            model = self.initialize_model(model_param)
+            self.pool.apply_async(func=run,
+                                  args=(model, self.results, model_param))
+
+        self.pool.close()
+        self.pool.join()
+
+        #Sort results according to the accuracy of models
+
+        #Write to file results obtained
+        
+        return best_model
+
+    def initialize_models_param(self):
+        """
+            Initialize list of models parameters
+            
+            Return a shuffle list of models parameters to use to initialize a NN object
+            with also layer information
+        """
+
+    def initialize_model(self, model_param):
+        """
+            Create NN model to use to execute a cross validation on it
+
+            Param: 
+                model_param(dict): dictionary of param to use to create NN object
+            
+            Return a NN model with also complete graph topology of the network
+        """
+
+        
+    def run(self):       
+        result = cross_validation()
+        self.results.append(result, model_param)
+
+    def write_results(self):        
 
