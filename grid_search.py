@@ -1,11 +1,13 @@
 """
     Module grid_search to do the grid search for ML models
 """
+from utility import normalize_data, read_cup_data
 from cross_validation import cross_validation
 import multiprocessing
 import weight_initializer as wi
 import activation_function as af
 
+#Parameters which we conduct our GridSearch on our NN model
 parameters = {
     'learning_rates': [0.01, 0.05, 0.1],
     'regularization': [0, 0.005, 0.01],
@@ -20,6 +22,9 @@ parameters = {
     'num_epoch': 500,
 }
 
+train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv")
+train_data, train_label = normalize_data(train_data, train_label)
+dataset = list(zip(train_data, train_label))
 
 class GridSearch():
     """
@@ -64,10 +69,12 @@ class GridSearch():
         self.pool.join()
 
         #Sort results according to the accuracy of models
+        self.results.sort(key=lambda x: x['accuracy_average_vl'], reverse=True)
 
         #Write to file results obtained
-        
-        return best_model
+        self.write_results(save_path)
+
+        return self.results[0]
 
     def initialize_models_param(self):
         """
@@ -87,10 +94,39 @@ class GridSearch():
             Return a NN model with also complete graph topology of the network
         """
 
-        
-    def run(self):       
-        result = cross_validation()
-        self.results.append(result, model_param)
+    def write_results(self, file_path):
+        """
+            Write results obtained by GridSearch in a txt file
+            Param:
+                file_path(str): path where we will save our results on GridSearch
+        """
+        with open(file_path) as file:
+            for item in self.results:
+                file.write(
+                    "{'accuracy_best_vl':" + str(item['accuracy_average_vl']) + ", 'learning_rate':" + 
+                    str(item['model_param']['learning_rate']) + ", regularization:" + 
+                    str(item['model_param']['regularization']) + ", momentum:" + 
+                    str(item['model_param']['momentum']) + ", activation_hidden:" + 
+                    str(item['model_param']['activation']) + ", weight_init: " + 
+                    str(item['model_param']['weight_init']) + "topology:" + 
+                    str(item['model_param']['topology']))
+        return None
 
-    def write_results(self):        
+def run(model, results, model_param):
+    """
+        Proxy function where it will start cross validation on a configuration
+        in an asyncro way
+
+        Param:
+            model(NeuralNetwork): NeuralNetwork object to use
+            results(List): List of results obtained in GridSearch
+            model_param(dict): dict of param of model object
+        Return nothing but add result from cross validation and model_param in results list
+    """       
+    average, standard_deviation, average_best_vl, _ = cross_validation(model, dataset, 4)
+    results.append({
+        'accuracy_average_vl': average_best_vl,
+        'model_param': model_param,
+    })
+     
 
