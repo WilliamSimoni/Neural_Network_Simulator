@@ -56,7 +56,7 @@ def grid_search(params, dataset, num_features, output_dim, n_threads=5, save_pat
     results = multiprocessing.Manager().list()
 
 
-    for model_param in list(itertools.product(*params))[:10]:
+    for model_param in list(itertools.product(*params)):
         model = initialize_model(model_param, num_features, output_dim)
         print("Model:", model)
         pool.apply_async(func=run,
@@ -70,7 +70,7 @@ def grid_search(params, dataset, num_features, output_dim, n_threads=5, save_pat
     l_results = l_results.sort(key=lambda x: x['accuracy_average_vl'], reverse=True)
 
     #Write to file results obtained
-    write_results(results, save_path)
+    write_results(l_results, save_path)
 
     return results[0]
 
