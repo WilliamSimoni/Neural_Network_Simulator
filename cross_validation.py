@@ -68,12 +68,12 @@ def cross_validation(model, dataset, num_subsets):
         
         reports.append(report)
 
-        report.plot_loss()
+        #report.plot_loss()
 
     return sum_error/num_subsets, np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
 
-
-nn = NeuralNetwork(100, 'mean_squared_error', '', 0.8,
+"""
+nn = NeuralNetwork(500, 'mean_squared_error', '', 0.8,
                    0.01, nn_type="batch", batch_size=1)
 
 # create three layers
@@ -82,15 +82,15 @@ train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
 #train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
 train_data, train_label = normalize_data(train_data, train_label)
 
-layer1 = HiddenLayer(weights=wi.xavier_initializer(30, len(train_data[0])),
-                     learning_rates=lr.Constant(30, len(train_data[0]),  0.3),
+layer1 = HiddenLayer(weights=wi.xavier_initializer(20, len(train_data[0])),
+                     learning_rates=lr.Constant(20, len(train_data[0]),  0.1),
                      activation=af.TanH())
-"""
+
 layer2 = HiddenLayer(weights=wi.xavier_initializer(50, 50),
                      learning_rates=lr.Constant(50, 50,  0.2),
-                     activation=af.TanH())"""
-layer3 = OutputLayer(weights=wi.xavier_initializer(2, 30),
-                     learning_rates=lr.Constant(2, 30, 0.3),
+                     activation=af.TanH())
+layer3 = OutputLayer(weights=wi.xavier_initializer(2, 20),
+                     learning_rates=lr.Constant(2, 20, 0.1),
                      activation=af.Linear())
 
 nn.add_layer(layer1)
@@ -103,3 +103,4 @@ cross_validation_res = cross_validation(nn, training_examples, 3)
 # print(split(training_examples, 5))
 #print(cross_validation_res)
 #cProfile.run('cross_validation(nn, training_examples, 3)')
+"""

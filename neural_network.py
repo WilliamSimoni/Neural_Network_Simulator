@@ -49,7 +49,7 @@ class NeuralNetwork:
         self.metric = self.check_metric(metric)
         self.loss = self.check_loss(loss)
 
-    def __init__(self, parameters):
+    def init_params(self, parameters):
         """
             NN constructor which we pass a dict of parameters
             Param:
