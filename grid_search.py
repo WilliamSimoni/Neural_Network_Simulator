@@ -148,6 +148,7 @@ def run(model, results, model_param, dataset):
         'accuracy_average_vl': average_best_vl,
         'model_param': model_param,
     })
+    print("Finish {} cross-validation".format(len(results)))
     
 
     
