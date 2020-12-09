@@ -38,12 +38,10 @@ def cross_validation(model, dataset, num_subsets):
 
     #get the indexes to break down the data set into the different folds
     splitted_data_set_index = split(dataset, num_subsets)
-    print(splitted_data_set_index)
 
     for k in range(0, num_subsets):
         #create a deep copy of the model passed as argument
         model_k = model.deepcopy()
-        print(model_k)
         #dividing training and validation set
         training_set = dataset[:splitted_data_set_index[k]
                                [0]] + dataset[splitted_data_set_index[k][1]:]
@@ -64,9 +62,9 @@ def cross_validation(model, dataset, num_subsets):
 
         reports.append(report)
 
-        report.plot_accuracy()
+        #report.plot_accuracy()
 
-    return np.mean(errors), np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
+    return np.round(np.mean(errors), 8), np.round(np.std(errors), 8), np.round(sum_tr_err_with_best_vl_err/num_subsets, 8), reports
 
 """
 nn = NeuralNetwork(500, 'mean_squared_error', 'euclidean_loss', 0.8,
