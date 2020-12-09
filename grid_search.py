@@ -5,7 +5,9 @@ from layer import HiddenLayer, OutputLayer
 from utility import normalize_data, read_cup_data
 import cross_validation as cv
 import multiprocessing
+import csv
 import itertools
+import time
 import learning_rate as lr
 import weight_initializer as wi
 import activation_function as af
@@ -52,7 +54,7 @@ def run(model, results, model_param, dataset):
     
 if __name__ == '__main__':
 
-    def grid_search(params, dataset, num_features, output_dim, n_threads=5, save_path='grid_results/grid.txt'):
+    def grid_search(params, dataset, num_features, output_dim, n_threads=5, save_path='grid_results/grid.csv'):
         """
             Execute Grid Search
 
@@ -77,8 +79,8 @@ if __name__ == '__main__':
                multiprocessing.Pool(n_threads)
         results = multiprocessing.Manager().list()
 
-
-        for model_param in list(itertools.product(*params))[:20]:
+        start = time.time()
+        for model_param in list(itertools.product(*params)):
             model = initialize_model(model_param, num_features, output_dim)
             print("Model:", model)
             pool.apply_async(func=run,
@@ -93,7 +95,8 @@ if __name__ == '__main__':
 
         #Write to file results obtained
         write_results(results, save_path)
-
+        
+        print("Grid Search ended in {} minutes".format(time.gmtime(time.time() - start).tm_min))
         return results[0]
 
 
@@ -145,15 +148,24 @@ if __name__ == '__main__':
                 file_path(str): path where we will save our results on GridSearch
         """
         with open(file_path, 'w') as result_file:
+            fieldnames = []
+            writer = csv.writer(result_file)
+            writer.writerow(['accuracy_average_vl', 'accuracy_sd_vl', 'average_tr_error_best_vl',
+                          'learning_rate', 'regularization', 'momentum', 'activation_hidden', 
+                          'weight_init', 'topology'])
+
             for item in results:
-                result_file.write(
-                    "{'accuracy_average_vl':" + str(item['accuracy_average_vl']) + ", accuracy_sd_vl:" +
-                    str(item['accuracy_sd_vl']) + ", average_tr_error_best_vl:" +
-                    str(item['average_tr_error_best_vl']) + ", 'learning_rate':" + 
-                    str(item['model_param'][0]) + ", regularization:" + str(item['model_param'][2]) + 
-                    ", momentum:" + str(item['model_param'][1]) + ", activation_hidden:" + 
-                    str(item['model_param'][4]) + ", weight_init: " + str(item['model_param'][3])
-                    + ", topology:" + str(item['model_param'][7]) + "\n")
+                writer.writerow([
+                    str(item['accuracy_average_vl']),
+                    str(item['accuracy_sd_vl']),
+                    str(item['average_tr_error_best_vl']), 
+                    str(item['model_param'][0]),
+                    str(item['model_param'][2]), 
+                    str(item['model_param'][1]), 
+                    str(item['model_param'][4]), 
+                    str(item['model_param'][3]),
+                    item['model_param'][7]
+                ])
         return None
 
     grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
