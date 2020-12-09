@@ -26,7 +26,7 @@ parameters = {
     'num_epoch': [500],
 }
 
-train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv")
+train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
 train_data, train_label = normalize_data(train_data, train_label)
 dataset = list(zip(train_data, train_label))
 

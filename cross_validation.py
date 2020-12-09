@@ -33,7 +33,6 @@ def cross_validation(model, dataset, num_subsets):
     """
     #output of the crossvalidation
     sum_tr_err_with_best_vl_err = 0
-    sum_error = 0
     errors = np.zeros(num_subsets)
     reports = []
 
@@ -61,19 +60,16 @@ def cross_validation(model, dataset, num_subsets):
         sum_tr_err_with_best_vl_err += report.get_tr_err_with_best_vl_err()
 
         #add the error to the vector erros for calculating (at the end) the standard deviation
-        errors[k] = report.get_vl_error()
+        errors[k] = report.get_vl_accuracy()
 
-        #sum the error to calculate the mean error (at the end)
-        sum_error += errors[k]
-        
         reports.append(report)
 
-        #report.plot_loss()
+        report.plot_accuracy()
 
-    return sum_error/num_subsets, np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
+    return np.mean(errors), np.std(errors), sum_tr_err_with_best_vl_err/num_subsets, reports
 
 """
-nn = NeuralNetwork(500, 'mean_squared_error', '', 0.8,
+nn = NeuralNetwork(500, 'mean_squared_error', 'euclidean_loss', 0.8,
                    0.01, nn_type="batch", batch_size=1)
 
 # create three layers
@@ -101,6 +97,6 @@ training_examples = list(zip(train_data, train_label))
 # print(training_examples)
 cross_validation_res = cross_validation(nn, training_examples, 3)
 # print(split(training_examples, 5))
-#print(cross_validation_res)
+print(cross_validation_res)
 #cProfile.run('cross_validation(nn, training_examples, 3)')
 """

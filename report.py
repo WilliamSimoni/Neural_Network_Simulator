@@ -112,6 +112,17 @@ class Report():
         """
         return self.validation_error[num_epoch]
 
+    def get_vl_accuracy(self, num_epoch = -1):
+        """return the validation error at a certain epoch
+
+        Param:
+            num_epoch (int, optional): Defaults to -1.
+
+        Returns:
+            (float64): the validation error at a certain epoch
+        """
+        return self.validation_accuracy[num_epoch]
+
     def plot_loss(self):
         """
             Plot Loss error for Training, Validation and Test set
