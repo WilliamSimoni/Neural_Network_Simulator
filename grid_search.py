@@ -111,8 +111,8 @@ if __name__ == '__main__':
         """
         print(model_param)
         learning_rate = float(model_param[0])
-        momentum = float(model_param[1])
-        regularization = float(model_param[2])
+        regularization = float(model_param[1])
+        momentum = float(model_param[2])
         weight_initialization = model_param[3]
         activation = model_param[4]
         type_nn = model_param[5]
@@ -139,6 +139,7 @@ if __name__ == '__main__':
                                    lr.Constant(output_dim, last_dim, learning_rate),
                                    af.Linear())
         model.add_layer(output_layer)
+        print('momentum:', model.momentum_rate)
         return model
 
     def write_results(results, file_path):
@@ -160,8 +161,8 @@ if __name__ == '__main__':
                     str(item['accuracy_sd_vl']),
                     str(item['average_tr_error_best_vl']), 
                     str(item['model_param'][0]),
-                    str(item['model_param'][2]), 
                     str(item['model_param'][1]), 
+                    str(item['model_param'][2]), 
                     str(item['model_param'][4]), 
                     str(item['model_param'][3]),
                     item['model_param'][7]
