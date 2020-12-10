@@ -96,7 +96,10 @@ if __name__ == '__main__':
         #Write to file results obtained
         write_results(results, save_path)
         
-        print("Grid Search ended in {} minutes".format(time.gmtime(time.time() - start).tm_min))
+        with open('grid_results/grid_info.txt', 'a') as info_file:
+            total_time = time.gmtime(time.time() - start)
+            info_file.write("Grid Search ended in {} hour {} minutes {}˘seconds".format(
+                total_time.tm_hour, total_time.tm_min, total_time.tm_sec))
         return results[0]
 
 
@@ -110,19 +113,19 @@ if __name__ == '__main__':
             Return a NN model with also complete graph topology of the network
         """
         print(model_param)
-        learning_rate = float(model_param[0])
-        regularization = float(model_param[1])
-        momentum = float(model_param[2])
+        learning_rate = model_param[0]
+        regularization = model_param[1]
+        momentum = model_param[2]
         weight_initialization = model_param[3]
         activation = model_param[4]
         type_nn = model_param[5]
-        batch_size = int(model_param[6])
+        batch_size = model_param[6]
         topology = model_param[7]
         loss = model_param[8]
         accuracy = model_param[9]
-        num_epochs = int(model_param[10])
+        num_epochs = model_param[10]
     
-        print("Type Num_epochs:", type(num_epochs))
+        
         #Create NN object model
         model = NeuralNetwork(num_epochs, loss, accuracy, momentum,
                               regularization, type_nn, batch_size)
@@ -149,7 +152,6 @@ if __name__ == '__main__':
                 file_path(str): path where we will save our results on GridSearch
         """
         with open(file_path, 'w') as result_file:
-            fieldnames = []
             writer = csv.writer(result_file)
             writer.writerow(['accuracy_average_vl', 'accuracy_sd_vl', 'average_tr_error_best_vl',
                           'learning_rate', 'regularization', 'momentum', 'activation_hidden', 
