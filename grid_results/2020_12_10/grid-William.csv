@@ -1,0 +1,650 @@
+accuracy_average_vl,accuracy_sd_vl,average_tr_error_best_vl,learning_rate,momentum,regularization,activation_hidden,weight_init,topology
+
+0.45636345,0.00652348,0.26790568,0.01,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.46356595,0.00816666,0.27414719,0.01,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.39412106,0.0103245,0.21018952,0.01,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.47551446,0.00515336,0.29025569,0.01,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.45826027,0.00668551,0.26812383,0.01,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.53215483,0.00646878,0.36118924,0.01,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.40083007,0.00731989,0.21231575,0.01,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.49649425,0.00982991,0.31148513,0.01,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.46458514,0.00960415,0.2871347,0.01,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.4770601,0.00990257,0.28398533,0.01,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.46145725,0.01663497,0.27571747,0.01,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.46777636,0.0274489,0.29427113,0.01,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.3167165,0.03279658,1.27352862,0.01,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.18640422,0.03183326,1.64957415,0.01,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672051,0.0327958,1.89633861,0.01,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31671677,0.0327966,1.99168081,0.01,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.18640419,0.03183331,1.64448112,0.01,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.3167237,0.03279525,1.59894148,0.01,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.3167182,0.0327962,1.99602835,0.01,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.18640409,0.03183362,1.64948325,0.01,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31673919,0.03279091,1.87068093,0.01,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.18640419,0.03183349,1.64955642,0.01,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31671731,0.03279642,1.6705667,0.01,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31669752,0.0328008,1.82946642,0.01,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31671756,0.03279636,1.9866945,0.01,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.24650734,0.03235822,1.54968384,0.01,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31670238,0.03280012,2.00011057,0.01,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.24650733,0.03235815,1.56056101,0.01,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31671713,0.03279647,1.95973973,0.01,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.3167264,0.03279423,1.98989413,0.01,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31671716,0.03279646,1.94984561,0.01,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.24650735,0.03235821,1.80666556,0.01,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31671275,0.03279794,1.99900551,0.01,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.24650733,0.0323582,1.80643376,0.01,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.3167177,0.03279632,1.91968868,0.01,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31670701,0.03279908,1.9373064,0.01,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.52243711,0.00758091,0.3321207,0.01,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.48288196,0.0085391,0.29957929,0.01,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.42051672,0.02222638,0.24828073,0.01,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.47663335,0.01703893,0.29251283,0.01,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.45836074,0.00848594,0.26807936,0.01,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.40538185,0.01114582,0.22776119,0.01,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.49624781,0.00694538,0.31582609,0.01,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.48842467,0.00850546,0.30572521,0.01,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.63567727,0.02080949,0.51420844,0.01,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.49043554,0.01037682,0.30572747,0.01,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.46289794,0.01383436,0.27655679,0.01,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.39763034,0.00991628,0.21030385,0.01,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.3167173,0.03279612,1.99991403,0.01,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.18584698,0.03182747,1.03032975,0.01,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672316,0.03279466,1.94662618,0.01,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.18584697,0.03182765,1.64814974,0.01,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31671763,0.03279607,1.88839417,0.01,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672111,0.03279501,1.91606364,0.01,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31671839,0.03279618,1.7816444,0.01,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.18584705,0.03182743,1.64814943,0.01,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31673037,0.0327941,1.94626124,0.01,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.18584701,0.03182764,1.64814017,0.01,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31671885,0.03279578,1.98279994,0.01,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31670509,0.03279858,1.96489227,0.01,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31671702,0.03279628,1.90771623,0.01,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.2461838,0.03235541,1.80429792,0.01,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31671349,0.03279668,1.95293942,0.01,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31671785,0.03279601,1.90860737,0.01,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.24618378,0.03235545,1.46273146,0.01,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31671943,0.03279576,1.97283535,0.01,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31671815,0.03279604,1.91772325,0.01,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.24618377,0.03235555,1.63634741,0.01,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672653,0.0327938,1.99969289,0.01,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.2461838,0.0323554,1.80576981,0.01,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.3167183,0.03279585,1.79099597,0.01,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31671328,0.03279708,1.91156486,0.01,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.44956277,0.00766049,0.26708933,0.01,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.47388815,0.00653262,0.28792886,0.01,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.43776408,0.01610896,0.24949229,0.01,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.476226,0.01140507,0.28948733,0.01,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.453249,0.00793154,0.26634325,0.01,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.40525846,0.00499973,0.21677969,0.01,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.52006902,0.00553043,0.3370777,0.01,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.49705617,0.01527508,0.31504274,0.01,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.44142151,0.01916753,0.25609977,0.01,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.50184751,0.01858492,0.3209881,0.01,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.47623237,0.0116828,0.28413906,0.01,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.41628957,0.01654687,0.22563435,0.01,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31671749,0.03279576,1.72861324,0.01,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.18529058,0.0318217,1.37437631,0.01,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672251,0.03279505,1.98679664,0.01,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.1852907,0.03182154,1.64671264,0.01,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31671763,0.03279585,1.65477619,0.01,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31671957,0.03279491,1.98412442,0.01,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31671712,0.03279587,1.94258933,0.01,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.18529072,0.03182133,1.60601318,0.01,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672967,0.03279287,1.99941302,0.01,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.18529058,0.0318217,1.36906205,0.01,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31671778,0.03279576,1.93626941,0.01,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672211,0.03279404,1.97631902,0.01,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31671759,0.03279583,1.99862883,0.01,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.24586057,0.0323526,1.8048958,0.01,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672104,0.03279496,1.96098988,0.01,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31671766,0.03279579,1.97461077,0.01,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.24586049,0.03235267,1.80578074,0.01,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31671806,0.03279558,1.99845517,0.01,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31671807,0.03279575,1.93413902,0.01,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.24586054,0.03235267,1.80489519,0.01,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31673078,0.03279249,1.95180288,0.01,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.2458605,0.03235272,1.79214894,0.01,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31671739,0.03279587,1.81476031,0.01,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31671388,0.03279644,1.99868412,0.01,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.40150164,0.00709318,0.20775809,0.05,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.43003998,0.00762492,0.23869115,0.05,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.32566322,0.01598428,0.14920685,0.05,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.4298683,0.00778971,0.23904952,0.05,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.39155061,0.00500382,0.19535813,0.05,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.33673561,0.01958572,0.16154958,0.05,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.40589737,0.00885526,0.21741425,0.05,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42993698,0.00758058,0.23856787,0.05,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.43001616,0.0075709,0.23883898,0.05,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.35834854,0.01543967,0.17733327,0.05,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.36126736,0.0058661,0.17249624,0.05,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.33578738,0.01384357,0.15483227,0.05,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.24880666,0.05,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90323947,0.02678437,1.01019138,0.05,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.94744455,0.05,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31672362,0.0327842,1.26231259,0.05,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.90323947,0.02678437,1.01019803,0.05,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.6948351,0.05,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.67151013,0.05,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90323947,0.02678437,1.01021147,0.05,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.53440252,0.05,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90323947,0.02678437,1.0079198,0.05,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.1337753,0.05,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.73700067,0.05,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.82075647,0.05,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.04883271,0.02998947,1.31864713,0.05,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.91029639,0.05,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.04883271,0.02998947,1.23531067,0.05,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.72062096,0.05,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.93970443,0.05,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.85068279,0.05,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.04883271,0.02998947,1.30723033,0.05,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.87407418,0.05,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.04883271,0.02998947,1.01104944,0.05,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.34496759,0.05,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.94807363,0.05,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.38878471,0.01129942,0.19886192,0.05,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42975351,0.00773711,0.23891267,0.05,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.34313375,0.00782684,0.15923049,0.05,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42995497,0.007404,0.23887866,0.05,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.38399617,0.00727712,0.19070911,0.05,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.34852273,0.01371579,0.16304399,0.05,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.38622281,0.0088303,0.19624509,0.05,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.4297544,0.00761184,0.23910578,0.05,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.33909204,0.01944114,0.16232195,0.05,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42989261,0.00762739,0.23878704,0.05,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.39903148,0.00656236,0.20436922,0.05,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.34187912,0.01330719,0.16240425,0.05,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.59180795,0.05,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90211674,0.02675315,1.00798813,0.05,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.51197021,0.05,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90211674,0.02675315,1.00256031,0.05,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.34069994,0.05,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.6049997,0.05,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.52123539,0.05,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90211674,0.02675315,1.00795395,0.05,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.42556615,0.05,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90211674,0.02675315,1.0080505,0.05,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.30658921,0.05,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.22815993,0.05,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.78610969,0.05,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.04789135,0.02997345,1.27313036,0.05,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.93010942,0.05,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31672362,0.0327842,1.61307065,0.05,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.04789135,0.02997345,1.3077975,0.05,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.89087595,0.05,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.80429165,0.05,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.04789135,0.02997345,1.30984533,0.05,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.82376146,0.05,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.31672362,0.0327842,1.28352457,0.05,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.04789135,0.02997345,1.30263955,0.05,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.83092083,0.05,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.38349188,0.00726636,0.1970152,0.05,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.4299845,0.00791322,0.23967438,0.05,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.33216431,0.01007732,0.15524939,0.05,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42986453,0.00788716,0.23894982,0.05,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.40482876,0.00899182,0.20965623,0.05,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.32963632,0.01409566,0.15033409,0.05,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.40860287,0.00389692,0.21216156,0.05,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42978372,0.00774604,0.23865923,0.05,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.35372146,0.01947542,0.17243966,0.05,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.429899,0.00750788,0.23864531,0.05,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.37076717,0.00980948,0.17659004,0.05,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.33796052,0.01239766,0.1548028,0.05,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.77807307,0.05,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90099907,0.02672197,1.00580047,0.05,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.5791566,0.05,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90099907,0.02672197,1.00580077,0.05,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.63602981,0.05,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.82060278,0.05,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.32137848,0.05,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90099907,0.02672197,1.00187677,0.05,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.2908139,0.05,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90099907,0.02672197,1.00497012,0.05,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.35866242,0.05,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.45317581,0.05,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.80758365,0.05,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.04695276,0.02995741,1.31459483,0.05,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.95271338,0.05,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.04695276,0.02995741,1.31349472,0.05,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.75484327,0.05,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.93712546,0.05,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.86176413,0.05,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.04695276,0.02995741,0.87948204,0.05,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.89549662,0.05,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.04695276,0.02995741,1.09794864,0.05,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.64921464,0.05,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.93517041,0.05,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.35527119,0.00529199,0.16977055,0.1,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42984782,0.007551,0.23856568,0.1,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.31231615,0.01540206,0.14118035,0.1,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42984703,0.00754468,0.23906477,0.1,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.34184034,0.00895544,0.15874637,0.1,0,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.3235193,0.0153033,0.14685851,0.1,0,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.35587617,0.00756303,0.16861535,0.1,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42984666,0.00754923,0.23881528,0.1,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.31976097,0.01139592,0.15023376,0.1,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.4298475,0.00754825,0.23902038,0.1,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.35832911,0.01020291,0.16719636,0.1,0,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.32407556,0.01192151,0.14378108,0.1,0,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.14831895,0.1,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.74792224,0.02133337,0.72417473,0.1,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.69112152,0.1,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31672362,0.0327842,1.23517413,0.1,0.4,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.74792224,0.02133337,0.72488347,0.1,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.42499898,0.1,0.4,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.15967499,0.1,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.74792224,0.02133337,0.72422714,0.1,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.56293132,0.1,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.74792224,0.02133337,0.72427614,0.1,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,0.78840167,0.1,0.4,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.31065823,0.1,0.4,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.62533157,0.1,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90323947,0.02678437,0.8501862,0.1,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.92180659,0.1,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+1.31672362,0.0327842,1.61686942,0.1,0.8,0,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.90323947,0.02678437,0.73060338,0.1,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.79435926,0.1,0.8,0,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.52735396,0.1,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90323947,0.02678437,0.98378654,0.1,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.960085,0.1,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90323947,0.02678437,0.88891169,0.1,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.28382908,0.1,0.8,0,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.90890724,0.1,0.8,0,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.34579969,0.0075109,0.16220868,0.1,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42984991,0.00754937,0.23885834,0.1,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.32141422,0.01718039,0.14906044,0.1,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42984818,0.0075495,0.23862616,0.1,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.3481915,0.00888122,0.16233684,0.1,0,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.31645913,0.01615395,0.13927608,0.1,0,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.33930662,0.00930998,0.15925549,0.1,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42984932,0.00755389,0.23906252,0.1,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.32330295,0.01576604,0.15058747,0.1,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42984875,0.00754505,0.23873517,0.1,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.37149973,0.00774258,0.17453271,0.1,0,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.31726588,0.01302303,0.14513408,0.1,0,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.61542305,0.1,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.74684998,0.02128942,0.72288366,0.1,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.65674868,0.1,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.74684998,0.02128942,0.72242511,0.1,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.03971021,0.1,0.4,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.57317746,0.1,0.4,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.08602764,0.1,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.74684998,0.02128942,0.72251908,0.1,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.750743,0.1,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.74684998,0.02128942,0.72254206,0.1,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.13169317,0.1,0.4,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.42826791,0.1,0.4,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.64806779,0.1,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90211674,0.02675315,0.92192362,0.1,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.85962234,0.1,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90211674,0.02675315,0.71084509,0.1,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.40235065,0.1,0.8,0.005,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.8499939,0.1,0.8,0.005,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.60072889,0.1,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90211674,0.02675315,0.95597507,0.1,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.98879232,0.1,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90211674,0.02675315,0.89859739,0.1,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.33631312,0.1,0.8,0.005,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.99008457,0.1,0.8,0.005,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.33359807,0.00787353,0.15216478,0.1,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42984906,0.00755119,0.23889724,0.1,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.31402709,0.01505618,0.14360854,0.1,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.42984797,0.00754882,0.23888279,0.1,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+0.34418804,0.0084905,0.15786053,0.1,0,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.31726584,0.00956349,0.1428442,0.1,0,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.33120476,0.00997314,0.14924332,0.1,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42984892,0.00754824,0.239171,0.1,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.32978381,0.00977714,0.15601069,0.1,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.42984711,0.00755174,0.23858742,0.1,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+0.34765175,0.00492766,0.16038218,0.1,0,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+0.32200636,0.01135713,0.14203403,0.1,0,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.38221627,0.1,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.74578423,0.02124569,0.69618537,0.1,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.70723086,0.1,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.74578423,0.02124569,0.7205993,0.1,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.00996481,0.1,0.4,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.6000818,0.1,0.4,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+0.74578423,0.02124569,0.7194786,0.1,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.21076244,0.1,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+1.31672362,0.0327842,1.39627071,0.1,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.74578423,0.02124569,0.72061014,0.1,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,0.90733372,0.1,0.4,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.28051242,0.1,0.4,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.7524486,0.1,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90099907,0.02672197,0.8958327,0.1,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.91412796,0.1,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(10, 10)"
+
+0.90099907,0.02672197,0.78932394,0.1,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(15,)"
+
+1.31672362,0.0327842,1.54570788,0.1,0.8,0.01,<class 'activation_function.TanH'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.88351042,0.1,0.8,0.01,<class 'activation_function.Relu'>,<function xavier_initializer at 0x0000026930142EE0>,"(20, 20)"
+
+1.31672362,0.0327842,1.43480483,0.1,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90099907,0.02672197,1.00562563,0.1,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.81161002,0.1,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(10, 10)"
+
+0.90099907,0.02672197,0.73020985,0.1,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(15,)"
+
+1.31672362,0.0327842,1.75637535,0.1,0.8,0.01,<class 'activation_function.TanH'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
+1.31672362,0.0327842,1.5270094,0.1,0.8,0.01,<class 'activation_function.Relu'>,<function he_initializer at 0x0000026930142F70>,"(20, 20)"
+
