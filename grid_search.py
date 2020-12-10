@@ -15,14 +15,14 @@ from neural_network import NeuralNetwork
 
 #Parameters which we conduct our GridSearch on our NN model
 parameters = {
-    'learning_rates': [0.01, 0.05, 0.1],
+    'learning_rates': [0.01, 0.05, 0.1, 0.15],
     'regularization': [0, 0.005, 0.01],
     'momentum': [0, 0.4, 0.8],
     'weight_initialization': [wi.xavier_initializer, wi.he_initializer],
-    'activation_hidden': [af.TanH, af.Relu],
+    'activation_hidden': [af.TanH, af.Relu, af.Sigmoid],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(10, 10), (15, ), (20, 20)],
+    'topology': [(10, 10), (30, ), (20, 20), (25, 25)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
@@ -98,7 +98,7 @@ if __name__ == '__main__':
         
         with open('grid_results/grid_info.txt', 'a') as info_file:
             total_time = time.gmtime(time.time() - start)
-            info_file.write("Grid Search ended in {} hour {} minutes {}˘seconds".format(
+            info_file.write("Grid Search ended in {} hour {} minutes {} seconds \n".format(
                 total_time.tm_hour, total_time.tm_min, total_time.tm_sec))
         return results[0]
 
@@ -171,4 +171,4 @@ if __name__ == '__main__':
                 ])
         return None
 
-    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
+    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
