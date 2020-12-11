@@ -15,11 +15,11 @@ from neural_network import NeuralNetwork
 
 #Parameters which we conduct our GridSearch on our NN model
 parameters = {
-    'learning_rates': [0.01, 0.05, 0.1, 0.15],
+    'learning_rates': [0.05, 0.1, 0.15, 0.2],
     'regularization': [0, 0.005, 0.01],
-    'momentum': [0, 0.4, 0.8],
-    'weight_initialization': [wi.xavier_initializer, wi.he_initializer],
-    'activation_hidden': [af.TanH, af.Relu, af.Sigmoid],
+    'momentum': [0.4, 0.8, 1.2],
+    'weight_initialization': [wi.xavier_initializer, wi.ranged_uniform_initializer],
+    'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
     'topology': [(10, 10), (30, ), (20, 20), (25, 25)],
