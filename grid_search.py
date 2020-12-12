@@ -15,7 +15,7 @@ from neural_network import NeuralNetwork
 
 #Parameters which we conduct our GridSearch on our NN model
 parameters = {
-    'learning_rates': [0.05, 0.1, 0.15, 0.2],
+    'learning_rates': [0.08, 0.1, 0.13, 0.15],
     'regularization': [0, 0.005, 0.01],
     'momentum': [0.4, 0.8, 1.2],
     'weight_initialization': [wi.xavier_initializer, wi.ranged_uniform_initializer],
