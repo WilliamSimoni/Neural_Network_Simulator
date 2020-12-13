@@ -15,14 +15,14 @@ from neural_network import NeuralNetwork
 
 #Parameters which we conduct our GridSearch on our NN model
 parameters = {
-    'learning_rates': [0.08, 0.1, 0.13, 0.15],
-    'regularization': [0, 0.005, 0.01],
+    'learning_rates': [0.08, 0.1, 0.13],
+    'regularization': [0, 0.0025, 0.005, 0.0075],
     'momentum': [0.4, 0.8, 1.2],
     'weight_initialization': [wi.xavier_initializer, wi.ranged_uniform_initializer],
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(10, 10), (30, ), (20, 20), (25, 25)],
+    'topology': [(10, 10), (5, 5, 5), (20, 20), (25,25)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
