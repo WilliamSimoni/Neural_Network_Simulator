@@ -13,24 +13,26 @@ import weight_initializer as wi
 import activation_function as af
 from neural_network import NeuralNetwork
 
-#Parameters which we conduct our GridSearch on our NN model
+# Parameters which we conduct our GridSearch on our NN model
 parameters = {
     'learning_rates': [0.08, 0.1, 0.13],
-    'regularization': [0, 0.0025, 0.005, 0.0075],
-    'momentum': [0.4, 0.8, 1.2],
+    'regularization': [0, 0.001, 0.0025, 0.005],
+    'momentum': [0.4, 0.8, 1.0],
     'weight_initialization': [wi.xavier_initializer, wi.ranged_uniform_initializer],
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(10, 10), (5, 5, 5), (20, 20), (25,25)],
+    'topology': [(10, 10), (5, 5, 5), (20, 20), (10, 5, 5)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
 }
 
-train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
+train_data, train_label, test_data, test_label = read_cup_data(
+    "dataset/ML-CUP20-TR.csv", 0.8)
 train_data, train_label = normalize_data(train_data, train_label)
 dataset = list(zip(train_data, train_label))
+
 
 def run(model, results, model_param, dataset):
     """
@@ -42,16 +44,61 @@ def run(model, results, model_param, dataset):
             results(List): List of results obtained in GridSearch
             model_param(dict): dict of param of model object
             Return nothing but add result from cross validation and model_param in results list
-    """       
-    average_vl, sd_vl, average_tr_error_best_vl, reports = cv.cross_validation(model, dataset, 4)
+    """
+    average_vl, sd_vl, average_tr_error_best_vl, reports = cv.cross_validation(
+        model, dataset, 4)
     results.append({
         'accuracy_average_vl': average_vl,
-        'accuracy_sd_vl': sd_vl, 
+        'accuracy_sd_vl': sd_vl,
         'average_tr_error_best_vl': average_tr_error_best_vl,
         'model_param': model_param,
     })
     print("Finish {} cross-validation".format(len(results)))
-    
+
+
+def initialize_model(model_param, num_features, output_dim):
+    """
+        Create NN model to use to execute a cross validation on it
+
+        Param: 
+            model_param(dict): dictionary of param to use to create NN object
+
+        Return a NN model with also complete graph topology of the network
+    """
+    print(model_param)
+    learning_rate = model_param[0]
+    regularization = model_param[1]
+    momentum = model_param[2]
+    weight_initialization = model_param[3]
+    activation = model_param[4]
+    type_nn = model_param[5]
+    batch_size = model_param[6]
+    topology = model_param[7]
+    loss = model_param[8]
+    accuracy = model_param[9]
+    num_epochs = model_param[10]
+
+    # Create NN object model
+    model = NeuralNetwork(num_epochs, loss, accuracy, momentum,
+                          regularization, type_nn, batch_size)
+
+    last_dim = num_features
+    # Add Layers
+    for num_nodes in topology[1:]:
+        layer = HiddenLayer(weight_initialization(num_nodes, last_dim),
+                            lr.Constant(num_nodes, last_dim, learning_rate),
+                            activation())
+        model.add_layer(layer)
+        last_dim = num_nodes
+    output_layer = OutputLayer(weight_initialization(output_dim, last_dim),
+                               lr.Constant(output_dim, last_dim,
+                                           learning_rate),
+                               af.Linear())
+    model.add_layer(output_layer)
+    print('momentum:', model.momentum_rate)
+    return model
+
+
 if __name__ == '__main__':
 
     def grid_search(params, dataset, num_features, output_dim, n_threads=5, save_path='grid_results/grid.csv'):
@@ -76,7 +123,7 @@ if __name__ == '__main__':
             params['num_epoch']
         ]
         pool = multiprocessing.Pool(multiprocessing.cpu_count()) if n_threads is None else \
-               multiprocessing.Pool(n_threads)
+            multiprocessing.Pool(n_threads)
         results = multiprocessing.Manager().list()
 
         start = time.time()
@@ -84,66 +131,23 @@ if __name__ == '__main__':
             model = initialize_model(model_param, num_features, output_dim)
             print("Model:", model)
             pool.apply_async(func=run,
-                            args=(model, results, model_param, dataset))
+                             args=(model, results, model_param, dataset))
 
         pool.close()
         pool.join()
 
-        #Sort results according to the accuracy of models
-    
+        # Sort results according to the accuracy of models
+
         #l_results = list(results.sort(key=lambda x: x['accuracy_average_vl'], reverse=True))
 
-        #Write to file results obtained
+        # Write to file results obtained
         write_results(results, save_path)
-        
+
         with open('grid_results/grid_info.txt', 'a') as info_file:
             total_time = time.gmtime(time.time() - start)
             info_file.write("Grid Search ended in {} hour {} minutes {} seconds \n".format(
                 total_time.tm_hour, total_time.tm_min, total_time.tm_sec))
         return results[0]
-
-
-    def initialize_model(model_param, num_features, output_dim):
-        """
-            Create NN model to use to execute a cross validation on it
-
-            Param: 
-                model_param(dict): dictionary of param to use to create NN object
-
-            Return a NN model with also complete graph topology of the network
-        """
-        print(model_param)
-        learning_rate = model_param[0]
-        regularization = model_param[1]
-        momentum = model_param[2]
-        weight_initialization = model_param[3]
-        activation = model_param[4]
-        type_nn = model_param[5]
-        batch_size = model_param[6]
-        topology = model_param[7]
-        loss = model_param[8]
-        accuracy = model_param[9]
-        num_epochs = model_param[10]
-    
-        
-        #Create NN object model
-        model = NeuralNetwork(num_epochs, loss, accuracy, momentum,
-                              regularization, type_nn, batch_size)
-        
-        last_dim = num_features
-        #Add Layers 
-        for num_nodes in topology[1:]:
-            layer = HiddenLayer(weight_initialization(num_nodes, last_dim),
-                                lr.Constant(num_nodes, last_dim, learning_rate),
-                                activation())
-            model.add_layer(layer)
-            last_dim = num_nodes
-        output_layer = OutputLayer(weight_initialization(output_dim, last_dim),
-                                   lr.Constant(output_dim, last_dim, learning_rate),
-                                   af.Linear())
-        model.add_layer(output_layer)
-        print('momentum:', model.momentum_rate)
-        return model
 
     def write_results(results, file_path):
         """
@@ -154,21 +158,49 @@ if __name__ == '__main__':
         with open(file_path, 'w') as result_file:
             writer = csv.writer(result_file)
             writer.writerow(['accuracy_average_vl', 'accuracy_sd_vl', 'average_tr_error_best_vl',
-                          'learning_rate', 'regularization', 'momentum', 'activation_hidden', 
-                          'weight_init', 'topology'])
+                             'learning_rate', 'regularization', 'momentum', 'activation_hidden',
+                             'weight_init', 'topology'])
 
             for item in results:
                 writer.writerow([
                     str(item['accuracy_average_vl']),
                     str(item['accuracy_sd_vl']),
-                    str(item['average_tr_error_best_vl']), 
+                    str(item['average_tr_error_best_vl']),
                     str(item['model_param'][0]),
-                    str(item['model_param'][1]), 
-                    str(item['model_param'][2]), 
-                    str(item['model_param'][4]), 
+                    str(item['model_param'][1]),
+                    str(item['model_param'][2]),
+                    str(item['model_param'][4]),
                     str(item['model_param'][3]),
                     item['model_param'][7]
                 ])
         return None
 
     grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
+
+
+# TESTS
+"""
+model_param = [
+    0.1,
+    0.0025,
+    0.8,
+    wi.ranged_uniform_initializer,
+    af.TanH,
+    'batch',
+    1,
+    (10,10),
+    'mean_squared_error',
+    'euclidean_loss',
+    500
+]
+
+train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
+#train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
+train_data, train_label = normalize_data(train_data, train_label)
+
+nn = initialize_model(model_param, len(train_data[0]), 2)
+training_examples = list(zip(train_data, train_label))
+
+
+print(cv.cross_validation(nn, training_examples, 4))
+"""
