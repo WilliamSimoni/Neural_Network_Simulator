@@ -2,8 +2,6 @@ import math
 import numpy as np
 from random import choice
 from neural_network import NeuralNetwork
-from utility import normalize_data, read_cup_data
-
 
 class Bagging():
 
