@@ -12,7 +12,7 @@ from bagging import Bagging
 
 def monk_example():
     """
-        Test NN model using monk3 dataset
+        Test NN model using monk1 dataset
     """
     # load data
 
