@@ -28,10 +28,10 @@ def monk_example():
         nn = NeuralNetwork(500, 'mean_squared_error', 'classification_accuracy', 0.8, 0.01, nn_type="batch", batch_size=1)
         
         layer1 = HiddenLayer(weights=wi.he_initializer(15, len(train_data[0])),
-                            learning_rates=lr.LinearDecay(15, len(train_data[0]), 1, 300, 0.5), 
+                            learning_rates=lr.Constant(15, len(train_data[0]), 0.8),
                             activation=af.Relu())
         layer2 = OutputLayer(weights=wi.he_initializer(1, 15),
-                            learning_rates=lr.LinearDecay(1, 15, 1, 300, 0.5), 
+                            learning_rates=lr.Constant(1, 15, 0.8),
                             activation=af.Sigmoid())
         
         nn.add_layer(layer1)
