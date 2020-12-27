@@ -20,10 +20,10 @@ def monk_example():
     train_data, train_label, _, _ = read_monk_data("dataset/monks-3.train")
     test_data, test_label, _, _ = read_monk_data("dataset/monks-3.test")
 
-    #create a bagger to perform bagging (bootstrap set to false)
-    bagger = Bagging(len(train_data), 500, False)
+    #create a ensemble to perform bagging (bootstrap set to false)
+    ensemble = Bagging(len(train_data), 500, False)
 
-    #create and add neural network to the bagger
+    #create and add neural network to the ensemble
     for _ in range(0,10):
         nn = NeuralNetwork(500, 'mean_squared_error', 'classification_accuracy', 0.8, 0.01, nn_type="batch", batch_size=1)
         
@@ -37,14 +37,14 @@ def monk_example():
         nn.add_layer(layer1)
         nn.add_layer(layer2)
 
-        bagger.add_neural_network(nn)
+        ensemble.add_neural_network(nn)
         
 
     training_examples = list(zip(train_data, train_label))
     test_examples = list(zip(test_data, test_label))
 
     #training
-    report = bagger.fit(training_examples, test_examples)
+    report = ensemble.fit(training_examples, test_examples)
 
     #report result
     print("training mse", report.training_error[-1])
