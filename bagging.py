@@ -30,7 +30,7 @@ class Bagging():
 
         Args:
             model (NeuralNetwork): neural network to add to the ensemble
-            min_error ([type], optional): [description]. Defaults to 1e-12.
+            min_error ([type], optional): min error for early stopping. Defaults to 1e-12.
         """
         self.models.append(model)
         self.min_tr_errors.append(min_error)
@@ -50,8 +50,8 @@ class Bagging():
 
         # training
         for i in range(0, len(self.models)):
-            # if bootstrap is true then we perform _generate_sample(Bootstramp with resampling), otherwise we use
-            # simply the original training set
+            # if bootstrap is true then we perform _generate_sample(Bootstramp with resampling), otherwise we simply use
+            # the original training set
             report = self.models[i].fit(self._generate_sample(training_set), validation_set, min_error=self.min_tr_errors[i]
                                         ) if self.bootstrap else self.models[i].fit(training_set, validation_set, min_error=self.min_tr_errors[i])
             training_reports.append(report)
