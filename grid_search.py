@@ -22,7 +22,7 @@ parameters = {
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(10, 10), (5, 5, 5), (20, 20), (10, 5, 5), (5, 5, 10)],
+    'topology': [(10), (5, 5), (20), (5, 5, 5), (5, 10)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
@@ -84,7 +84,7 @@ def initialize_model(model_param, num_features, output_dim):
 
     last_dim = num_features
     # Add Layers
-    for num_nodes in topology[1:]:
+    for num_nodes in topology[0:]:
         layer = HiddenLayer(weight_initialization(num_nodes, last_dim),
                             lr.Constant(num_nodes, last_dim, learning_rate),
                             activation())
@@ -175,20 +175,20 @@ if __name__ == '__main__':
                 ])
         return None
 
-    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
+    #grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
 
 
 # TESTS
 """
 model_param = [
-    0.1,
-    0.0025,
+    0.13,
+    0.0008,
     0.8,
     wi.ranged_uniform_initializer,
     af.TanH,
     'batch',
     1,
-    (10,10),
+    (5,5),
     'mean_squared_error',
     'euclidean_loss',
     500
@@ -202,5 +202,7 @@ nn = initialize_model(model_param, len(train_data[0]), 2)
 training_examples = list(zip(train_data, train_label))
 
 
-print(cv.cross_validation(nn, training_examples, 4))
+report = nn.fit(training_examples)
+report.plot_accuracy()
+nn.show()
 """

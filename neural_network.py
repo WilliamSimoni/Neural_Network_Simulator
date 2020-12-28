@@ -10,7 +10,7 @@ from report import Report
 from loss import loss_functions
 from metric import metric_functions
 import tqdm
-
+import VisualizeNN as VisNN
 
 class NeuralNetwork:
     """
@@ -48,6 +48,7 @@ class NeuralNetwork:
             regularization_rate)
         self.metric = self.check_metric(metric)
         self.loss = self.check_loss(loss)
+        self.topology = []
 
     def init_params(self, parameters):
         """
@@ -219,11 +220,14 @@ class NeuralNetwork:
         # the first layer added define the input dimension of the neural network
         if len(self.layers) == 0:
             self.input_dimension = layer.get_num_input()
+            self.topology.append(layer.get_num_input())
         # the new layer must have an input dimension equal
         # to the number of units in the last layer added
         elif layer.get_num_input() != self.output_dimension:
             raise ValueError(
                 "The number of input for this new layer must be equal to previous layer")
+
+        self.topology.append(layer.get_num_unit())
 
         # the last layer inserted define the output dimension
         self.output_dimension = layer.get_num_unit()
@@ -436,3 +440,11 @@ class NeuralNetwork:
                 self.batch_size, batch_total_samples_ratio,
                 self.momentum_rate, self.regularization_rate)
         """
+    
+    def show(self):
+        weights = []
+        for layer in self.layers:
+            weights.append(layer.transposedWeights[1:,0:])
+        network=VisNN.DrawNN(self.topology, weights)
+        network.draw()
+
