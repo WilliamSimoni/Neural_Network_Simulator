@@ -22,7 +22,7 @@ parameters = {
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(10), (5, 5), (20), (5, 5, 5), (5, 10)],
+    'topology': [(10,), (5, 5), (20,), (10, 5, 5), (5, 10)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
@@ -84,7 +84,7 @@ def initialize_model(model_param, num_features, output_dim):
 
     last_dim = num_features
     # Add Layers
-    for num_nodes in topology[0:]:
+    for num_nodes in topology:
         layer = HiddenLayer(weight_initialization(num_nodes, last_dim),
                             lr.Constant(num_nodes, last_dim, learning_rate),
                             activation())
