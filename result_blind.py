@@ -22,4 +22,4 @@ def create_output_file(file_path, blind_predicted):
                     elem[1],
                 ])
 
-create_output_file("Scarsenal_ML-CUP20-TR.csv", final_model().predict(blind_data))
+create_output_file("Scarsenal_ML-CUP20-TS.csv", final_model().predict(blind_data))
