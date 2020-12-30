@@ -12,6 +12,7 @@ import learning_rate as lr
 import weight_initializer as wi
 import activation_function as af
 from neural_network import NeuralNetwork
+from bagging import Bagging
 
 # Parameters which we conduct our GridSearch on our NN model
 parameters = {
@@ -60,7 +61,7 @@ def initialize_model(model_param, num_features, output_dim):
     """
         Create NN model to use to execute a cross validation on it
 
-        Param: 
+        Param:
             model_param(dict): dictionary of param to use to create NN object
 
         Return a NN model with also complete graph topology of the network
@@ -84,6 +85,7 @@ def initialize_model(model_param, num_features, output_dim):
 
     last_dim = num_features
     # Add Layers
+    print(topology)
     for num_nodes in topology:
         layer = HiddenLayer(weight_initialization(num_nodes, last_dim),
                             lr.Constant(num_nodes, last_dim, learning_rate),
@@ -105,8 +107,8 @@ if __name__ == '__main__':
         """
             Execute Grid Search
 
-            Param: 
-                save_path(str): string of file path 
+            Param:
+                save_path(str): string of file path
 
         """
         params = [
@@ -138,7 +140,7 @@ if __name__ == '__main__':
 
         # Sort results according to the accuracy of models
 
-        #l_results = list(results.sort(key=lambda x: x['accuracy_average_vl'], reverse=True))
+        # l_results = list(results.sort(key=lambda x: x['accuracy_average_vl'], reverse=True))
 
         # Write to file results obtained
         write_results(results, save_path)
@@ -178,7 +180,52 @@ if __name__ == '__main__':
     #grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
 
 
-# TESTS
+# BAGGING FINAL RESULTS
+
+def final_model():
+    model_params = [
+        [0.13, 0.0005, 0.8, wi.xavier_initializer, af.TanH, 'batch',
+            1, (5,10), 'mean_squared_error', 'euclidean_loss', 500],
+    ]
+
+    model_params = [
+        [0.1, 0, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.1, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0008, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
+            1, (5, 10), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.1, 0.0008, 0.8, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 0.8, wi.xavier_initializer, af.TanH, 'batch',
+            1, (5,5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 0.6, wi.xavier_initializer, af.TanH, 'batch',
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 0.8, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
+            1, (5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 0.8, wi.xavier_initializer, af.TanH, 'batch',
+            1, (5,10), 'mean_squared_error', 'euclidean_loss', 500],
+    ]
+
+    train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
+    train_data, train_label = normalize_data(train_data, train_label)
+    training_examples = list(zip(train_data, train_label))
+
+    ensample = Bagging(len(training_examples))
+
+    for model_param in model_params:
+        nn = initialize_model(model_param, len(train_data[0]), 2)
+        ensample.add_neural_network(nn)
+    
+    ensample.fit(training_examples)
+    
+        
+
+final_model()
 """
 model_param = [
     0.13,
@@ -188,14 +235,14 @@ model_param = [
     af.TanH,
     'batch',
     1,
-    (5,5),
+    (10,5,5),
     'mean_squared_error',
     'euclidean_loss',
     500
 ]
 
 train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
-#train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
+# train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
 train_data, train_label = normalize_data(train_data, train_label)
 
 nn = initialize_model(model_param, len(train_data[0]), 2)
@@ -204,5 +251,8 @@ training_examples = list(zip(train_data, train_label))
 
 report = nn.fit(training_examples)
 report.plot_accuracy()
-nn.show()
+print("training mse", report.training_error[-1])
+print("validation mse", report.get_vl_error())
+print("training accuracy", report.training_accuracy[-1])
+print("validation accuracy", report.get_vl_accuracy())
 """
