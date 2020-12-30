@@ -184,11 +184,6 @@ if __name__ == '__main__':
 
 def final_model():
     model_params = [
-        [0.13, 0.0005, 0.8, wi.xavier_initializer, af.TanH, 'batch',
-            1, (5,10), 'mean_squared_error', 'euclidean_loss', 500],
-    ]
-
-    model_params = [
         [0.1, 0, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
             1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
         [0.1, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
