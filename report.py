@@ -128,7 +128,8 @@ class Report():
             Plot Loss error for Training, Validation and Test set
         """
         mlp.plot(self.training_error, label='training')
-        mlp.plot(self.validation_error, 'r--', linewidth=2,  label='validation')
+        if self.validation_accuracy[0] != 0:
+            mlp.plot(self.validation_error, 'r--', linewidth=2,  label='validation')
         #mlp.plot(self.test_error)
         mlp.ylabel('Error')
         mlp.legend()
@@ -141,7 +142,8 @@ class Report():
             Plot Accuracy for Training, Validation and Test set
         """
         mlp.plot(self.training_accuracy, label='training')
-        mlp.plot(self.validation_accuracy, 'r--', linewidth=2, label='validation')
+        if self.validation_accuracy[0] != 0:
+            mlp.plot(self.validation_accuracy, 'r--', linewidth=2, label='validation')
         #mlp.plot(self.test_accuracy)
         mlp.ylabel('Accuracy')
         mlp.legend()
