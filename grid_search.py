@@ -183,6 +183,7 @@ if __name__ == '__main__':
 # BAGGING FINAL RESULTS
 
 def final_model():
+    
     model_params = [
         [0.1, 0, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
             1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
@@ -207,20 +208,21 @@ def final_model():
     ]
 
     train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
-    train_data, train_label = normalize_data(train_data, train_label)
+    #train_data, train_label = normalize_data(train_data, train_label)
     training_examples = list(zip(train_data, train_label))
 
-    ensample = Bagging(len(training_examples))
+    ensemble = Bagging(len(training_examples))
 
     for model_param in model_params:
         nn = initialize_model(model_param, len(train_data[0]), 2)
-        ensample.add_neural_network(nn)
+        ensemble.add_neural_network(nn)
     
-    ensample.fit(training_examples)
+    ensemble.fit(training_examples)
+    return ensemble
     
         
 
-final_model()
+#final_model()
 """
 model_param = [
     0.13,
