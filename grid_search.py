@@ -210,6 +210,7 @@ def final_model():
     train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
     #train_data, train_label = normalize_data(train_data, train_label)
     training_examples = list(zip(train_data, train_label))
+    test_examples = list(zip(test_data, test_label))
 
     ensemble = Bagging(len(training_examples))
 
@@ -217,13 +218,30 @@ def final_model():
         nn = initialize_model(model_param, len(train_data[0]), 2)
         ensemble.add_neural_network(nn)
     
-    ensemble.fit(training_examples)
+    ensemble.fit(training_examples, test_examples)
+    
     return ensemble
     
         
 
 #final_model()
+
+
+
 """
+17.3424323806
+9.549290397010338
+6.857825099432584
+3.9735023822009112
+9.848623616101907
+4.146277949131173
+7.970618203289681
+8.80459194896491
+8.001441124426606
+4.521621670599758
+
+7.929469230439691
+
 model_param = [
     0.13,
     0.0008,
