@@ -218,7 +218,9 @@ def final_model():
         nn = initialize_model(model_param, len(train_data[0]), 2)
         ensemble.add_neural_network(nn)
     
-    ensemble.fit(training_examples, test_examples)
+    report = ensemble.fit(training_examples, test_examples)
+
+    print("error ensembled:", report.get_vl_accuracy())
     
     return ensemble
     

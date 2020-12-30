@@ -35,7 +35,7 @@ class Bagging():
         self.models.append(model)
         self.min_tr_errors.append(min_error)
 
-    def fit(self, training_set, validation_set=None):
+    def fit(self, training_set, validation_set=None, test_set = None):
         """perform training 
 
         Args:
@@ -54,6 +54,7 @@ class Bagging():
             # the original training set
             report = self.models[i].fit(self._generate_sample(training_set), validation_set, min_error=self.min_tr_errors[i]
                                         ) if self.bootstrap else self.models[i].fit(training_set, validation_set, min_error=self.min_tr_errors[i])
+            print("model ", i, ": ", report.get_vl_accuracy())
             training_reports.append(report)
 
         # calculate the mean of every report
