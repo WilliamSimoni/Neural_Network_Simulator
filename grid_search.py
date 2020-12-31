@@ -18,14 +18,14 @@ from metric import metric_functions
 
 # Parameters which we conduct our GridSearch on our NN model
 parameters = {
-    'learning_rates': [0.08, 0.1, 0.13],
-    'regularization': [0, 0.0005, 0.0008, 0.001, 0.0015],
+    'learning_rates': [0.1, 0.13, 0.15],
+    'regularization': [0.0005, 0.00075, 0.001, 0.0025, 0.005],
     'momentum': [0.6, 0.8, 1.0],
     'weight_initialization': [wi.xavier_initializer, wi.ranged_uniform_initializer],
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(10,), (5, 5), (20,), (10, 5, 5), (5, 10)],
+    'topology': [(30, 20), (20,20), (20,), (10, 5, 5), (15, 15)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
