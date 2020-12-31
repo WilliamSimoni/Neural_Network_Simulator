@@ -234,8 +234,6 @@ def final_model():
 
     for model_param in model_params:
         nn = initialize_model(model_param, len(train_data[0]), 2)
-        report = cv.cross_validation(nn, training_examples, 4)
-        print(report)
         ensemble.add_neural_network(nn)
 
     # training all the models in the ensemble
