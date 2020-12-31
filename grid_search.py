@@ -2,7 +2,7 @@
     Module grid_search to do the grid search for ML models
 """
 from layer import HiddenLayer, OutputLayer
-from utility import normalize_data, read_cup_data
+from utility import normalize_data, read_cup_data, denormalize_data
 import cross_validation as cv
 import multiprocessing
 import csv
@@ -13,6 +13,8 @@ import weight_initializer as wi
 import activation_function as af
 from neural_network import NeuralNetwork
 from bagging import Bagging
+from loss import loss_functions
+from metric import metric_functions
 
 # Parameters which we conduct our GridSearch on our NN model
 parameters = {
@@ -31,7 +33,7 @@ parameters = {
 
 train_data, train_label, test_data, test_label = read_cup_data(
     "dataset/ML-CUP20-TR.csv", 0.8)
-train_data, train_label = normalize_data(train_data, train_label)
+train_data, train_label, _, _ = normalize_data(train_data, train_label)
 dataset = list(zip(train_data, train_label))
 
 
@@ -208,23 +210,65 @@ def final_model():
     ]
 
     train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
-    #train_data, train_label = normalize_data(train_data, train_label)
+    train_data, train_label, den_data, den_label = normalize_data(train_data, train_label)
+    test_data, test_label,_,_ =  normalize_data(test_data, test_label, den_data, den_label)
+
     training_examples = list(zip(train_data, train_label))
     test_examples = list(zip(test_data, test_label))
 
+
     ensemble = Bagging(len(training_examples))
+
+    #create and add the model to the ensemble
 
     for model_param in model_params:
         nn = initialize_model(model_param, len(train_data[0]), 2)
         ensemble.add_neural_network(nn)
     
-    report = ensemble.fit(training_examples, test_examples)
+    #training all the models in the ensemble
 
-    print("error ensembled:", report.get_vl_accuracy())
+    ensemble.fit(training_examples, test_examples)
+    
+    #check models performance
+
+    i = 1
+    for model in ensemble.models:
+        predicted_training_data = denormalize_data(model.predict(train_data), den_label)
+        error = metric_functions['euclidean_loss'](
+                predicted_training_data,
+                denormalize_data(train_label, den_label)
+            )
+        print("model ", i, ", training: ", error)
+        
+        predicted_test_data = denormalize_data(model.predict(test_data), den_label)
+        error = metric_functions['euclidean_loss'](
+                predicted_test_data,
+                denormalize_data(test_label, den_label)
+            )
+        
+        print("model ", i, ", test: ", error)
+        i += 1
+    
+    #check ensemble performance
+
+    predicted_training_data = denormalize_data(ensemble.predict(train_data), den_label)
+    error = metric_functions['euclidean_loss'](
+                predicted_training_data,
+                denormalize_data(train_label, den_label)
+        )
+    print("ensemble training: ", error)
+        
+    predicted_test_data = denormalize_data(ensemble.predict(test_data), den_label)
+    error = metric_functions['euclidean_loss'](
+            predicted_test_data,
+            denormalize_data(test_label, den_label)
+    )
+        
+    print("ensemble test: ", error)
+
+    #print("error ensembled:", report.get_vl_accuracy())
     
     return ensemble
-    
-        
 
 #final_model()
 
