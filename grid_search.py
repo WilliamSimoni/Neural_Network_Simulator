@@ -25,7 +25,7 @@ parameters = {
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(30, 20), (20,20), (20,), (10, 5, 5), (15, 15)],
+    'topology': [(30, 20), (20, 20), (10, 5, 5), (15, 15)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
@@ -179,114 +179,119 @@ if __name__ == '__main__':
                 ])
         return None
 
-    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
+    #grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
 
 
 # BAGGING FINAL RESULTS
 
 def final_model():
-    
+
     model_params = [
-        [0.1, 0, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
+        [0.1, 0.00075, 1.0, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.15, 0.0005, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (20, 20), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.15, 0.001, 0.8, wi.ranged_uniform_initializer, af.Relu, 'batch',
+            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.13, 0.0005, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (15,15), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.15, 0.001, 0.8, wi.xavier_initializer, af.Relu, 'batch',
+            1, (15,15), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.13, 0.0005, 1.0, wi.ranged_uniform_initializer, af.TanH, 'batch',
+            1, (15,15), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.15, 0.0005, 0.8, wi.ranged_uniform_initializer, af.TanH, 'batch',
             1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.1, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
+
+        [0.13, 0.00075, 1.0, wi.ranged_uniform_initializer, af.Relu, 'batch',
             1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0008, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
-            1, (5, 10), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.1, 0.0008, 0.8, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0005, 0.8, wi.xavier_initializer, af.TanH, 'batch',
-            1, (5,5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0005, 0.6, wi.xavier_initializer, af.TanH, 'batch',
-            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0005, 0.8, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0005, 1.0, wi.xavier_initializer, af.TanH, 'batch',
-            1, (5, 5), 'mean_squared_error', 'euclidean_loss', 500],
-        [0.13, 0.0005, 0.8, wi.xavier_initializer, af.TanH, 'batch',
-            1, (5,10), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.15, 0.001, 1.0, wi.ranged_uniform_initializer, af.Relu, 'batch',
+            1, (20, 20), 'mean_squared_error', 'euclidean_loss', 500],
+
+        [0.15, 0.0025, 0.8, wi.xavier_initializer, af.Relu, 'batch',
+            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
     ]
 
-    train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
-    train_data, train_label, den_data, den_label = normalize_data(train_data, train_label)
-    test_data, test_label,_,_ =  normalize_data(test_data, test_label, den_data, den_label)
+    train_data, train_label, test_data, test_label = read_cup_data(
+        "dataset/ML-CUP20-TR.csv", 0.8)
+    train_data, train_label, den_data, den_label = normalize_data(
+        train_data, train_label)
+    test_data, test_label, _, _ = normalize_data(
+        test_data, test_label, den_data, den_label)
 
     training_examples = list(zip(train_data, train_label))
     test_examples = list(zip(test_data, test_label))
 
-
     ensemble = Bagging(len(training_examples))
 
-    #create and add the model to the ensemble
+    # create and add the model to the ensemble
 
     for model_param in model_params:
         nn = initialize_model(model_param, len(train_data[0]), 2)
+        report = cv.cross_validation(nn, training_examples, 4)
+        print(report)
         ensemble.add_neural_network(nn)
-    
-    #training all the models in the ensemble
+
+    # training all the models in the ensemble
 
     ensemble.fit(training_examples, test_examples)
-    
-    #check models performance
+
+    # check models performance
 
     i = 1
     for model in ensemble.models:
-        predicted_training_data = denormalize_data(model.predict(train_data), den_label)
+        predicted_training_data = denormalize_data(
+            model.predict(train_data), den_label)
         error = metric_functions['euclidean_loss'](
-                predicted_training_data,
-                denormalize_data(train_label, den_label)
-            )
-        print("model ", i, ", training: ", error)
-        
-        predicted_test_data = denormalize_data(model.predict(test_data), den_label)
-        error = metric_functions['euclidean_loss'](
-                predicted_test_data,
-                denormalize_data(test_label, den_label)
-            )
-        
-        print("model ", i, ", test: ", error)
-        i += 1
-    
-    #check ensemble performance
-
-    predicted_training_data = denormalize_data(ensemble.predict(train_data), den_label)
-    error = metric_functions['euclidean_loss'](
-                predicted_training_data,
-                denormalize_data(train_label, den_label)
+            predicted_training_data,
+            denormalize_data(train_label, den_label)
         )
-    print("ensemble training: ", error)
-        
-    predicted_test_data = denormalize_data(ensemble.predict(test_data), den_label)
-    error = metric_functions['euclidean_loss'](
+        print("model ", i, ", training: ", error)
+
+        predicted_test_data = denormalize_data(
+            model.predict(test_data), den_label)
+        error = metric_functions['euclidean_loss'](
             predicted_test_data,
             denormalize_data(test_label, den_label)
+        )
+
+        print("model ", i, ", test: ", error)
+        i += 1
+
+    # check ensemble performance
+
+    predicted_training_data = denormalize_data(
+        ensemble.predict(train_data), den_label)
+    error = metric_functions['euclidean_loss'](
+        predicted_training_data,
+        denormalize_data(train_label, den_label)
     )
-        
+    print("ensemble training: ", error)
+
+    predicted_test_data = denormalize_data(
+        ensemble.predict(test_data), den_label)
+    error = metric_functions['euclidean_loss'](
+        predicted_test_data,
+        denormalize_data(test_label, den_label)
+    )
+
     print("ensemble test: ", error)
 
     #print("error ensembled:", report.get_vl_accuracy())
-    
+
     return ensemble
 
-#final_model()
 
+final_model()
 
 
 """
-17.3424323806
-9.549290397010338
-6.857825099432584
-3.9735023822009112
-9.848623616101907
-4.146277949131173
-7.970618203289681
-8.80459194896491
-8.001441124426606
-4.521621670599758
-
-7.929469230439691
 
 model_param = [
     0.13,

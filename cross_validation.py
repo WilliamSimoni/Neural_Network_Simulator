@@ -79,7 +79,7 @@ def cross_validation(model, dataset, num_subsets):
 
         reports.append(report)
 
-        report.plot_accuracy()
+        #report.plot_accuracy()
 
     return np.round(np.mean(errors), 8), np.round(np.std(errors), 8), np.round(sum_tr_err_with_best_vl_err/num_subsets, 8), reports
 
