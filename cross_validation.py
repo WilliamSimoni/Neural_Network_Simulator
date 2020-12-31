@@ -1,6 +1,6 @@
 import numpy as np
 import copy
-from utility import normalize_data, read_monk_data, read_cup_data
+from utility import normalize_data, read_monk_data, read_cup_data, denormalize_data
 from neural_network import NeuralNetwork
 from layer import OutputLayer, HiddenLayer
 import weight_initializer as wi
@@ -8,6 +8,10 @@ import activation_function as af
 import math
 import cProfile
 import learning_rate as lr
+from metric import metric_functions
+
+train_data, train_label, test_data, test_label = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
+_, _, den_data, den_label = normalize_data(train_data, train_label)
 
 def split(dataset, num_subsets):
     min_num_element_per_subset = math.floor(len(dataset) / num_subsets)
@@ -57,12 +61,25 @@ def cross_validation(model, dataset, num_subsets):
         #get what was the training error when we reach the minimum validation error 
         sum_tr_err_with_best_vl_err += report.get_tr_err_with_best_vl_err()
 
+        inputs_validation = np.array([elem[0]
+                                          for elem in validation_set])
+        targets_validation = np.array([elem[1]
+                                           for elem in validation_set])
+        
         #add the error to the vector erros for calculating (at the end) the standard deviation
-        errors[k] = report.get_vl_accuracy()
+        predicted_test_data = denormalize_data(model_k.predict(inputs_validation), den_label)
+        error = metric_functions['euclidean_loss'](
+                predicted_test_data,
+                denormalize_data(targets_validation, den_label)
+            )
+        
+        errors[k] = error
+
+        print(error)
 
         reports.append(report)
 
-        #report.plot_accuracy()
+        report.plot_accuracy()
 
     return np.round(np.mean(errors), 8), np.round(np.std(errors), 8), np.round(sum_tr_err_with_best_vl_err/num_subsets, 8), reports
 
