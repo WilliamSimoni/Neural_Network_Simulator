@@ -179,7 +179,7 @@ if __name__ == '__main__':
                 ])
         return None
 
-    #grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
+    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]),)
 
 
 # BAGGING FINAL RESULTS
