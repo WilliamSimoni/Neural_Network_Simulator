@@ -28,5 +28,5 @@ def create_output_file(file_path, blind_predicted):
             ])
 
 
-create_output_file("Scarsenal_ML-CUP20-TR.csv",
+create_output_file("Scarsenal_ML-CUP20-TS.csv",
                    denormalize_data(final_model().predict(blind_data), den_label))
