@@ -4,6 +4,7 @@
 import numpy as np
 from activation_function import ActivationFunction
 from learning_rate import LearningRate
+import copy
 
 class Layer:
     """
@@ -172,12 +173,17 @@ class Layer:
         """
     
     def deepcopy(self):
+        """Create a deep copy of the layer object
+
+        Returns:
+            Layer: deep copy of the layer
+        """
         if isinstance(self, HiddenLayer):
-            return HiddenLayer(np.copy(self.weights), self.learning_rates.deepcopy(), self.activation)
+            return HiddenLayer(copy.deepcopy(self.weights), self.learning_rates.deepcopy(), self.activation)
         elif isinstance(self, OutputLayer):
-            return OutputLayer(np.copy(self.weights), self.learning_rates.deepcopy(), self.activation)
+            return OutputLayer(copy.deepcopy(self.weights), self.learning_rates.deepcopy(), self.activation)
         else:
-            return Layer(np.copy(self.weights), self.learning_rates.deepcopy(), self.activation)
+            return Layer(copy.deepcopy(self.weights), self.learning_rates.deepcopy(), self.activation)
 
 class OutputLayer(Layer):
     """

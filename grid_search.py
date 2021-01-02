@@ -179,13 +179,18 @@ if __name__ == '__main__':
                 ])
         return None
 
-    #grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
+    #execute grid search
+    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
 
 
 # BAGGING FINAL RESULTS
 
 def final_model():
+    """
+        Return the final model for the ML cup obtained with the final grid search
+    """
 
+    #model params contains the best hyperparams obtained with the final grid search 
     model_params = [
         [0.1, 0.00075, 1.0, wi.ranged_uniform_initializer, af.TanH, 'batch',
             1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
@@ -218,6 +223,8 @@ def final_model():
             1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
     ]
 
+    #Reading and normalizing data from the ML cup 
+    #Note that we take 80% for training and 20% for test
     train_data, train_label, test_data, test_label = read_cup_data(
         "dataset/ML-CUP20-TR.csv", 0.8)
     train_data, train_label, den_data, den_label = normalize_data(
@@ -228,6 +235,7 @@ def final_model():
     training_examples = list(zip(train_data, train_label))
     test_examples = list(zip(test_data, test_label))
 
+    #create ensemble object that will contain all the hypothesis
     ensemble = Bagging(len(training_examples))
 
     # create and add the model to the ensemble
@@ -240,7 +248,7 @@ def final_model():
 
     ensemble.fit(training_examples, test_examples)
 
-    # check models performance
+    # check models performance (denormalizing)
 
     i = 1
     for model in ensemble.models:
@@ -281,42 +289,4 @@ def final_model():
 
     print("ensemble test: ", error)
 
-    #print("error ensembled:", report.get_vl_accuracy())
-
     return ensemble
-
-
-final_model()
-
-
-"""
-
-model_param = [
-    0.13,
-    0.0008,
-    0.8,
-    wi.ranged_uniform_initializer,
-    af.TanH,
-    'batch',
-    1,
-    (10,5,5),
-    'mean_squared_error',
-    'euclidean_loss',
-    500
-]
-
-train_data, train_label, _, _ = read_cup_data("dataset/ML-CUP20-TR.csv", 0.8)
-# train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train", 1)
-train_data, train_label = normalize_data(train_data, train_label)
-
-nn = initialize_model(model_param, len(train_data[0]), 2)
-training_examples = list(zip(train_data, train_label))
-
-
-report = nn.fit(training_examples)
-report.plot_accuracy()
-print("training mse", report.training_error[-1])
-print("validation mse", report.get_vl_error())
-print("training accuracy", report.training_accuracy[-1])
-print("validation accuracy", report.get_vl_accuracy())
-"""
