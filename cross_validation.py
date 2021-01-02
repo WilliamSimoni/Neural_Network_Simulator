@@ -54,7 +54,7 @@ def cross_validation(model, dataset, num_subsets, den_label=None):
 
     # get the indexes to break down the data set into the different folds
     splitted_data_set_index = split(dataset, num_subsets)
-    print(splitted_data_set_index)
+
     for k in range(0, num_subsets):
         # create a deep copy of the model passed as argument
         model_k = model.deepcopy()
