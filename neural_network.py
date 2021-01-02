@@ -24,6 +24,8 @@ class NeuralNetwork:
 
         Args:
             max_epochs (int): number of maximum epochs used in param fitting.
+            loss (string): Indicate the loss function to use to evaluate the model
+            metric(string): indicate the metric used to evaluate the model, like Accuracy
             momentum_rate (int, optional): momentum_rate used for learning. Defaults to 0.
             regularization_rate(int,optional): regularization_rate used for learning. Defaults to 0
             nn_type (string, optional): type of Neural Network used. Default "SGD"
@@ -31,8 +33,6 @@ class NeuralNetwork:
             batch_size (int, optional): size of batch used, Default set to 1.
             type_classifier (string, optional): estabilish the type of classification used
                             Accepted values are "Classification" and "Regression"
-            loss (string): Indicate the loss function to use to evaluate the model
-            metric(string): indicate the metric used to evaluate the model, like Accuracy
         """
         self.max_epochs = self.check_max_epochs(max_epochs)
         self.input_dimension = 0
@@ -240,7 +240,7 @@ class NeuralNetwork:
             about predicted output of a sample
 
             Parameters:
-                sample: represents the feature space of an sample
+                sample(nparray of input patterns): input/inputs for which returning the predictions
 
             Precondition:
                 The length of sample is equal to input dimension in NN
@@ -255,7 +255,7 @@ class NeuralNetwork:
             FeedwardSignal feedward the signal from input to output of a feedforward NN
 
             Parameters:
-                sample: represent the feature space of an sample
+                sample(nparray of input patterns): input/inputs for which returning the predictions
 
             Precondition:
                 The length of sample is equal to input dimension in NN
@@ -274,14 +274,21 @@ class NeuralNetwork:
         return output_layer
 
     def fit(self, training_examples, validation_samples=None, test_samples=None, min_error=1e-12):
-        """[summary]
+        """training of the neural network using the training examples
 
         Parameters:
-            training_examples (array(tupla(input, target))): [description]
+            training_examples (array(tupla(input, target))): Training samples.
             validation_samples (array(tupla(input, target))): Validation samples (default None)
             test_samples (array(tupla(input, target))): Test samples to use in test (default None)
-            min_training_error (): [description]
+            min_error (float): Training stops whenever loss error 
+            becomes greater or equale than min_error . Defaults to 1e-12.
+        
+        Returns:
+            (Report): Report of the training. 
+            The object contains the training/*validation/*test error measured at the end of every epoch.
+            * only if validation samples and test samples is not None.
         """
+
         # create empty Report object
         report = Report(self.max_epochs, min_error)
         total_samples = len(training_examples)
@@ -291,7 +298,9 @@ class NeuralNetwork:
 
         # executed epochs
         num_epochs = 0
+        #error calculated at the end of each epoch
         error = np.Inf
+        #number of sets into which split the training set (e.g. for batch is 1)
         num_window = math.ceil(total_samples // self.batch_size)
 
         inputs_training = np.array([elem[0] for elem in training_examples])
@@ -306,18 +315,12 @@ class NeuralNetwork:
         # ratio between batch size and the total number of samples
         batch_total_samples_ratio = self.batch_size/total_samples
 
-        #ex = training_examples[0]
-        # stop when we execure max_epochs epochs or TODO training error
-
-        #training_predicted_before = self.predict(inputs_training)
-
         for num_epochs in tqdm.tqdm(range(self.max_epochs), desc="fit"):
 
             # shuffle training examples
             np.random.shuffle(training_examples)
 
             # training
-
             for index in range(0, num_window):
                 window_examples = training_examples[index * self.batch_size:
                                                     (index+1) * self.batch_size]
@@ -326,27 +329,28 @@ class NeuralNetwork:
                 self._back_propagation(
                     window_examples, batch_total_samples_ratio)
 
+            #calculate training/*validation/*(test) error after one epoch
+
             training_predicted = self.predict(inputs_training)
 
-            #print(training_predicted - training_predicted_before)
-            # print(self.layers[0].weights)
-
-            #training_predicted_before = training_predicted
-
-            # calculate Training error
+            # calculate loss on training set
             error = loss_functions[self.loss](
                 training_predicted,
                 targets_training,
             )
 
+            #adding error in the report
+            report.add_training_error(error, num_epochs)
+
+            # calculate accuracy on training set
             if self.metric != '':
                 accuracy = metric_functions[self.metric](
                     training_predicted,
                     targets_training)
+                #adding accuracy in the report
                 report.add_training_accuracy(accuracy, num_epochs)
 
-            report.add_training_error(error, num_epochs)
-
+            #Doing the same for validation set if validation_set is defined
             if validation_samples:
                 val_predicted = self.predict(inputs_validation)
                 validation_error = loss_functions[self.loss](
@@ -362,6 +366,7 @@ class NeuralNetwork:
                 report.add_validation_error(
                     error, validation_error, num_epochs)
 
+            #Doing the same for test set if test_set is defined
             if test_samples:
                 test_error = loss_functions[self.loss](
                     [self.predict(test_example[0])
@@ -369,13 +374,6 @@ class NeuralNetwork:
                     [test_example[1] for test_example in test_samples],
                 ) / len(test_samples)
                 report.add_test_error(test_error, num_epochs)
-
-            #print("Error during epoch {} is {}".format(num_epochs, error))
-            # print("Predicted value during epoch {} is {}"
-            #      .format(num_epochs, self.predict(ex[0])))
-            # print("Target value during epoch {} is {}".format(
-            #    num_epochs, ex[1]))
-            #print("Num Epoch: ", num_epochs)
 
             # check error
             if error <= min_error:
@@ -389,13 +387,6 @@ class NeuralNetwork:
 
         return report
 
-    def to_json(self):
-        """
-            Serialize NN object to a Json object
-        """
-        json_str = json.dumps(self.__dict__)
-        return json_str
-
     def _back_propagation(self, samples, batch_total_samples_ratio):
         """execute a step of the backpropagation algorithm
 
@@ -403,6 +394,7 @@ class NeuralNetwork:
             samples (np.array): list of samples
             batch_total_samples_ratio (float): batch_size / len(samples)
         """
+
         """
         #Extended code using normal For
         for sample in samples:
@@ -429,19 +421,22 @@ class NeuralNetwork:
          for index in range(len(self.layers[:-1]) - 1, -1, -1)]
 
         # updating the weights in the neural network
-        [layer.update_weight(
-            self.batch_size, batch_total_samples_ratio,
-            self.momentum_rate, self.regularization_rate)
-         for layer in self.layers]
-
-        """
+        """ extended code using normal For
         for layer in self.layers:
             layer.update_weight(
                 self.batch_size, batch_total_samples_ratio,
                 self.momentum_rate, self.regularization_rate)
         """
+        [layer.update_weight(
+            self.batch_size, batch_total_samples_ratio,
+            self.momentum_rate, self.regularization_rate)
+         for layer in self.layers]
     
     def show(self):
+        """
+            Show graphically the neural network structure using the 
+            visualizeNN module developed by Jianzheng Liu
+        """
         weights = []
         for layer in self.layers:
             weights.append(layer.transposedWeights[1:,0:])
