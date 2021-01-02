@@ -25,7 +25,7 @@ parameters = {
     'activation_hidden': [af.TanH, af.Relu],
     'type_nn': ['batch'],
     'batch_size': [1],
-    'topology': [(30, 20), (20, 20), (10, 5, 5), (15, 15)],
+    'topology': [(30, 20), (20, 20), (10, 5, 5), (15, 15), (20,)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
     'num_epoch': [500],
