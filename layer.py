@@ -96,6 +96,11 @@ class Layer:
         return self.weights
 
     def update_learning_rate(self, epoch):
+        """Update the learning rate according to the epoch
+
+        Args:
+            epoch (int): current training epoch
+        """
         self.learning_rates.update(epoch)
 
     def function_signal(self, input_values):
@@ -103,7 +108,7 @@ class Layer:
             Calculate the propagated values of a layer using an activation function
 
             Parameters:
-                input_values: values used as input in a Layer (it is the output of predicing layer)
+                input_values(list of patterns): values used as input in a Layer (it is the output of predicing layer)
 
             Return: output values of Layer units
         """
@@ -145,6 +150,7 @@ class Layer:
                           momentum_rate * old_delta_w +
                           reularization_rate * W[i][j]
         """
+        
         # calculating the new delta
         # new_delta_w[i][j] = learning_rate[i][j] * errors[i] * inputs[j]
         new_delta_w = np.multiply(
