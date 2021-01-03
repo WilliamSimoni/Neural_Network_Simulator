@@ -64,7 +64,7 @@ class Bagging():
             [report.training_error for report in training_reports], axis=0)
         final_report.validation_error = np.mean(
             [report.validation_error for report in training_reports], axis=0)
-        final_report.validation_error = np.mean(
+        final_report.test_error = np.mean(
             [report.test_error for report in training_reports], axis=0)
         final_report.training_accuracy = np.mean(
             [report.training_accuracy for report in training_reports], axis=0)

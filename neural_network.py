@@ -10,7 +10,6 @@ from report import Report
 from loss import loss_functions
 from metric import metric_functions
 import tqdm
-import VisualizeNN as VisNN
 
 class NeuralNetwork:
     """
@@ -431,15 +430,3 @@ class NeuralNetwork:
             self.batch_size, batch_total_samples_ratio,
             self.momentum_rate, self.regularization_rate)
          for layer in self.layers]
-    
-    def show(self):
-        """
-            Show graphically the neural network structure using the 
-            visualizeNN module developed by Jianzheng Liu
-        """
-        weights = []
-        for layer in self.layers:
-            weights.append(layer.transposedWeights[1:,0:])
-        network=VisNN.DrawNN(self.topology, weights)
-        network.draw()
-
