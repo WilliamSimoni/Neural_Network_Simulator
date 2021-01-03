@@ -56,6 +56,7 @@ class Bagging():
                                         ) if self.bootstrap else self.models[i].fit(training_set, validation_set, test_set, min_error=self.min_tr_errors[i])
             
             #print("model ", i, ": ", report.get_vl_accuracy())
+            
             training_reports.append(report)
 
         # calculate the mean of every report
@@ -69,7 +70,7 @@ class Bagging():
             [report.training_accuracy for report in training_reports], axis=0)
         final_report.validation_accuracy = np.mean(
             [report.validation_accuracy for report in training_reports], axis=0)
-        final_report.validation_accuracy = np.mean(
+        final_report.test_accuracy = np.mean(
             [report.test_accuracy for report in training_reports], axis=0)
 
         #print(final_report.training_accuracy[0])
