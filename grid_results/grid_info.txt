@@ -1,3 +1,0 @@
-Grid Search ended in 1 hour 5 minutes 18 seconds
-Grid Search ended in 2 hour 38 minutes 43 seconds
-Grid Search ended in 2 hour 31 minutes 9 seconds 
