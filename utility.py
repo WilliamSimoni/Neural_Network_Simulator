@@ -4,7 +4,6 @@
 """
 import csv
 import numpy as np
-from sklearn.preprocessing import StandardScaler
 
 def read_monk_data(file_path, train_dim=1.0, shuffle=False):
     """
