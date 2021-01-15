@@ -2,7 +2,6 @@
 Neural Network module implement a feedforward Neural Network
 """
 import math
-import json
 import numpy as np
 from layer import Layer
 from neural_exception import InvalidNeuralNetwork
@@ -333,7 +332,7 @@ class NeuralNetwork:
             training_predicted = self.predict(inputs_training)
 
             # calculate loss on training set
-            error = loss_functions[self.loss](
+            error = loss_functions[self.loss].loss(
                 training_predicted,
                 targets_training,
             )
@@ -352,7 +351,7 @@ class NeuralNetwork:
             #Doing the same for validation set if validation_set is defined
             if validation_samples:
                 val_predicted = self.predict(inputs_validation)
-                validation_error = loss_functions[self.loss](
+                validation_error = loss_functions[self.loss].loss(
                     val_predicted,
                     targets_validation,
                 )
@@ -367,7 +366,7 @@ class NeuralNetwork:
 
             #Doing the same for test set if test_set is defined
             if test_samples:
-                test_error = loss_functions[self.loss](
+                test_error = loss_functions[self.loss].loss(
                     [self.predict(test_example[0])
                      for test_example in test_samples],
                     [test_example[1] for test_example in test_samples],
