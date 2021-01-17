@@ -3,31 +3,32 @@ Neural Network module implement a feedforward Neural Network
 """
 import math
 import numpy as np
+import tqdm
 from layer import Layer
 from neural_exception import InvalidNeuralNetwork
 from report import Report
 from loss import loss_functions
 from metric import metric_functions
-import tqdm
+from optimizer import optimizer_implemented
+
 
 class NeuralNetwork:
     """
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, loss='euclidean_loss', metric='',
-                 momentum_rate=0, regularization_rate=0, nn_type="SGD",
+    def __init__(self, max_epochs, optimizer = 'batch',loss='euclidean_loss', metric='',
+                 momentum_rate=0, regularization_rate=0,
                  batch_size=1, type_classifier="classification"):
         """create an instance of neural network class
 
         Args:
             max_epochs (int): number of maximum epochs used in param fitting.
+            optimizer(string): indicate the Optimizer object used to train the model
             loss (string): Indicate the loss function to use to evaluate the model
             metric(string): indicate the metric used to evaluate the model, like Accuracy
             momentum_rate (int, optional): momentum_rate used for learning. Defaults to 0.
             regularization_rate(int,optional): regularization_rate used for learning. Defaults to 0
-            nn_type (string, optional): type of Neural Network used. Default "SGD"
-                Only SGD(Stocasthic Gradient Descent), batch and minibatch has been implemented.
             batch_size (int, optional): size of batch used, Default set to 1.
             type_classifier (string, optional): estabilish the type of classification used
                             Accepted values are "Classification" and "Regression"
@@ -35,8 +36,8 @@ class NeuralNetwork:
         self.max_epochs = self.check_max_epochs(max_epochs)
         self.input_dimension = 0
         self.output_dimension = 0
-        self.type = self.check_nn_type(nn_type)
-        self.batch_size = self.check_batch_size(batch_size, )
+        self.optimizer = self.check_optimizer(optimizer)
+        self.batch_size = self.check_batch_size(batch_size)
         self.type_classifier = self.check_type_classifier(type_classifier)
 
         # note: this is not a np.ndarray object
@@ -46,6 +47,7 @@ class NeuralNetwork:
             regularization_rate)
         self.metric = self.check_metric(metric)
         self.loss = self.check_loss(loss)
+
         self.topology = []
 
     def init_params(self, parameters):
@@ -61,7 +63,8 @@ class NeuralNetwork:
         regularization = parameters['regularization']
         nn_type = parameters['type_nn']
         batch_size = parameters['batch_size']
-        self.__init__(max_epoch, loss, accuracy, momentum_rate, regularization, nn_type, batch_size)
+        optimizer = parameters['optimizer'] if parameters['optimizer'] is not None else 'batch'
+        self.__init__(max_epoch, optimizer, loss, accuracy, momentum_rate, regularization, nn_type, batch_size)
         
     def deepcopy(self):
         """
@@ -79,11 +82,11 @@ class NeuralNetwork:
             Param:
                 batch_size(float): rate used as batch_size and should be > 0
             Return:
-                batch_size is 1 if self.type is SGD
-                batch_size if self.type is != SGD and batch_size > 0
+                batch_size is 1 if self.optimizer is SGD
+                batch_size if self.optimizer is != SGD and batch_size > 0
                 otherwise raise InvalidNeuralNetwork exception
         """
-        if self.type == "SGD" and batch_size == 1:
+        if self.optimizer == "SGD" and batch_size == 1:
             return batch_size
         elif batch_size > 0:
             return batch_size
@@ -144,17 +147,16 @@ class NeuralNetwork:
         else:
             raise InvalidNeuralNetwork()
 
-    def check_nn_type(self, nn_type):
+    def check_optimizer(self, optimizer):
         """
-            Check type of Neural Network implemented in NN constructor
+            Check optimizer value inserted in NN constructor
             Param:
-                nn_type(string): indicate the type of NN implemented
-                    Accepted value are SGD, minibatch and batch
+                optimizer(string): name of optimizer object used to train NN model
             Return:
-                nn_type is an accepted value otherwise raise InvalidNeuralNetwork exception
+                optimizer if is a valid optimizer object otherwise raise InvalidNeuralNetwork exception
         """
-        if nn_type in ["SGD", "minibatch", "batch"]:
-            return nn_type
+        if optimizer in optimizer_implemented:
+            return optimizer
         else:
             raise InvalidNeuralNetwork()
 
@@ -291,7 +293,7 @@ class NeuralNetwork:
         report = Report(self.max_epochs, min_error)
         total_samples = len(training_examples)
 
-        if self.type == "batch":
+        if self.optimizer == "batch":
             self.batch_size = total_samples
 
         # executed epochs
@@ -318,6 +320,7 @@ class NeuralNetwork:
             # shuffle training examples
             np.random.shuffle(training_examples)
 
+            #optimizer_implemented[self.optimizer].train(training_examples)
             # training
             for index in range(0, num_window):
                 window_examples = training_examples[index * self.batch_size:
@@ -380,9 +383,6 @@ class NeuralNetwork:
             # update the learning rate
             [layer.update_learning_rate(num_epochs) for layer in self.layers]
 
-            # increase number of epochs
-            num_epochs += 1
-
         return report
 
     def _back_propagation(self, samples, batch_total_samples_ratio):
@@ -411,7 +411,7 @@ class NeuralNetwork:
         # calculate error signal (delta) of output units
         targets = np.array([elem[1] for elem in samples])
         inputs = np.array([elem[0] for elem in samples])
-        self.layers[-1].error_signal(targets, self.predict(inputs))
+        self.layers[-1].error_signal(targets, self.predict(inputs), loss=loss_functions[self.loss])
 
         # calculate error signal (delta) of hidden units
         [self.layers[index].error_signal(self.layers[index+1].get_errors(),

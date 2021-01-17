@@ -211,19 +211,19 @@ class OutputLayer(Layer):
         """
         super().__init__(weights, learning_rates, activation)
 
-    def error_signal(self, targets, outputs):
+    def error_signal(self, targets, outputs, loss):
         """implement the calculation of the error signal for an output layer
 
         Parameters:
             target (np.array): target for a specific pattern x
             output (np.array): the output of the layer for a specific pattern x
-
+            loss (Loss): the loss object used to compute the derivative of Loss function
         Formula:
             for each unit i
 
-                errors[i] = f'(net[i]) * (target[i] - output[i])
+                errors[i] = f'(net[i]) * loss'(target, output)
         """
-        difference = np.array([(target - output) for target, output in zip(targets, outputs)])
+        difference = loss.derivative(outputs, targets)
         self.errors = np.multiply(self.activation.derivative(self.net), difference)
         self.current_delta_w = np.sum([np.einsum('i,j', error, input) for error, input in zip(self.errors, self.inputs)], axis=0)
 

@@ -70,18 +70,17 @@ class MeanSquareError(Loss):
                 predicted: predicted output for all samples
                 targets: target value provided by dataset for all samples
         """
-        return np.sum([(predict - target)**2
-                   for predict, target in list(zip(predicted, targets))]) / len(predicted)
+        return np.mean([(predict - target)**2
+                   for predict, target in list(zip(predicted, targets))])
 
-    def derivative(self, predict, target):
+    def derivative(self, predicted, targets):
         """
-            Calculate the derivative of Mean Square error loss using the k target
-            used in Backpropagation
+            Calculate the derivative of Mean Square error used in Backpropagation
             Param:
-                predict: k predicted output
-                targets: k target value provided by dataset
+                predicted: the n predicted outputs
+                targets: the n targets value provided by dataset
         """
-        return np.array([predict - target])
+        return np.array([(target - output) for target, output in zip(targets, predicted)])
 
 
 loss_functions = {

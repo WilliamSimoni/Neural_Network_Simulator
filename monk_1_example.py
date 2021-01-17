@@ -1,6 +1,7 @@
 """
     Test our NN model using Monk3 dataset
 """
+from optimizer import GradientDescent
 import numpy as np
 from utility import read_monk_data
 from neural_network import NeuralNetwork
@@ -16,16 +17,16 @@ def monk_example():
     """
     # load data
 
-    train_data, train_label, _, _ = read_monk_data("dataset/monks-2.train")
-    test_data, test_label, _, _ = read_monk_data("dataset/monks-2.test")
+    train_data, train_label, _, _ = read_monk_data("dataset/monks-1.train")
+    test_data, test_label, _, _ = read_monk_data("dataset/monks-1.test")
 
     # create a ensemble to perform bagging (bootstrap set to false)
     ensemble = Bagging(len(train_data), 500, False)
 
     # create and add neural network to the ensemble
     for _ in range(0, 10):
-        nn = NeuralNetwork(500, 'mean_squared_error', 'classification_accuracy',
-                        0.8, nn_type="batch", batch_size=1)
+        nn = NeuralNetwork(500, 'batch','mean_squared_error', 'classification_accuracy',
+                        0.8, batch_size=1)
 
         layer1 = HiddenLayer(weights=wi.ranged_uniform_initializer(15, len(train_data[0]), -0.12, 0.12),
                             learning_rates=lr.Constant(15, len(train_data[0]), 0.8),
