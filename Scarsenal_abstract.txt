@@ -1,0 +1,3 @@
+We used as the final model an ensemble of the ten best models obtained by a grid search of 900 parameters. 
+We used the 4-fold cross-validation to evaluate the models. 
+The ten best models are the ones that achieve the lowest MEE error and have a stable learning curve.
