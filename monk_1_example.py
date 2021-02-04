@@ -25,14 +25,14 @@ def monk_example():
 
     # create and add neural network to the ensemble
     for _ in range(0, 10):
-        nn = NeuralNetwork(500, 'batch','mean_squared_error', 'classification_accuracy',
+        nn = NeuralNetwork(500, 'SGD','mean_squared_error', 'classification_accuracy',
                         0.8, batch_size=1)
 
-        layer1 = HiddenLayer(weights=wi.ranged_uniform_initializer(15, len(train_data[0]), -0.12, 0.12),
-                            learning_rates=lr.Constant(15, len(train_data[0]), 0.8),
+        layer1 = HiddenLayer(weights=wi.ranged_uniform_initializer(4, len(train_data[0]), -0.12, 0.12),
+                            learning_rates=lr.Constant(4, len(train_data[0]), 0.8),
                             activation=af.Relu())
-        layer2 = OutputLayer(weights=wi.ranged_uniform_initializer(1, 15, -0.12, 0.12),
-                            learning_rates=lr.Constant(1, 15, 0.8),
+        layer2 = OutputLayer(weights=wi.ranged_uniform_initializer(1, 4, -0.12, 0.12),
+                            learning_rates=lr.Constant(1, 4, 0.8),
                             activation=af.Sigmoid())
 
         nn.add_layer(layer1)

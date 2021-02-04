@@ -17,9 +17,8 @@ class NeuralNetwork:
         Neural Network class to represent a feedforward Neural Network
     """
 
-    def __init__(self, max_epochs, optimizer = 'batch',loss='euclidean_loss', metric='',
-                 momentum_rate=0, regularization_rate=0,
-                 batch_size=1, type_classifier="classification"):
+    def __init__(self, max_epochs, optimizer = 'SGD',loss='euclidean_loss', metric='',
+                 momentum_rate=0, regularization_rate=0, batch_size=1):
         """create an instance of neural network class
 
         Args:
@@ -38,7 +37,6 @@ class NeuralNetwork:
         self.output_dimension = 0
         self.optimizer = self.check_optimizer(optimizer)
         self.batch_size = self.check_batch_size(batch_size)
-        self.type_classifier = self.check_type_classifier(type_classifier)
 
         # note: this is not a np.ndarray object
         self.layers = []
@@ -61,7 +59,6 @@ class NeuralNetwork:
         loss = parameters['loss_function']
         accuracy = parameters['accuracy']
         regularization = parameters['regularization']
-        nn_type = parameters['type_nn']
         batch_size = parameters['batch_size']
         optimizer = parameters['optimizer'] if parameters['optimizer'] is not None else 'batch'
         self.__init__(max_epoch, optimizer, loss, accuracy, momentum_rate, regularization, nn_type, batch_size)
@@ -327,8 +324,9 @@ class NeuralNetwork:
                                                     (index+1) * self.batch_size]
 
                 # Backpropagate training examples
-                self._back_propagation(
-                    window_examples, batch_total_samples_ratio)
+                optimizer_implemented[self.optimizer]()._back_propagation(
+                    self, window_examples, batch_total_samples_ratio,
+                    loss_functions[self.loss])
 
             #calculate training/*validation/*(test) error after one epoch
 

@@ -131,47 +131,7 @@ class Layer:
         # of the layer to the new nets result.
         return np.array(self.activation.output(self.net))
 
-    def update_weight(self, batch_size, batch_total_samples_ratio,
-                            momentum_rate=0, regularization_rate=0):
-        """update the weights of the layers
-
-        Parameters:
-            batch_size (int): size of a batch used to compute average over batch
-            batch_total_samples_ratio (float): batch_size / len(samples)
-            momentum_rate (int, optional): the momentum rate used to update the weights.
-                Defaults to 0.
-            regularization_rate (int, optional): the regularization rate used to update the weights.
-                                                    Defaults to 0.
-
-        Formula:
-            The j-th weight of the i-th unit is update as follow:
-
-                W[i][j] = W[i][j] + learning_rate[i][j] * errors[i] * inputs[j] +
-                          momentum_rate * old_delta_w +
-                          reularization_rate * W[i][j]
-        """
-        
-        # calculating the new delta
-        # new_delta_w[i][j] = learning_rate[i][j] * errors[i] * inputs[j]
-        new_delta_w = np.multiply(
-            self.learning_rates.value() / batch_size, self.current_delta_w)
-
-        # updating the weights
-
-        # regularization (no for bias)
-        self.weights[0:, 1:] -= batch_total_samples_ratio * \
-            regularization_rate * self.weights[0:, 1:]
-
-        # adding delta_w and momentum
-        self.weights += new_delta_w + self.old_delta_w * momentum_rate
-
-        # updating old_delta_w for the next update of the weights
-        self.old_delta_w = new_delta_w
-
-        # reinitialize things
-        self.current_delta_w = np.zeros(self.weights.shape)
-        self.errors = np.empty([self.num_unit])
-
+ 
     def error_signal(self, target, output):
         """abstract class
 
