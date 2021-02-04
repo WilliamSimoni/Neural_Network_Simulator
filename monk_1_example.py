@@ -28,11 +28,11 @@ def monk_example():
         nn = NeuralNetwork(500, 'SGD','mean_squared_error', 'classification_accuracy',
                         0.8, batch_size=1)
 
-        layer1 = HiddenLayer(weights=wi.ranged_uniform_initializer(4, len(train_data[0]), -0.12, 0.12),
-                            learning_rates=lr.Constant(4, len(train_data[0]), 0.8),
+        layer1 = HiddenLayer(weights=wi.ranged_uniform_initializer(15, len(train_data[0]), -0.12, 0.12),
+                            learning_rates=lr.Constant(15, len(train_data[0]), 0.9),
                             activation=af.Relu())
-        layer2 = OutputLayer(weights=wi.ranged_uniform_initializer(1, 4, -0.12, 0.12),
-                            learning_rates=lr.Constant(1, 4, 0.8),
+        layer2 = OutputLayer(weights=wi.ranged_uniform_initializer(1, 15, -0.12, 0.12),
+                            learning_rates=lr.Constant(1, 15, 0.9),
                             activation=af.Sigmoid())
 
         nn.add_layer(layer1)

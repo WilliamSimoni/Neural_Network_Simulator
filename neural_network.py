@@ -61,7 +61,7 @@ class NeuralNetwork:
         regularization = parameters['regularization']
         batch_size = parameters['batch_size']
         optimizer = parameters['optimizer'] if parameters['optimizer'] is not None else 'batch'
-        self.__init__(max_epoch, optimizer, loss, accuracy, momentum_rate, regularization, nn_type, batch_size)
+        self.__init__(max_epoch, optimizer, loss, accuracy, momentum_rate, regularization, batch_size)
         
     def deepcopy(self):
         """
@@ -290,7 +290,7 @@ class NeuralNetwork:
         report = Report(self.max_epochs, min_error)
         total_samples = len(training_examples)
 
-        if self.optimizer == "batch":
+        if self.optimizer == "SGD":
             self.batch_size = total_samples
 
         # executed epochs
@@ -382,48 +382,3 @@ class NeuralNetwork:
             [layer.update_learning_rate(num_epochs) for layer in self.layers]
 
         return report
-
-    def _back_propagation(self, samples, batch_total_samples_ratio):
-        """execute a step of the backpropagation algorithm
-
-        Parameters:
-            samples (np.array): list of samples
-            batch_total_samples_ratio (float): batch_size / len(samples)
-        """
-
-        """
-        #Extended code using normal For
-        for sample in samples:
-
-            # calculate error signal (delta) of output units
-            self.layers[-1].error_signal(sample[1], self.predict(sample[0]))
-            self.layers[-1].update_delta_w()
-
-           
-            
-            for index in range(len(self.layers[:-1]) - 1, -1, -1):
-                self.layers[index].error_signal(self.layers[index+1].get_errors(),
-                                                self.layers[index+1].get_weights())
-                self.layers[index].update_delta_w()
-        """
-        # calculate error signal (delta) of output units
-        targets = np.array([elem[1] for elem in samples])
-        inputs = np.array([elem[0] for elem in samples])
-        self.layers[-1].error_signal(targets, self.predict(inputs), loss=loss_functions[self.loss])
-
-        # calculate error signal (delta) of hidden units
-        [self.layers[index].error_signal(self.layers[index+1].get_errors(),
-                                         self.layers[index+1].get_weights())
-         for index in range(len(self.layers[:-1]) - 1, -1, -1)]
-
-        # updating the weights in the neural network
-        """ extended code using normal For
-        for layer in self.layers:
-            layer.update_weight(
-                self.batch_size, batch_total_samples_ratio,
-                self.momentum_rate, self.regularization_rate)
-        """
-        [layer.update_weight(
-            self.batch_size, batch_total_samples_ratio,
-            self.momentum_rate, self.regularization_rate)
-         for layer in self.layers]

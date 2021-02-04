@@ -1,6 +1,7 @@
 """
     Module grid_search to do the grid search for ML models
 """
+from optimizer import Optimizer
 from layer import HiddenLayer, OutputLayer
 from utility import normalize_data, read_cup_data, denormalize_data
 import cross_validation as cv
@@ -23,11 +24,11 @@ parameters = {
     'momentum': [0.6, 0.8, 1.0],
     'weight_initialization': [wi.xavier_initializer, wi.ranged_uniform_initializer],
     'activation_hidden': [af.TanH, af.Relu],
-    'type_nn': ['batch'],
     'batch_size': [1],
     'topology': [(30, 20), (20, 20), (10, 5, 5), (15, 15), (20,)],
     'loss': ['mean_squared_error'],
     'accuracy': ['euclidean_loss'],
+    'optimizer': 'SGD',
     'num_epoch': [500],
 }
 
@@ -74,16 +75,16 @@ def initialize_model(model_param, num_features, output_dim):
     momentum = model_param[2]
     weight_initialization = model_param[3]
     activation = model_param[4]
-    type_nn = model_param[5]
-    batch_size = model_param[6]
-    topology = model_param[7]
-    loss = model_param[8]
-    accuracy = model_param[9]
+    batch_size = model_param[5]
+    topology = model_param[6]
+    loss = model_param[7]
+    accuracy = model_param[8]
+    optimizer = model_param[9]
     num_epochs = model_param[10]
 
     # Create NN object model
-    model = NeuralNetwork(num_epochs, loss, accuracy, momentum,
-                          regularization, type_nn, batch_size)
+    model = NeuralNetwork(num_epochs, optimizer, loss, accuracy, momentum,
+                          regularization, batch_size)
 
     last_dim = num_features
     # Add Layers
@@ -119,11 +120,11 @@ if __name__ == '__main__':
             params['momentum'],
             params['weight_initialization'],
             params['activation_hidden'],
-            params['type_nn'],
             params['batch_size'],
             params['topology'],
             params['loss'],
             params['accuracy'],
+            params['optimizer'],
             params['num_epoch']
         ]
         pool = multiprocessing.Pool(multiprocessing.cpu_count()) if n_threads is None else \
@@ -180,7 +181,7 @@ if __name__ == '__main__':
         return None
 
     #execute grid search
-    grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
+    #grid_search(parameters, dataset, len(train_data[0]), len(train_label[0]))
 
 
 # BAGGING FINAL RESULTS
@@ -192,49 +193,50 @@ def final_model():
 
     #model params contains the best hyperparams obtained with the final grid search 
     model_params = [
-        [0.1, 0.00075, 1.0, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
 
-        [0.15, 0.0005, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (20, 20), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.01, 0.0005, 0.6, wi.ranged_uniform_initializer, af.TanH, 
+            1, (20, 20), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.15, 0.001, 0.8, wi.ranged_uniform_initializer, af.Relu, 'batch',
-            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.15, 0.001, 0.8, wi.ranged_uniform_initializer, af.Relu, 
+            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.13, 0.0005, 0.6, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (15,15), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 0.6, wi.ranged_uniform_initializer, af.TanH, 
+            1, (15,15), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.15, 0.001, 0.8, wi.xavier_initializer, af.Relu, 'batch',
-            1, (15,15), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.15, 0.001, 0.8, wi.xavier_initializer, af.Relu, 
+            1, (15,15), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.13, 0.0005, 1.0, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (15,15), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.0005, 1.0, wi.ranged_uniform_initializer, af.TanH, 
+            1, (15,15), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.15, 0.0005, 0.8, wi.ranged_uniform_initializer, af.TanH, 'batch',
-            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.15, 0.0005, 0.8, wi.ranged_uniform_initializer, af.TanH, 
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.13, 0.00075, 1.0, wi.ranged_uniform_initializer, af.Relu, 'batch',
-            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.13, 0.00075, 1.0, wi.ranged_uniform_initializer, af.Relu, 
+            1, (10, 5, 5), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.15, 0.001, 1.0, wi.ranged_uniform_initializer, af.Relu, 'batch',
-            1, (20, 20), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.15, 0.001, 1.0, wi.ranged_uniform_initializer, af.Relu, 
+            1, (20, 20), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
 
-        [0.15, 0.0025, 0.8, wi.xavier_initializer, af.Relu, 'batch',
-            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 500],
+        [0.15, 0.0025, 0.8, wi.xavier_initializer, af.Relu, 
+            1, (15, 15), 'mean_squared_error', 'euclidean_loss', 'SGD', 500],
     ]
 
     #Reading and normalizing data from the ML cup 
     #Note that we take 80% for training and 20% for test
     train_data, train_label, test_data, test_label = read_cup_data(
         "dataset/ML-CUP20-TR.csv", 0.8)
-    train_data, train_label, den_data, den_label = normalize_data(
-        train_data, train_label)
-    test_data, test_label, _, _ = normalize_data(
-        test_data, test_label, den_data, den_label)
+    #train_data, train_label, den_data, den_label = normalize_data(
+     #   train_data, train_label)
+    #test_data, test_label, _, _ = normalize_data(
+      #  test_data, test_label, den_data, den_label)
 
     training_examples = list(zip(train_data, train_label))
     test_examples = list(zip(test_data, test_label))
 
+    model_test = initialize_model(model_params[0], len(train_data[0]), 2)
+    report = model_test.fit(training_examples, test_examples)
+    report.plot_accuracy()
     #create ensemble object that will contain all the hypothesis
     ensemble = Bagging(len(training_examples))
 
@@ -290,3 +292,5 @@ def final_model():
     print("ensemble test: ", error)
 
     return ensemble
+
+final_model()
