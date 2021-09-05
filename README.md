@@ -3,142 +3,65 @@ A neural network deployed by Marco Natali and William Simoni for the Machine Lea
 
 The deployed neural network will be a **feedforward** network whose units in a layer will be connected to all the units belonging to the layer directly above and directly below.
 
-## Class diagram
+## Installation
+To execute our neural network simulation you need to install some pip packages defined in requirement file using this command:
+```
+pip install -r requirement.txt
+```
 
-The neural network simulator consists of two classes:
+## Example of usage
+In this example, we will create a neural network to solve the monk 3 task. The entire code is available in monk_3_example.py. First thing first, we need to create an instance of a neural network. To do that we just write:
+```
+nn = NeuralNetwork(500, 'SGD', 'mean_squared_error', 'classification_accuracy', 0.8, 0.01, batch_size=1)
+```
+The parameter we need to provide to the constructor of the neural network are in order:
+* **max_epochs**: maximum number of epochs the training algorithm will perform. In our example, the training algorithm will stop after 500 epochs. 
+* **optimizer**: indicate the Optimizer object used to train the model. SGD is at the moment the only available optimizer, however, it can be extended to other optimizers such as ADAM.
+* **loss**: the loss function used to train the model. The available loss are "mean_squared_error" and "cross_entropy".
+* **metric**: the metric used to evaluate the model, like classification accuracy or the euclidean loss. 
+* **momentum_rate**: momentum_rate used for learning. Defaults to 0.
+* **regularization_rate**: regularization_rate used for learning. Defaults to 0.
+* **batch_size**:  size of batch used, Default set to 1 (stochastic SGD). It can be every number greater than 1.
 
-* the **Neural Network** class apply forward and backpropagation on its layers
-* the **Layer** class represent a layer of units of the neural network
-* the **Activation function** abstract class represents an activation function
+We have now to define the layers that compose the topology of the neural network. In our example, we will create an hidden layer of four neurons and an output layer of 1 neuron:
+```
+ layer1 = HiddenLayer(weights=wi.he_initializer(4, len(train_data[0])),
+                            learning_rates=lr.Constant(4, len(train_data[0]), 0.8),
+                            activation=af.Relu())
+```
+```
+ layer2 = OutputLayer(weights=wi.he_initializer(1, 4),
+                            learning_rates=lr.Constant(1, 4, 0.8),
+                            activation=af.Sigmoid())
+```
+There are two types of layer, the hidden layer and the output layer. Every neural network should have an output layer in the end. Every layer has the following parameters:
+* **weights**: matrix of num_unit * num_input + 1 elements, that contain the weights of the units in the layer (including the biases). To create the matrix we can use the functions defined in weight_initializer.py. In our example, we used the he_initializer. 
+* **learning_rate**: matrix of unitNumber * inputNumber elements, that contain the learning rates of the units in the layer (including the biases). To create the matrix we can use the functions defined in learning_rate.py. In our example, we used the Constant learning rate. 
+* **activation**: activation function of the units in the layer. The functions are implemented in activation_function.py.
 
-![Class diagram](https://user-images.githubusercontent.com/56754601/96553750-e678f780-12b5-11eb-9c03-63e387e19ac8.png)
+Eventually, we add the layers to the nueral network:
+```
+nn.add_layer(layer1)
+nn.add_layer(layer2)
+```
 
-### Neural Network Class
-
-#### instance variables
-
-the instance variables are:
-* **layers**: ordered sequence of layer objects. 
-* **momentum**: momentum function used for weights updatw
-* **learningRateUpdate**: function that update the learning rates
-* **momentumRate**: hyperparameter of momemtum rate
-* **hiddenLayerNumber**: number of hidden layer
-* **unitsPerHiddenlayer**: units per hidden layer
-* **outputUnit**: number of output units
-* **maxEpochs**: maximum number of epochs
-* **regularizationRate**: regularization rate
-* **regularizationFunction**: function used for regularization
-* **Neural Network Type**: type of neural network solver, we only implemented Stochastic/Online Gradient descent
-* **inputDimension**: dimension of the input
-
-#### methods
-
-##### fit (public)
-The fit method trains the neural network over a set of training examples.
-
-input:
-* trainingExamples: array of tuplas (x, target)
-
-*pre-condition*: trainingExamples.length > 0 and x.dimension = inputDimension and target.dimension = outputUnit
-
-*post-condition*: update the weights
-
-##### predict (public)
-Predict the target value over a sample
-
-input:
-* sample: feature space X that represents a feature space of an example
-
-*pre-condition*: sample.dimension = inputDimension
-
-*return*: returns the predicted target over the sample
-
-##### feedForwardSignal (private)
-Propagate the signal from input to output layer
-
-input:
-* sample: feature space X that represents a feature space of an example
-
-*pre-condition*: sample.dimension = inputDimension
-
-*return*: returns the predicted target over the sample
-
-##### backPropagation (private)
-Backpropagate the error from output to input layer
-
-input: 
-* exampleSample: 
-* targetPredicted:
-
-*post-condition*: update the weights
-
-### Layer Class
-
-A layer that contains **h** units with **i** inputs, stores the units' weight in a matrix ![equation](https://latex.codecogs.com/gif.latex?W%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*i%7D), the units' bias in a vector *b* ![equation](https://latex.codecogs.com/gif.latex?%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh%7D), and the weights' learning rate in a matrix ![equation](https://latex.codecogs.com/gif.latex?E%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*i%7D). Each unit of a layer has the same activation function defined when an instance of the class is created.
-
-There are two specialized classes of the layer class:
-* the **Output layer class** that represents an output layer
-* the **Hidden layer class** that represents an hidden layer
-
-The two classes differ only on the error signal method. 
-
-#### methods
-
-##### functionSignal 
-
-return the function signal
-
-#### errorSignal
-
-abstact method
-
-##### updateWeight
-
-update weights 
-
-### Output Layer class
-
-A layer that contains output unit. It implements errorSignal for output unit. 
-
-#### Error Signal
-
-This method returns: 
-    
-![equation](https://latex.codecogs.com/gif.latex?%5Cdelta_%7Bj%7D%20%3D%20f%27%28net_%7Bj%7D%29%28target_%7Bj%7D%20-%20output_%7Bj%7D%29)
-
-
-### Hidden Layer class
-
-A layer that contains output unit. It implements errorSignal for output unit. 
-
-#### Error Signal
-
-This method returns: 
-    
-![equation](https://latex.codecogs.com/gif.latex?%5Cdelta_%7Bj%7D%20%3D%20f%27%28net_%7Bj%7D%29%5Csum_%7Bk%5Cin%20Downstream%28j%29%7D%5Cdelta_%7Bk%7D%20*%20w_%7Bkj%7D)
-
-
-## Function signal
-
-Suppose to have a neural network with **i** inputs, **H** hidden layers with **h** units, and an output layer with **o** units. Therefore:
-* each hidden layer has a matrix ![equation](https://latex.codecogs.com/gif.latex?W_%7Bl%7D%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh*h%7D) and a vector ![equation](https://latex.codecogs.com/gif.latex?b_%7Bl%7D%5Cin%20%5Cmathbb%7BR%7D%5E%7Bh%7D), where *l* is the level of the layer; e.g. the first layer has l = 1 a the last layer has l = H. 
-* The output layer has a matrix ![equation](https://latex.codecogs.com/gif.latex?W_%7Bo%7D%5Cin%20%5Cmathbb%7BR%7D%5E%7Bo*o%7D) and a vector ![equation](https://latex.codecogs.com/gif.latex?b_%7Bo%7D%5Cin%20%5Cmathbb%7BR%7D%5E%7Bo%7D).
-
-The feedback signal for the first level is calculated as follow: TODO
-
-# TODO (28/10/2020)
-
-* function signal in layer (Marco)
-* feedforwardSignal in neural network (Marco)
-* predict in neural network (Marco)
-* layer constructor (William)
-* activation function (William)
-
-# TODO (04/11/2020)
-
-* add comments to code (William)
-* study how to implement momentum and regularization rate (Everyone)
-* unitary test about predict, backpropagation, error_signal, ecc. (Marco)
-
-
-
+### Training
+We first load the data:
+```
+train_data, train_label, _, _ = read_monk_data("dataset/monks-3.train")
+test_data, test_label, _, _ = read_monk_data("dataset/monks-3.test")
+```
+We zip the loaded data:
+```
+training_examples = list(zip(train_data, train_label))
+test_examples = list(zip(test_data, test_label))
+```
+Finally we can train the model:
+```
+report = nn.fit(training_examples, test_examples)
+```
+The fit function returns a report object that we can then use to plot some charts:
+```
+report.plot_loss()
+report.plot_accuracy()
+```
