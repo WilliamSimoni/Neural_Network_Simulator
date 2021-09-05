@@ -87,21 +87,6 @@ class GradientDescent(Optimizer):
         # updating old_delta_w for the next update of the weights
         layer.old_delta_w = new_delta_w
 
-        
-
-class AdaGrad(Optimizer):
-    """
-        AdaGrad Optimizer
-    """
-
-
-class Adam(Optimizer):
-    """
-        Adam Optimizer
-    """
-
 optimizer_implemented = {
-    'Adam': Adam,
     'SGD': GradientDescent,
-    'AdaGrad': AdaGrad,
 }

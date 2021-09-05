@@ -1,12 +1,10 @@
 import numpy as np
-import copy
 from utility import normalize_data, read_monk_data, read_cup_data, denormalize_data
 from neural_network import NeuralNetwork
 from layer import OutputLayer, HiddenLayer
 import weight_initializer as wi
 import activation_function as af
 import math
-import cProfile
 import learning_rate as lr
 from metric import metric_functions
 

@@ -3,7 +3,6 @@
     choice in ML models in particular for NN
 """
 import numpy as np
-import report as rp
 
 
 class LearningRate():

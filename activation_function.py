@@ -28,7 +28,6 @@ class ActivationFunction():
             numpy.ndarray: output of the derivative
         """
 
-
 class Linear(ActivationFunction):
     """Implementation of the linear function:
 
@@ -55,6 +54,8 @@ class Linear(ActivationFunction):
     def derivative(self, x_val):
         return np.ones(x_val.shape)
 
+    def __str__(self):
+        return "linear"
 
 class Sigmoid(ActivationFunction):
     """Implementation of the sigmoid function:
@@ -95,6 +96,8 @@ class Sigmoid(ActivationFunction):
     def derivative(self, x_val):
         return self.derivative_func(self.output(x_val))
 
+    def __str__(self):
+        return "sigmoid"
 
 class TanH(ActivationFunction):
     """Implementation of the tanh function
@@ -135,6 +138,8 @@ class TanH(ActivationFunction):
     def derivative(self, x_val):
         return self.derivative_func(self.output(x_val))
 
+    def __str__(self):
+        return "tanh"
 
 class Relu(ActivationFunction):
     """Implementation of the relu function
@@ -165,6 +170,8 @@ class Relu(ActivationFunction):
     def derivative(self, x_val):
         return 1.0*(x_val > 0)
 
+    def __str__(self):
+        return "relu"
 
 class LeakyRelu(ActivationFunction):
     """Implementation of the leaky relu function
@@ -201,6 +208,9 @@ class LeakyRelu(ActivationFunction):
         result[x_val >= 0] = 1
         return result
 
+    def __str__(self):
+        return "leaky-relu with " + str(self.slope) + " as slope"
+
 
 class SoftPlus(ActivationFunction):
     """Implementation of the soft plus function
@@ -228,3 +238,6 @@ class SoftPlus(ActivationFunction):
 
     def derivative(self, x_val):
         return 1 / (1 + np.exp(-x_val))
+
+    def __str__(self):
+        return "softplus"
